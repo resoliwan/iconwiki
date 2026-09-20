@@ -1,4 +1,4 @@
-import { searchCatalogMatches } from './catalog.js';
+import { normalize, searchCatalogMatches } from './catalog.js';
 
 const CACHE_KEY = 'moa.smart-search.v1';
 const SUPPORTED_TRANSLATION_LANGUAGES = new Set([
@@ -84,8 +84,14 @@ export function sanitizeExpansion(value, englishQuery) {
   return terms;
 }
 
+export function isAndQuery(query) {
+  return normalize(query || '').split(/\s+/).filter(Boolean).length > 1;
+}
+
 export function buildSmartResults(items, options, expansion = null, resultType = 'all') {
-  const effectiveQuery = expansion?.englishQuery || options.query;
+  // Keep the original AND query for direct English matches; add AI suggestions separately.
+  const effectiveQuery = isAndQuery(options.query) && (!expansion?.sourceLanguage || expansion.sourceLanguage === 'en')
+    ? options.query : expansion?.englishQuery || options.query;
   const directMatches = searchCatalogMatches(items, { ...options, query: effectiveQuery });
   const direct = directMatches.map(row => row.item);
   const directIds = new Set(direct.map(item => item.id));
@@ -193,12 +199,12 @@ export class ChromeSmartSearch {
     return (await translator.translate(text)).trim();
   }
 
-  async expand(query, selectedLanguage = 'auto', progress, partial) {
+  async expand(query, selectedLanguage = 'auto', progress, partial, { refresh = false } = {}) {
     const source = String(query).normalize('NFKC').trim();
     if (!source) return null;
     const cache = readCache(this.storage);
     const directCacheKey = `en:${source.toLowerCase()}`;
-    if (cache[directCacheKey] && selectedLanguage === 'en') {
+    if (!refresh && cache[directCacheKey] && selectedLanguage === 'en') {
       return { sourceQuery: source, sourceLanguage: 'en', ...cache[directCacheKey], cached: true };
     }
 
@@ -208,7 +214,7 @@ export class ChromeSmartSearch {
     const baseResult = { sourceQuery: source, sourceLanguage, englishQuery, terms: [] };
     partial?.(baseResult);
     const cacheKey = `en:${englishQuery.toLowerCase()}`;
-    if (cache[cacheKey]) {
+    if (!refresh && cache[cacheKey]) {
       return { sourceQuery: source, sourceLanguage, ...cache[cacheKey], cached: true };
     }
     let model;
@@ -233,7 +239,7 @@ export class ChromeSmartSearch {
     };
     const response = await model.prompt(
       `The English icon search query is "${englishQuery.replaceAll('"', '')}". ` +
-      'Return related English terms for finding visually meaningful icons. Include concrete synonyms, objects, actions, expressions, or categories. Use lowercase terms of one to three words. Do not repeat the query.',
+      'Return related English terms for finding visually meaningful icons. Include concrete synonyms, objects, actions, expressions, or categories. Use lowercase terms of one to three words. For multi-word queries, preserve the combined meaning of all words in each suggestion. Do not expand unrelated meanings of individual words. Do not repeat the query.',
       { responseConstraint: schema },
     );
     const terms = sanitizeExpansion(JSON.parse(response), englishQuery);

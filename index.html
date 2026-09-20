@@ -3,15 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#151619">
+  <meta name="theme-color" content="#131314">
   <title>Moa · Icon Library</title>
-  <link rel="icon" type="image/svg+xml" href="./assets/app-icon.svg">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="./assets/app-icon.svg?v=dark-2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css?v=filters-2">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
-    <a class="brand-mark" href="./" aria-label="Moa home"><img src="./assets/app-icon.svg" alt=""></a>
-    <button class="rail-button active" id="browse-button" aria-label="All images" title="All images"><span class="rail-symbol">▦</span><span>Library</span></button>
+    <a class="brand-mark" href="./" aria-label="Moa home"><img src="./assets/app-icon.svg?v=dark-2" alt=""></a>
+    <button class="rail-button active" id="browse-button" aria-label="Toggle library filters" title="Library filters" aria-expanded="true" aria-controls="filters-panel"><span class="rail-symbol" aria-hidden="true">category</span><span>Library</span></button>
     <a class="rail-bottom" href="./README.md" target="_blank" title="Help" aria-label="Help">?</a>
   </aside>
 
@@ -20,9 +23,8 @@
       <a class="brand" href="./">Moa<span>Icon Library</span></a>
       <div class="search-box">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
-        <input id="search" type="search" placeholder="Search by name or keyword" aria-label="Search images" autocomplete="off" spellcheck="false">
-        <button class="smart-button" id="smart-search" type="button" role="switch" aria-checked="false" title="Use AI translation and related terms for every search"><span aria-hidden="true">✦</span> AI expansion <b id="smart-state">OFF</b></button>
-        <kbd>/</kbd>
+        <input id="search" type="search" placeholder="Search icons · spaces mean AND" aria-label="Search images" autocomplete="off" spellcheck="false">
+        <button class="smart-button" id="smart-search" type="button" role="switch" aria-checked="false" title="Expand related terms automatically, or press Enter to run again."><span aria-hidden="true">✦</span> AI expansion <b id="smart-state">OFF</b></button>
       </div>
       <div class="expansion-panel" id="expansion-panel" hidden>
         <strong>Expanded terms</strong>
@@ -31,42 +33,51 @@
     </header>
 
     <div class="workspace" id="workspace">
-      <aside class="detail" id="detail" aria-label="Image details" hidden></aside>
-      <main>
-        <div class="results-bar">
-          <div class="result-summary">
-            <span class="result-count" id="result-count" role="status">Loading…</span>
-          </div>
+      <aside class="filters" id="filters-panel" aria-label="Search filters">
+        <div class="filters-heading"><h2><span class="ui-symbol" aria-hidden="true">tune</span> Filters</h2><div class="filter-actions"><button class="text-button" id="reset-filters" type="button">Reset all</button><button class="close-button" id="close-filters" type="button" aria-label="Close filters" title="Close filters">×</button></div></div>
           <div class="view-options">
+            <span class="filter-label" id="library-label">Library</span>
             <details class="multi-filter" id="collection-filter">
               <summary id="collection-filter-summary">All libraries</summary>
               <div class="multi-filter-menu" id="collection-options"></div>
             </details>
+            <span class="filter-label">License</span>
             <details class="multi-filter" id="license-filter">
               <summary id="license-filter-summary">All licenses</summary>
               <div class="multi-filter-menu" id="license-options"></div>
             </details>
+            <label class="filter-label" for="result-filter">Match range</label>
             <select id="result-filter" aria-label="Select match type">
               <option value="all">All match ranges</option>
               <option value="exact">Exact</option>
               <option value="keyword">Keyword</option>
               <option value="similar">Similar</option>
             </select>
+            <label class="filter-label" for="display-mode">Display</label>
             <select id="display-mode" aria-label="Select card view">
               <option value="images">Images only</option>
               <option value="labels">Images + labels</option>
             </select>
             <label class="tone-toggle"><input type="checkbox" id="skin-tones"> Include skin tone variants</label>
           </div>
+      </aside>
+      <main>
+        <div class="library-heading"><p>ICONS &amp; EMOJI</p><h1>Find the icons for your project</h1></div>
+        <div class="results-bar">
+          <div class="result-summary">
+            <span class="result-count" id="result-count" role="status">Loading…</span>
+          </div>
+
         </div>
 
         <div class="emoji-grid" id="grid" aria-label="Image search results" aria-busy="true"></div>
         <div class="empty-state" id="empty" hidden><span>⌕</span><h2>No matching images</h2><p>Try another word or a shorter search term.</p><button class="button" id="reset">Reset search</button></div>
       </main>
+      <aside class="detail" id="detail" aria-label="Image details" hidden></aside>
     </div>
   </div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./app.js?v=expansion-enter-1"></script>
 </body>
 </html>

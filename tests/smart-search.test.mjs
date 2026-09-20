@@ -77,3 +77,42 @@ test('smart search falls back locally when built-in AI needs a user gesture', as
   assert.deepEqual(result.terms, ['head', 'person', 'smile', 'expression', 'eyes', 'mouth', 'human']);
   assert.equal(result.local, true);
 });
+
+
+test('multi-word direct matches stay AND while AI suggestions remain separate', () => {
+  const catalog = prepareCatalog([
+    { id: 'both', collection: 'test', kind: 'image', src: 'a.svg', name: 'cat', keywords: ['black'] },
+    { id: 'cat-only', collection: 'test', kind: 'image', src: 'b.svg', name: 'cat', keywords: ['white'] },
+    { id: 'black-only', collection: 'test', kind: 'image', src: 'c.svg', name: 'dog', keywords: ['black'] },
+  ]);
+  const expansion = { englishQuery: 'cat', terms: ['dog', 'white'] };
+  for (const query of ['black cat', 'cat black', '  CAT   black  ', 'cat\tblack', 'cat　black']) {
+    for (const activeExpansion of [null, expansion]) {
+      const result = buildSmartResults(catalog, { query }, activeExpansion);
+      assert.deepEqual([...result.directIds], ['both']);
+      assert.deepEqual(buildSmartResults(catalog, { query }, activeExpansion, 'keyword').results.map(item => item.id), ['both']);
+      assert.equal(result.relatedIds.size, activeExpansion ? 2 : 0);
+    }
+  }
+  assert.equal(buildSmartResults(catalog, { query: 'cat missing' }, expansion).directIds.size, 0);
+});
+
+
+test('explicit refresh regenerates expansions instead of returning cached terms', async () => {
+  const values = new Map();
+  let calls = 0;
+  const smart = new ChromeSmartSearch({
+    LanguageModel: { create: async () => ({ prompt: async () => {
+      calls++;
+      return JSON.stringify({ terms: [calls === 1 ? 'happy face' : 'smiling face'] });
+    } }) },
+  }, { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) });
+  const first = await smart.expand('smile face', 'en');
+  assert.deepEqual(first.terms, ['happy face']);
+  const cached = await smart.expand('smile face', 'en');
+  assert.equal(cached.cached, true);
+  assert.equal(calls, 1);
+  const refreshed = await smart.expand('smile face', 'en', null, null, { refresh: true });
+  assert.deepEqual(refreshed.terms, ['smiling face']);
+  assert.equal(calls, 2);
+});

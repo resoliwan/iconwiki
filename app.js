@@ -1,5 +1,5 @@
 import { loadCatalog } from './catalog.js';
-import { buildSmartResults, ChromeSmartSearch } from './smart-search.js';
+import { buildSmartResults, ChromeSmartSearch } from './smart-search.js?v=expansion-enter-1';
 
 const $ = selector => document.querySelector(selector);
 const MAX_RENDERED_RESULTS = 600;
@@ -293,15 +293,19 @@ function renderPanel() {
   panel.scrollTop = 0;
 }
 
-function setSmartStatus(_message = '', busy = false) {
-  $('#smart-search').classList.toggle('busy', busy);
+function setSmartStatus(message = '', busy = false) {
+  const toggle = $('#smart-search');
+  toggle.classList.toggle('busy', busy);
+  toggle.setAttribute('aria-busy', String(busy));
+  toggle.title = message || 'Expand related terms automatically, or press Enter to run again.';
+  $('#smart-state').textContent = busy ? '…' : state.smartEnabled ? 'ON' : 'OFF';
 }
 
 function setSmartExpansion(expansion) {
   state.smartExpansion = expansion;
 }
 
-async function runSmartSearch() {
+async function runSmartSearch({ refresh = false } = {}) {
   clearTimeout(smartTimer);
   const query = state.query.trim();
   const request = ++smartRequest;
@@ -320,15 +324,20 @@ async function runSmartSearch() {
       setSmartExpansion(partial);
       setSmartStatus('', true);
       renderGrid();
-    });
+    }, { refresh });
     if (request !== smartRequest || query !== state.query.trim()) return;
     setSmartExpansion(expansion);
     setSmartStatus();
     renderGrid();
+    if (refresh && !expansion?.terms.length) toast(expansion?.local
+      ? 'Chrome AI is unavailable and no local expansion was found. Showing direct matches.'
+      : 'No additional related terms found.');
   } catch (error) {
     if (request !== smartRequest) return;
     setSmartExpansion(null);
-    setSmartStatus(error.message || 'Chrome AI could not expand this search.');
+    const message = error.message || 'Chrome AI could not expand this search.';
+    setSmartStatus(message);
+    toast(message);
     renderGrid();
   }
 }
@@ -340,11 +349,19 @@ function scheduleSmartSearch() {
 }
 
 $('#search').addEventListener('input', event => {
+  ++smartRequest;
   state.query = event.target.value;
   setSmartExpansion(null);
   setSmartStatus(state.smartEnabled && state.query.trim() ? 'Waiting to expand…' : '');
   renderGrid();
   scheduleSmartSearch();
+});
+$('#search').addEventListener('keydown', event => {
+  if (event.key !== 'Enter' || event.isComposing || event.repeat) return;
+  event.preventDefault();
+  state.query = event.currentTarget.value;
+  if (state.smartEnabled) runSmartSearch({ refresh: true });
+  else renderGrid();
 });
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
@@ -379,7 +396,19 @@ document.addEventListener('pointerdown', event => {
   }
 });
 $('#reset').addEventListener('click', reset);
-$('#browse-button').addEventListener('click', () => { closePanel(); reset(); });
+$('#reset-filters').addEventListener('click', reset);
+function setFiltersOpen(open) {
+  $('#filters-panel').hidden = !open;
+  $('#workspace').classList.toggle('filters-closed', !open);
+  $('#browse-button').classList.toggle('active', open);
+  $('#browse-button').setAttribute('aria-expanded', String(open));
+  if (!open) {
+    for (const filter of multiFilters) filter.open = false;
+    $('#browse-button').focus({ preventScroll: true });
+  } else $('#close-filters').focus({ preventScroll: true });
+}
+$('#close-filters').addEventListener('click', () => setFiltersOpen(false));
+$('#browse-button').addEventListener('click', () => setFiltersOpen($('#filters-panel').hidden));
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('#detail').hidden) closePanel();
   if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.metaKey && !event.ctrlKey) {
