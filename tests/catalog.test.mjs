@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { prepareCatalog, searchCatalog } from '../catalog.js';
+import { prepareCatalog, searchCatalog, searchCatalogMatches } from '../catalog.js';
 import { emptyMatching, isEnglishText, upsertMatch, validateMatching } from '../matching.js';
 
 const items = prepareCatalog([
@@ -13,6 +13,14 @@ const items = prepareCatalog([
 
 test('direct name matches rank before exact keyword matches', () => {
   assert.deepEqual(searchCatalog(items, { query: 'cat' }).map(item => item.id), ['unicode:1F408', 'unicode:1F431', 'material-symbols-outlined:pets']);
+});
+
+test('search results identify exact and keyword match ranges', () => {
+  assert.deepEqual(searchCatalogMatches(items, { query: 'cat' }).map(row => [row.item.id, row.matchType]), [
+    ['unicode:1F408', 'exact'],
+    ['unicode:1F431', 'keyword'],
+    ['material-symbols-outlined:pets', 'keyword'],
+  ]);
 });
 
 test('multiple terms must all match', () => {
@@ -42,6 +50,19 @@ test('license class filter limits results independently from text search', () =>
     { id: 'a', collection: 'attribution-set', licenseClass: 'attribution', kind: 'image', src: 'a.svg', name: 'cat', keywords: ['pet'] },
   ]);
   assert.deepEqual(searchCatalog(licensed, { query: 'cat', licenseClass: 'attribution' }).map(item => item.id), ['a']);
+});
+
+test('library and license checkbox filters accept multiple selections', () => {
+  const filtered = prepareCatalog([
+    { id: 'p1', collection: 'one', licenseClass: 'permissive', kind: 'image', src: 'p1.svg', name: 'cat' },
+    { id: 'a1', collection: 'one', licenseClass: 'attribution', kind: 'image', src: 'a1.svg', name: 'cat' },
+    { id: 'p2', collection: 'two', licenseClass: 'permissive', kind: 'image', src: 'p2.svg', name: 'cat' },
+    { id: 'r3', collection: 'three', licenseClass: 'restricted', kind: 'image', src: 'r3.svg', name: 'cat' },
+  ]);
+  assert.deepEqual(searchCatalog(filtered, {
+    query: 'cat', collections: ['one', 'two'], licenseClasses: ['permissive'],
+  }).map(item => item.id), ['p1', 'p2']);
+  assert.deepEqual(searchCatalog(filtered, { query: 'cat', collections: [] }), []);
 });
 
 test('matching values must use English text', () => {

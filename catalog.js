@@ -35,8 +35,10 @@ export async function loadCatalog() {
   return { collections, items: prepareCatalog(items) };
 }
 
-export function searchCatalog(items, { query = '', group = '', collection = '', licenseClass = '', skinTones = true } = {}) {
+export function searchCatalogMatches(items, { query = '', group = '', collection = '', collections = null, licenseClass = '', licenseClasses = null, skinTones = true } = {}) {
   const q = normalize(query);
+  const allowedCollections = collections === null ? null : new Set(collections);
+  const allowedLicenseClasses = licenseClasses === null ? null : new Set(licenseClasses);
   const terms = q.split(/\s+/).filter(Boolean);
   const codeQuery = terms.length && terms.every(term => /^(?:u\+|0x)[0-9a-f]+$/.test(term))
     ? terms.map(term => term.replace(/^(?:u\+|0x)/, '')).join(' ')
@@ -44,19 +46,24 @@ export function searchCatalog(items, { query = '', group = '', collection = '', 
   const scored = [];
   for (const item of items) {
     if (item.status === 'component' || group && item.group !== group || collection && item.collection !== collection ||
-        licenseClass && item.licenseClass !== licenseClass || !skinTones && item.skinTone) continue;
-    if (!q) { scored.push({ item, score: 0 }); continue; }
+        allowedCollections && !allowedCollections.has(item.collection) || licenseClass && item.licenseClass !== licenseClass ||
+        allowedLicenseClasses && !allowedLicenseClasses.has(item.licenseClass) || !skinTones && item.skinTone) continue;
+    if (!q) { scored.push({ item, score: 0, matchType: 'browse' }); continue; }
     if (normalize(item.emoji || '') === q || normalize(item.id) === q || codeQuery && item._codes === codeQuery) {
-      scored.push({ item, score: 1000 });
+      scored.push({ item, score: 1000, matchType: 'exact' });
     } else if (item._names.includes(q)) {
-      scored.push({ item, score: 900 });
+      scored.push({ item, score: 900, matchType: 'exact' });
     } else if (terms.every(term => item._nameTokens.includes(term))) {
-      scored.push({ item, score: 700 });
+      scored.push({ item, score: 700, matchType: 'keyword' });
     } else if (item._keywords.includes(q)) {
-      scored.push({ item, score: 600 });
+      scored.push({ item, score: 600, matchType: 'keyword' });
     } else if (terms.every(term => [...item._nameTokens, ...item._keywordTokens].includes(term))) {
-      scored.push({ item, score: 100 });
+      scored.push({ item, score: 100, matchType: 'keyword' });
     }
   }
-  return scored.sort((a, b) => b.score - a.score || a.item._order - b.item._order).map(row => row.item);
+  return scored.sort((a, b) => b.score - a.score || a.item._order - b.item._order);
+}
+
+export function searchCatalog(items, options = {}) {
+  return searchCatalogMatches(items, options).map(row => row.item);
 }

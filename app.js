@@ -1,11 +1,16 @@
 import { loadCatalog } from './catalog.js';
-import { emptyMatching, isEnglishText, loadDraft, saveDraft, upsertMatch, validateMatching, downloadMatching } from './matching.js';
-import { buildSmartResults, ChromeSmartSearch, guessLanguageFromScript } from './smart-search.js';
+import { buildSmartResults, ChromeSmartSearch } from './smart-search.js';
 
 const $ = selector => document.querySelector(selector);
 const MAX_RENDERED_RESULTS = 600;
+const SMART_PREFERENCE_KEY = 'moa-ai-expansion-enabled';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons']);
-const state = { items: [], collections: [], byId: new Map(), query: '', collection: '', licenseClass: '', resultType: 'all', inputLanguage: 'auto', skinTones: false, selected: null, mode: 'detail', matching: emptyMatching(), word: '', meaning: '', smartEnabled: false, smartExpansion: null };
+const LICENSE_FILTERS = [
+  { id: 'permissive', name: 'Permissive' },
+  { id: 'attribution', name: 'Attribution / ShareAlike' },
+  { id: 'restricted', name: 'Restricted / Brand' },
+];
+const state = { items: [], collections: [], byId: new Map(), query: '', filterCollections: new Set(), filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false, selected: null, smartEnabled: false, smartExpansion: null };
 const chromeSmartSearch = new ChromeSmartSearch();
 let smartTimer;
 let smartRequest = 0;
@@ -28,6 +33,76 @@ function button(text, className, action) {
   node.addEventListener('click', action);
   return node;
 }
+function encodedSelection(selected, options) {
+  if (selected.size === options.length) return '';
+  return selected.size ? [...selected].join(',') : 'none';
+}
+function readSelection(value, options) {
+  const valid = new Set(options.map(option => option.id));
+  if (!value) return new Set(valid);
+  if (value === 'none') return new Set();
+  return new Set(value.split(',').filter(id => valid.has(id)));
+}
+function readSmartPreference() {
+  try { return localStorage.getItem(SMART_PREFERENCE_KEY) === 'true'; }
+  catch { return false; }
+}
+function saveSmartPreference() {
+  try { localStorage.setItem(SMART_PREFERENCE_KEY, String(state.smartEnabled)); }
+  catch { /* The toggle still works for the current page if storage is unavailable. */ }
+}
+function renderSmartToggle() {
+  const toggle = $('#smart-search');
+  toggle.setAttribute('aria-checked', String(state.smartEnabled));
+  $('#smart-state').textContent = state.smartEnabled ? 'ON' : 'OFF';
+}
+function renderMultiFilter({ root, summary, container, options, selected, allLabel, singularLabel, pluralLabel, update }) {
+  const selectedNames = options.filter(option => selected.has(option.id)).map(option => option.name);
+  summary.textContent = selected.size === options.length ? allLabel
+    : selected.size === 0 ? `No ${pluralLabel}`
+      : selected.size === 1 ? selectedNames[0]
+        : `${selected.size} ${pluralLabel}`;
+  summary.title = selected.size > 1 && selected.size < options.length ? selectedNames.join(', ') : '';
+  const fragment = document.createDocumentFragment();
+  const actions = el('div', 'multi-filter-actions');
+  const selectAll = button('Select all', '', () => update(new Set(options.map(option => option.id))));
+  const clearAll = button('Clear all', '', () => update(new Set()));
+  selectAll.setAttribute('aria-label', `Select all ${pluralLabel}`);
+  clearAll.setAttribute('aria-label', `Clear all ${pluralLabel}`);
+  actions.append(selectAll, clearAll);
+  fragment.append(actions);
+  for (const option of options) {
+    const label = el('label', 'multi-filter-option');
+    const check = el('input');
+    check.type = 'checkbox';
+    check.checked = selected.has(option.id);
+    check.setAttribute('aria-label', option.name);
+    check.addEventListener('change', () => {
+      const next = new Set(selected);
+      if (check.checked) next.add(option.id);
+      else next.delete(option.id);
+      update(next);
+    });
+    label.append(check, document.createTextNode(option.name));
+    fragment.append(label);
+  }
+  container.replaceChildren(fragment);
+  root.setAttribute('aria-label', `${singularLabel} filter: ${summary.textContent}`);
+}
+function renderFilterControls() {
+  renderMultiFilter({
+    root: $('#collection-filter'), summary: $('#collection-filter-summary'), container: $('#collection-options'),
+    options: state.collections.map(collection => ({ id: collection.id, name: collection.name })),
+    selected: state.filterCollections, allLabel: 'All libraries', singularLabel: 'Library', pluralLabel: 'libraries',
+    update: next => { state.filterCollections = next; renderFilterControls(); renderGrid(); },
+  });
+  renderMultiFilter({
+    root: $('#license-filter'), summary: $('#license-filter-summary'), container: $('#license-options'),
+    options: LICENSE_FILTERS, selected: state.filterLicenseClasses,
+    allLabel: 'All licenses', singularLabel: 'License', pluralLabel: 'licenses',
+    update: next => { state.filterLicenseClasses = next; renderFilterControls(); renderGrid(); },
+  });
+}
 function art(item) {
   const node = el('span', 'emoji');
   node.setAttribute('aria-hidden', 'true');
@@ -46,61 +121,85 @@ function art(item) {
 }
 function updateURL() {
   const url = new URL(location.href);
-  for (const [key, value] of Object.entries({ q: state.query, collection: state.collection, license: state.licenseClass, match: state.resultType === 'all' ? '' : state.resultType, language: state.inputLanguage === 'auto' ? '' : state.inputLanguage, smart: state.smartEnabled ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '', view: state.mode === 'matches' ? 'matches' : '' })) {
+  const collectionOptions = state.collections.map(collection => ({ id: collection.id }));
+  for (const [key, value] of Object.entries({ q: state.query, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
     if (value) url.searchParams.set(key, value);
     else url.searchParams.delete(key);
   }
+  url.searchParams.delete('language');
+  url.searchParams.delete('view');
   history.replaceState(null, '', url);
 }
 function readURL() {
   const params = new URLSearchParams(location.search);
   state.query = params.get('q') || '';
-  state.collection = params.get('collection') || '';
-  state.licenseClass = params.get('license') || '';
-  state.resultType = ['direct', 'related'].includes(params.get('match')) ? params.get('match') : 'all';
-  state.inputLanguage = params.get('language') || 'auto';
-  const detectedLanguage = guessLanguageFromScript(state.query);
-  state.smartEnabled = params.get('smart') === '1' || Boolean(detectedLanguage && detectedLanguage !== 'en');
+  state.filterCollections = readSelection(params.get('collection'), state.collections);
+  state.filterLicenseClasses = readSelection(params.get('license'), LICENSE_FILTERS);
+  state.resultType = ['exact', 'keyword', 'similar'].includes(params.get('match')) ? params.get('match') : 'all';
+  state.displayMode = params.get('display') === 'labels' ? 'labels' : 'images';
+  state.smartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
+  if (params.has('smart')) saveSmartPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = state.byId.has(params.get('id')) ? params.get('id') : null;
-  state.mode = params.get('view') === 'matches' ? 'matches' : 'detail';
   $('#search').value = state.query;
   $('#skin-tones').checked = state.skinTones;
-  $('#collection-filter').value = state.collection;
-  $('#license-filter').value = state.licenseClass;
   $('#result-filter').value = state.resultType;
-  $('#language-filter').value = state.inputLanguage;
-  $('#smart-search').setAttribute('aria-pressed', String(state.smartEnabled));
+  $('#display-mode').value = state.displayMode;
+  renderSmartToggle();
+  renderFilterControls();
+}
+function renderExpansionTerms() {
+  const panel = $('#expansion-panel');
+  const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
+  const terms = expansion?.terms || [];
+  panel.hidden = !state.smartEnabled || !terms.length;
+  const fragment = document.createDocumentFragment();
+  for (const term of terms) {
+    fragment.append(el('span', 'expansion-term', term));
+  }
+  $('#expansion-terms').replaceChildren(fragment);
 }
 function renderGrid() {
   const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
-  const search = buildSmartResults(state.items, state, expansion, state.resultType);
+  const activeExpansion = state.smartEnabled ? expansion : null;
+  const search = buildSmartResults(state.items, {
+    ...state,
+    collections: [...state.filterCollections],
+    licenseClasses: [...state.filterLicenseClasses],
+  }, activeExpansion, state.resultType);
   const { results } = search;
   const renderedResults = results.slice(0, MAX_RENDERED_RESULTS);
-  const mapped = new Set(state.matching.matches.map(row => row.assetId));
   const fragment = document.createDocumentFragment();
   for (const item of renderedResults) {
     const card = button('', 'emoji-card', () => select(item.id));
     card.dataset.id = item.id;
     card.setAttribute('aria-label', item.name);
     card.setAttribute('aria-pressed', String(state.selected === item.id));
-    card.title = `${item.name}\n${item.id}`;
-    card.append(art(item), el('span', 'card-name', item.name));
-    if (search.relatedIds.has(item.id)) {
-      const related = el('span', 'related-mark', 'RELATED');
-      related.title = `Related term: ${search.relatedTermById.get(item.id)}`;
-      card.append(related);
+    const matchType = search.matchTypeById.get(item.id);
+    card.title = `${item.name}\n${item.id}${matchType && matchType !== 'browse' ? `\n${matchType} match` : ''}`;
+    card.append(art(item));
+    if (state.displayMode === 'labels') {
+      const caption = el('span', 'card-caption');
+      caption.append(el('span', 'card-name', item.name));
+      if (matchType && matchType !== 'browse') {
+        const mark = el('span', `match-mark ${matchType}`, matchType.toUpperCase());
+        mark.title = matchType === 'similar'
+          ? `AI expansion term: ${search.relatedTermById.get(item.id)}`
+          : `${matchType} match`;
+        caption.append(mark);
+      }
+      card.append(caption);
     }
-    if (mapped.has(item.id)) card.append(el('span', 'mapped-mark', '✓'));
     fragment.append(card);
   }
   $('#grid').replaceChildren(fragment);
+  $('#grid').classList.toggle('image-only', state.displayMode === 'images');
   $('#grid').setAttribute('aria-busy', 'false');
   $('#empty').hidden = results.length > 0;
   $('#result-count').textContent = results.length > MAX_RENDERED_RESULTS
     ? `${results.length.toLocaleString()} results · showing first ${MAX_RENDERED_RESULTS.toLocaleString()}`
     : `${results.length.toLocaleString()} results`;
-  $('#match-count').textContent = state.matching.matches.length;
+  renderExpansionTerms();
   updateURL();
 }
 function panelHeading(label) {
@@ -113,7 +212,6 @@ function panelHeading(label) {
 function closePanel() {
   const oldId = state.selected;
   state.selected = null;
-  state.mode = 'detail';
   renderPanel();
   renderGrid();
   const old = [...$('#grid').children].find(node => node.dataset.id === oldId);
@@ -121,7 +219,6 @@ function closePanel() {
 }
 function select(id) {
   state.selected = id;
-  state.mode = 'detail';
   renderPanel();
   for (const card of $('#grid').children) card.setAttribute('aria-pressed', String(card.dataset.id === id));
   updateURL();
@@ -130,10 +227,6 @@ function select(id) {
 async function copy(value, message) {
   try { await navigator.clipboard.writeText(value); toast(message); }
   catch { toast('Clipboard access is unavailable. Select and copy the text from the details panel.'); }
-}
-function persistMatching() {
-  try { saveDraft(state.matching); return true; }
-  catch { toast('Browser storage is unavailable. Export the matches as JSON.'); return false; }
 }
 function renderDetail(item) {
   const panel = $('#detail');
@@ -188,102 +281,24 @@ function renderDetail(item) {
   }));
   panel.append(tags);
   if (collection?.note) panel.append(el('p', 'hint', collection.note));
-
-  const form = el('form', 'match-form');
-  form.append(el('h3', 'section-label', 'Connect to a word'));
-  const wordLabel = el('label', '', 'English word');
-  const word = el('input');
-  word.name = 'word'; word.required = true; word.placeholder = 'Example: cat'; word.value = state.word;
-  word.addEventListener('input', () => { state.word = word.value; });
-  wordLabel.append(word);
-  const meaningLabel = el('label', '', 'English meaning · optional');
-  const meaning = el('input');
-  meaning.name = 'meaning'; meaning.placeholder = 'Example: a small domesticated animal'; meaning.value = state.meaning;
-  meaning.addEventListener('input', () => { state.meaning = meaning.value; });
-  meaningLabel.append(meaning);
-  const submit = el('button', 'button', 'Connect this image');
-  submit.type = 'submit';
-  form.append(wordLabel, meaningLabel, submit, el('p', 'hint', 'Saved as a browser draft. Use Export above to keep a JSON file.'));
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    if (!word.value.trim()) { word.focus(); return; }
-    if (!isEnglishText(word.value) || !isEnglishText(meaning.value)) {
-      toast('Enter the word and meaning in English.');
-      (!isEnglishText(word.value) ? word : meaning).focus();
-      return;
-    }
-    const asset = item.kind === 'emoji' ? { emoji: item.emoji }
-      : item.kind === 'font' ? { glyph: item.glyph }
-      : { src: item.src };
-    const row = { word: word.value.trim(), meaning: meaning.value.trim(), assetId: item.id, collection: item.collection,
-      ...asset, status: 'pending_review' };
-    state.matching = upsertMatch(state.matching, row);
-    const saved = persistMatching();
-    renderGrid();
-    if (saved) toast(`Connected ${row.word}. Review it in Word Matches.`);
-  });
-  panel.append(form);
-}
-function renderMatches() {
-  const panel = $('#detail');
-  panel.append(panelHeading('WORD MATCHES'), el('h2', '', 'Word matches'), el('p', 'english-name', `${state.matching.matches.length} connected · Export JSON to keep a file.`));
-  if (!state.matching.matches.length) panel.append(el('p', 'hint', 'Select an image and enter an English word to create the first match.'));
-  const list = el('div', 'match-list');
-  state.matching.matches.forEach((row, index) => {
-    const item = state.byId.get(row.assetId);
-    const card = el('div', 'match-row');
-    const main = button('', 'match-row-main', () => {
-      if (!item) { toast('The library for this match is not loaded.'); return; }
-      state.word = row.word; state.meaning = row.meaning;
-      select(item.id);
-    });
-    if (item) main.append(art(item));
-    const text = el('div');
-    text.append(el('strong', '', row.word), el('p', '', row.meaning || (item?.name || 'Library unavailable')));
-    main.append(text);
-    const controls = el('div', 'match-row-controls');
-    const label = el('label');
-    const check = el('input'); check.type = 'checkbox'; check.checked = row.status === 'approved';
-    check.addEventListener('change', () => {
-      row.status = check.checked ? 'approved' : 'pending_review';
-      persistMatching();
-    });
-    label.append(check, document.createTextNode(' Approved'));
-    controls.append(label, button('Remove', 'text-button', () => {
-      state.matching.matches.splice(index, 1);
-      persistMatching(); renderPanel(); renderGrid();
-    }));
-    card.append(main, controls); list.append(card);
-  });
-  panel.append(list);
 }
 function renderPanel() {
   const panel = $('#detail');
-  const visible = state.mode === 'matches' || Boolean(state.selected);
+  const visible = Boolean(state.selected);
   panel.hidden = !visible;
   $('#workspace').classList.toggle('with-detail', visible);
-  $('#matches-button').classList.toggle('active', state.mode === 'matches');
-  $('#browse-button').classList.toggle('active', state.mode !== 'matches');
   panel.replaceChildren();
   if (!visible) return;
-  if (state.mode === 'matches') renderMatches();
-  else renderDetail(state.byId.get(state.selected));
+  renderDetail(state.byId.get(state.selected));
   panel.scrollTop = 0;
 }
 
-function setSmartStatus(message = '', busy = false) {
-  const status = $('#smart-status');
-  status.textContent = message;
-  status.hidden = !message;
+function setSmartStatus(_message = '', busy = false) {
   $('#smart-search').classList.toggle('busy', busy);
 }
 
-function describeExpansion(expansion) {
-  const related = expansion.terms.length ? `${expansion.terms.length} related terms` : 'No related terms';
-  if (expansion.sourceLanguage !== 'en' || expansion.sourceQuery.toLowerCase() !== expansion.englishQuery.toLowerCase()) {
-    return `Translated “${expansion.sourceQuery}” → “${expansion.englishQuery}” · ${related}${expansion.cached ? ' · cached' : ''}`;
-  }
-  return `Chrome AI · ${related}${expansion.cached ? ' · cached' : ''}`;
+function setSmartExpansion(expansion) {
+  state.smartExpansion = expansion;
 }
 
 async function runSmartSearch() {
@@ -291,28 +306,28 @@ async function runSmartSearch() {
   const query = state.query.trim();
   const request = ++smartRequest;
   if (!state.smartEnabled || !query) {
-    state.smartExpansion = null;
+    setSmartExpansion(null);
     setSmartStatus();
     renderGrid();
     return;
   }
   setSmartStatus('Starting smart search…', true);
   try {
-    const expansion = await chromeSmartSearch.expand(query, state.inputLanguage, message => {
+    const expansion = await chromeSmartSearch.expand(query, 'auto', message => {
       if (request === smartRequest) setSmartStatus(message, true);
     }, partial => {
       if (request !== smartRequest || query !== state.query.trim()) return;
-      state.smartExpansion = partial;
-      setSmartStatus(describeExpansion(partial), true);
+      setSmartExpansion(partial);
+      setSmartStatus('', true);
       renderGrid();
     });
     if (request !== smartRequest || query !== state.query.trim()) return;
-    state.smartExpansion = expansion;
-    setSmartStatus(describeExpansion(expansion));
+    setSmartExpansion(expansion);
+    setSmartStatus();
     renderGrid();
   } catch (error) {
     if (request !== smartRequest) return;
-    state.smartExpansion = null;
+    setSmartExpansion(null);
     setSmartStatus(error.message || 'Chrome AI could not expand this search.');
     renderGrid();
   }
@@ -326,67 +341,45 @@ function scheduleSmartSearch() {
 
 $('#search').addEventListener('input', event => {
   state.query = event.target.value;
-  const detectedLanguage = guessLanguageFromScript(state.query);
-  if (detectedLanguage && detectedLanguage !== 'en') {
-    state.smartEnabled = true;
-    $('#smart-search').setAttribute('aria-pressed', 'true');
-  }
-  state.smartExpansion = null;
+  setSmartExpansion(null);
   setSmartStatus(state.smartEnabled && state.query.trim() ? 'Waiting to expand…' : '');
   renderGrid();
   scheduleSmartSearch();
 });
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
-$('#collection-filter').addEventListener('change', event => { state.collection = event.target.value; renderGrid(); });
-$('#license-filter').addEventListener('change', event => { state.licenseClass = event.target.value; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
-$('#language-filter').addEventListener('change', event => {
-  state.inputLanguage = event.target.value;
-  state.smartExpansion = null;
-  renderGrid();
-  if (state.smartEnabled) runSmartSearch();
-});
+$('#display-mode').addEventListener('change', event => { state.displayMode = event.target.value; renderGrid(); });
 $('#smart-search').addEventListener('click', () => {
   state.smartEnabled = !state.smartEnabled;
-  $('#smart-search').setAttribute('aria-pressed', String(state.smartEnabled));
+  saveSmartPreference();
+  renderSmartToggle();
   if (!state.smartEnabled) {
     ++smartRequest;
-    state.smartExpansion = null;
+    setSmartExpansion(null);
     setSmartStatus();
     renderGrid();
   } else runSmartSearch();
 });
 function reset() {
   ++smartRequest;
-  state.query = ''; state.collection = ''; state.licenseClass = ''; state.resultType = 'all'; state.smartExpansion = null;
-  $('#search').value = ''; $('#collection-filter').value = ''; $('#license-filter').value = ''; $('#result-filter').value = 'all';
+  state.query = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
+  $('#search').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
   setSmartStatus(); renderGrid();
 }
+const multiFilters = [...document.querySelectorAll('.multi-filter')];
+for (const filter of multiFilters) {
+  filter.addEventListener('toggle', () => {
+    if (!filter.open) return;
+    for (const other of multiFilters) if (other !== filter) other.open = false;
+  });
+}
+document.addEventListener('pointerdown', event => {
+  for (const filter of multiFilters) {
+    if (filter.open && !filter.contains(event.target)) filter.open = false;
+  }
+});
 $('#reset').addEventListener('click', reset);
 $('#browse-button').addEventListener('click', () => { closePanel(); reset(); });
-$('#matches-button').addEventListener('click', () => {
-  state.mode = 'matches'; state.selected = null; renderPanel(); renderGrid();
-  $('#detail .close-button').focus({ preventScroll: true });
-});
-$('#open-matching').addEventListener('click', () => $('#matching-file').click());
-$('#matching-file').addEventListener('change', async event => {
-  const file = event.target.files[0];
-  if (!file) return;
-  try {
-    const imported = validateMatching(JSON.parse(await file.text()));
-    let merged = state.matching;
-    for (const row of imported.matches) merged = upsertMatch(merged, row);
-    state.matching = merged;
-    const saved = persistMatching();
-    state.mode = 'matches'; state.selected = null; renderPanel(); renderGrid();
-    if (saved) toast(`Imported ${imported.matches.length} matches from ${file.name}. Existing word and meaning pairs were updated.`);
-  } catch (error) { toast(`Could not open the file. ${error.message}`); }
-  event.target.value = '';
-});
-$('#export-matching').addEventListener('click', () => {
-  downloadMatching(state.matching);
-  toast('The matching JSON download has started.');
-});
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('#detail').hidden) closePanel();
   if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.metaKey && !event.ctrlKey) {
@@ -394,17 +387,17 @@ document.addEventListener('keydown', event => {
   }
 });
 window.addEventListener('popstate', () => { readURL(); renderPanel(); renderGrid(); });
+if ('ResizeObserver' in window) {
+  new ResizeObserver(entries => {
+    const height = entries[0]?.borderBoxSize?.[0]?.blockSize || entries[0]?.contentRect.height;
+    if (height) document.documentElement.style.setProperty('--topbar-height', `${Math.ceil(height)}px`);
+  }).observe($('.topbar'));
+}
 
 try {
   const { collections, items } = await loadCatalog();
   state.collections = collections; state.items = items;
   state.byId = new Map(items.map(item => [item.id, item]));
-  for (const collection of collections) {
-    const option = el('option', '', collection.name); option.value = collection.id;
-    $('#collection-filter').append(option);
-  }
-  try { state.matching = loadDraft(); }
-  catch { toast('Could not read the saved draft. Open an exported JSON file if one is available.'); }
   readURL(); renderPanel(); renderGrid();
   if (state.smartEnabled && state.query.trim()) runSmartSearch();
 } catch (error) {

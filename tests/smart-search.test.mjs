@@ -26,11 +26,20 @@ test('expansion terms are English, unique, and exclude the query', () => {
   assert.deepEqual(sanitizeExpansion({ terms: ['Smile', 'face', 'smile', String.fromCodePoint(0xD45C, 0xC815), 'facial expression'] }, 'face'), ['smile', 'facial expression']);
 });
 
-test('direct results stay before related results and can be filtered', () => {
+test('exact, keyword, and similar results have separate match ranges', () => {
   const expansion = { englishQuery: 'face', terms: ['smile', 'expression'] };
   assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'all').results.map(item => item.id), ['a', 'b']);
-  assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'direct').results.map(item => item.id), ['a']);
-  assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'related').results.map(item => item.id), ['b']);
+  assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'exact').results.map(item => item.id), ['a']);
+  assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'keyword').results.map(item => item.id), []);
+  assert.deepEqual(buildSmartResults(items, { query: 'face' }, expansion, 'similar').results.map(item => item.id), ['b']);
+  assert.equal(buildSmartResults(items, { query: 'face' }, expansion).matchTypeById.get('b'), 'similar');
+});
+
+test('only expansion terms supplied by the active AI search contribute similar results', () => {
+  const allTerms = { englishQuery: 'face', terms: ['smile', 'jump'] };
+  const oneTerm = { ...allTerms, terms: ['jump'] };
+  assert.deepEqual(buildSmartResults(items, { query: 'face' }, allTerms, 'similar').results.map(item => item.id), ['b', 'c']);
+  assert.deepEqual(buildSmartResults(items, { query: 'face' }, oneTerm, 'similar').results.map(item => item.id), ['c']);
 });
 
 test('Chrome smart search translates foreign input before expanding English terms', async () => {
@@ -55,4 +64,16 @@ test('Chrome smart search translates foreign input before expanding English term
   assert.equal(result.englishQuery, 'cat');
   assert.deepEqual(result.terms, ['pet', 'animal']);
   assert.equal([...storageValues.values()].some(value => /[^\x00-\x7F]/.test(value)), false);
+});
+
+test('smart search falls back locally when built-in AI needs a user gesture', async () => {
+  const scope = {
+    LanguageDetector: { create: async () => { throw new Error('user gesture required'); } },
+    LanguageModel: { create: async () => { throw new Error('user gesture required'); } },
+  };
+  const smart = new ChromeSmartSearch(scope, null);
+  const result = await smart.expand('face');
+  assert.equal(result.sourceLanguage, 'en');
+  assert.deepEqual(result.terms, ['head', 'person', 'smile', 'expression', 'eyes', 'mouth', 'human']);
+  assert.equal(result.local, true);
 });

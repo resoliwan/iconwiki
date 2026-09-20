@@ -1,4 +1,4 @@
-import { searchCatalog } from './catalog.js';
+import { searchCatalogMatches } from './catalog.js';
 
 const CACHE_KEY = 'moa.smart-search.v1';
 const SUPPORTED_TRANSLATION_LANGUAGES = new Set([
@@ -41,6 +41,7 @@ const LOCAL_EXPANSIONS = {
   car: ['vehicle', 'transport', 'drive', 'road'],
   jump: ['leap', 'hop', 'person', 'movement'],
   smile: ['happy', 'face', 'laugh', 'joy'],
+  rabbit: ['bunny', 'hare', 'pet', 'animal', 'carrot', 'easter', 'burrow'],
 };
 
 export function localTranslation(value, language) {
@@ -85,21 +86,29 @@ export function sanitizeExpansion(value, englishQuery) {
 
 export function buildSmartResults(items, options, expansion = null, resultType = 'all') {
   const effectiveQuery = expansion?.englishQuery || options.query;
-  const direct = searchCatalog(items, { ...options, query: effectiveQuery });
+  const directMatches = searchCatalogMatches(items, { ...options, query: effectiveQuery });
+  const direct = directMatches.map(row => row.item);
   const directIds = new Set(direct.map(item => item.id));
   const related = [];
   const relatedIds = new Set();
   const relatedTermById = new Map();
+  const matchTypeById = new Map(directMatches.map(row => [row.item.id, row.matchType]));
   for (const term of expansion?.terms || []) {
-    for (const item of searchCatalog(items, { ...options, query: term }).slice(0, 120)) {
+    for (const { item } of searchCatalogMatches(items, { ...options, query: term }).slice(0, 120)) {
       if (directIds.has(item.id) || relatedIds.has(item.id)) continue;
       relatedIds.add(item.id);
       relatedTermById.set(item.id, term);
+      matchTypeById.set(item.id, 'similar');
       related.push(item);
     }
   }
-  const results = resultType === 'direct' ? direct : resultType === 'related' ? related : [...direct, ...related];
-  return { results, directIds, relatedIds, relatedTermById, effectiveQuery };
+  const exact = directMatches.filter(row => row.matchType === 'exact').map(row => row.item);
+  const keyword = directMatches.filter(row => row.matchType === 'keyword').map(row => row.item);
+  const results = resultType === 'exact' ? exact
+    : resultType === 'keyword' ? keyword
+      : resultType === 'similar' ? related
+        : [...direct, ...related];
+  return { results, directIds, relatedIds, relatedTermById, matchTypeById, effectiveQuery };
 }
 
 function readCache(storage) {
@@ -153,13 +162,17 @@ export class ChromeSmartSearch {
     const scriptLanguage = guessLanguageFromScript(text);
     if (scriptLanguage) return scriptLanguage;
     if (!('LanguageDetector' in this.scope)) return 'en';
-    if (!this.detector) {
-      progress?.('Detecting input language…');
-      this.detector = await this.createWithProgress(this.scope.LanguageDetector, {}, progress);
+    try {
+      if (!this.detector) {
+        progress?.('Detecting input language…');
+        this.detector = await this.createWithProgress(this.scope.LanguageDetector, {}, progress);
+      }
+      const results = await this.detector.detect(text);
+      const best = results[0];
+      return best?.confidence >= 0.45 ? best.detectedLanguage : 'en';
+    } catch {
+      return 'en';
     }
-    const results = await this.detector.detect(text);
-    const best = results[0];
-    return best?.confidence >= 0.45 ? best.detectedLanguage : 'en';
   }
 
   async translateToEnglish(text, sourceLanguage, progress) {

@@ -2,7 +2,7 @@
 
 Moa is a local, static icon browser built to make searching across icon and emoji libraries fast and easy.
 
-It loads each catalog into browser memory, searches English names and keywords, displays every result at a consistent size, and opens a detail panel when an item is selected. The included matching workflow can save an English word and its selected visual asset as JSON.
+It loads each catalog into browser memory, searches English names and keywords, displays every result at a consistent size, and opens a detail panel when an item is selected.
 
 ## Included libraries
 
@@ -31,10 +31,11 @@ Counts describe the catalogs currently generated in this repository. Unicode Emo
 
 - Search English names, keywords, tags, aliases, and categories.
 - Translate non-English searches to English and generate related terms with Chrome's built-in AI.
-- Filter results by library, license class, direct or related match, input language, and skin tone variants.
+- Select multiple libraries and license classes with checkbox filters, then narrow results by exact, keyword, or similar match and skin tone variants.
+- Switch between labeled cards and an images-only grid.
+- Turn AI expansion on once to keep using every generated related term across searches; the active terms remain visible below the search box.
 - Compare emoji, color artwork, outline icons, filled icons, and alternate weights in one grid.
 - Open an item to inspect its source, identifier, keywords, license, and asset path.
-- Store word-to-icon decisions in a small JSON matching file.
 - Run as a static site with no application server or database.
 
 License classes are intentionally broad: **Permissive** covers MIT, ISC, Apache-2.0, and Unicode-3.0; **Attribution / ShareAlike** covers CC BY and CC BY-SA assets; **Restricted / Brand** identifies brand marks and other assets that may require additional permission. Commercial use is not a separate class because it can be allowed across more than one class when each license condition is followed.
@@ -51,29 +52,9 @@ The HTTP server is only used to serve static files. Search and filtering run ent
 
 ## Chrome smart search
 
-Select **Smart** to use Chrome's built-in AI. Non-English input is detected and translated to English with the Language Detector and Translator APIs. The Prompt API then generates related English icon terms. Direct matches remain first, and the match filter can show all, direct, or related results.
+Turn **AI expansion** on to use Chrome's built-in AI. The setting is remembered for later searches and page reloads. Non-English input is detected and translated to English with the Language Detector and Translator APIs. The Prompt API then generates related English icon terms, which are shown below the search box and applied together. Exact and keyword matches remain first, and the match filter can isolate exact, keyword, or similar results.
 
 Chrome downloads its built-in models when needed. Expanded searches are cached in browser storage. If a built-in API is unavailable, direct local search continues to work.
-
-## Matching files
-
-The browser can open and update a JSON file with this structure:
-
-```json
-{
-  "version": 1,
-  "matches": {
-    "cat": {
-      "id": "unicode:1F408",
-      "collection": "unicode",
-      "name": "cat",
-      "asset": "🐈"
-    }
-  }
-}
-```
-
-Browsers with the File System Access API can update the selected file directly. Other browsers download an updated copy.
 
 ## Rebuild the catalogs
 
