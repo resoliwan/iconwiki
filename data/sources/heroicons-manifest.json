@@ -1,0 +1,19 @@
+{
+  "name": "Heroicons",
+  "version": "2.2.0",
+  "archiveUrl": "https://github.com/tailwindlabs/heroicons/archive/refs/tags/v2.2.0.tar.gz",
+  "upstreamUrl": "https://github.com/tailwindlabs/heroicons",
+  "sha256": "42bd31001127631a20270e7bd87ac13647bfcd628dd533e2ff31497068b4f7af",
+  "canonicalSize": 24,
+  "styles": [
+    "outline",
+    "solid"
+  ],
+  "styleCounts": {
+    "outline": 324,
+    "solid": 324
+  },
+  "assetCount": 648,
+  "license": "MIT",
+  "licenseFile": "HEROICONS-LICENSE.txt"
+}

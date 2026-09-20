@@ -1,0 +1,13 @@
+{
+  "name": "Bootstrap Icons",
+  "version": "1.13.1",
+  "archiveUrl": "https://codeload.github.com/twbs/icons/tar.gz/refs/tags/v1.13.1",
+  "upstreamUrl": "https://github.com/twbs/icons",
+  "archiveSha256": "1d83797ae4553ac02cb3fb27b1adb7d0839b56f3918985a4d62f205419d5377e",
+  "assetCount": 2078,
+  "catalog": "../bootstrap-icons.json",
+  "catalogSha256": "3802f29c8366c4d4b683f3a6e1229ca9a1c19f943f3ed8e39b6d991d2ef10530",
+  "assets": "../../assets/bootstrap-icons/*.svg",
+  "license": "MIT",
+  "licenseFile": "BOOTSTRAP-ICONS-LICENSE.txt"
+}

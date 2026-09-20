@@ -1,0 +1,22 @@
+{
+  "name": "Iconoir",
+  "version": "7.12.1",
+  "package": "iconoir",
+  "packageUrl": "https://registry.npmjs.org/iconoir/-/iconoir-7.12.1.tgz",
+  "packageSha256": "6a8ccf0c36a718c319238820d3af5dc25b3524e91f8d6df16c5c65c728b6124e",
+  "upstreamUrl": "https://github.com/iconoir-icons/iconoir",
+  "styles": [
+    "regular",
+    "solid"
+  ],
+  "styleCounts": {
+    "regular": 1383,
+    "solid": 288
+  },
+  "assetCount": 1671,
+  "catalog": "../iconoir.json",
+  "catalogSha256": "46ce3a4b859b97afbf6eb0192e6af7155312d75e3521819f80a735bf4307e882",
+  "assets": "../../assets/iconoir/*/*.svg",
+  "license": "MIT",
+  "licenseFile": "ICONOIR-LICENSE.txt"
+}

@@ -1,0 +1,15 @@
+{
+  "collection": "tabler",
+  "version": "3.47.0",
+  "ref": "v3.47.0",
+  "commit": "c940317930743839f3ba8dd02ebdbba930fb8be5",
+  "sourceUrl": "https://github.com/tabler/tabler-icons",
+  "archiveUrl": "https://codeload.github.com/tabler/tabler-icons/tar.gz/refs/tags/v3.47.0",
+  "archiveSha256": "4fbbd791f93c252fa80372ac8a789617e56b101bab6b4b2f2fbeeb0e88d63eaa",
+  "style": "outline",
+  "count": 5148,
+  "catalog": "../tabler.json",
+  "catalogSha256": "fb9c4ec182669d84f7bd9ca1006a67ef18c67a98ce65f508aa83b94e17716806",
+  "assets": "../../assets/tabler/*.svg",
+  "license": "TABLER-LICENSE.txt"
+}

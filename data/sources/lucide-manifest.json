@@ -1,0 +1,15 @@
+{
+  "collection": "lucide",
+  "version": "0.577.0",
+  "ref": "0.577.0",
+  "commit": "0ea8780434e2b4527dc860b18ff94883d080b59c",
+  "sourceUrl": "https://github.com/lucide-icons/lucide",
+  "archiveUrl": "https://codeload.github.com/lucide-icons/lucide/tar.gz/refs/tags/0.577.0",
+  "archiveSha256": "358bbe07eceafdabf53ffdb3f229bf1aabab55665dd8338b69a6e8139f539625",
+  "style": "outline",
+  "count": 1703,
+  "catalog": "../lucide.json",
+  "catalogSha256": "1bbe614b12f132391d5f97cce525c093866ddffda78446c67b589a8b80ebabd0",
+  "assets": "../../assets/lucide/*.svg",
+  "license": "LUCIDE-LICENSE.txt"
+}

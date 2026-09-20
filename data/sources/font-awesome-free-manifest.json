@@ -1,0 +1,23 @@
+{
+  "name": "Font Awesome Free",
+  "version": "7.3.1",
+  "archiveUrl": "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/refs/tags/7.3.1",
+  "upstreamUrl": "https://github.com/FortAwesome/Font-Awesome",
+  "archiveSha256": "d5a20554faa1ad30148b05f090a556e23495c446435c8dfc1624d3c0e3c2640b",
+  "styles": [
+    "brands",
+    "regular",
+    "solid"
+  ],
+  "styleCounts": {
+    "brands": 609,
+    "regular": 273,
+    "solid": 2001
+  },
+  "assetCount": 2883,
+  "catalog": "../font-awesome-free.json",
+  "catalogSha256": "24e0882d764b5dd56660b9ca209193720e89edb7812a0ab9d1b45e4ea1fcbf60",
+  "assets": "../../assets/font-awesome-free/*/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "FONT-AWESOME-FREE-LICENSE.txt"
+}

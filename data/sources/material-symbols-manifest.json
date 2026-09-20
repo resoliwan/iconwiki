@@ -1,0 +1,21 @@
+[
+  {
+    "url": "https://fonts.google.com/metadata/icons?incomplete=true",
+    "sha256": "022c13b127681522a2c5380f30597b0bb3771211dac300139c6b8df6a7466fb3"
+  },
+  {
+    "url": "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=block",
+    "file": "material-symbols-outlined.css",
+    "sha256": "908c8d091d988acaaec4f07cfe19117ce20259eccc6ab58afd6fc52b4015d778"
+  },
+  {
+    "url": "https://fonts.gstatic.com/s/materialsymbolsoutlined/v373/kJF1BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY43zj-jCxv3fzvRNU22ZXGJpEpjC_1v-p_4MrImHCIJIZrDCvHOejbd5zrDAt.woff2",
+    "file": "../../assets/material-symbols/material-symbols-outlined.woff2",
+    "sha256": "1d357f33433bdee4ace96798678d222aeef28e16176c4a7bbb78bc189984f236"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/google/material-design-icons/master/LICENSE",
+    "file": "MATERIAL-SYMBOLS-LICENSE.txt",
+    "sha256": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+  }
+]

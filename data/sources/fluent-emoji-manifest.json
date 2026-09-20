@@ -1,0 +1,11 @@
+{
+  "name": "Fluent Emoji",
+  "commit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+  "upstreamUrl": "https://github.com/microsoft/fluentui-emoji",
+  "style": "Color SVG",
+  "assetCount": 3145,
+  "catalog": "../fluent-emoji.json",
+  "catalogSha256": "4385dff3af10026ec13b5e4c7d6533e39922b7699a3cd93a08483c783cfa4ec5",
+  "license": "MIT",
+  "licenseFile": "FLUENT-EMOJI-LICENSE.txt"
+}

@@ -1,0 +1,20 @@
+{
+  "collection": "openmoji-color",
+  "name": "OpenMoji Color",
+  "version": "17.0.0",
+  "commit": "f9fc506a3f913be9897ab0181d611d4c910a4104",
+  "sourceUrl": "https://openmoji.org/",
+  "repositoryUrl": "https://github.com/hfg-gmuend/openmoji",
+  "archiveUrl": "https://github.com/hfg-gmuend/openmoji/archive/f9fc506a3f913be9897ab0181d611d4c910a4104.tar.gz",
+  "archiveSha256": "642e6034698fb28d209e4985112ae9b6eb3b8dea28c4ab187ed1883abfbad344",
+  "license": "CC-BY-SA-4.0",
+  "licenseFile": "OPENMOJI-LICENSE.txt",
+  "metadataFile": "openmoji-17.0.0.json",
+  "metadataSha256": "ab181dd523021dfbe2b98a13d96ab384b7b3014d17815261bc267fb39d9a211b",
+  "catalogFile": "../openmoji-color.json",
+  "catalogSha256": "603d9b8bc7db40b0878d5d526241413dbee4d6d1a5eb98dc604160ac7ed8cbfe",
+  "assetDirectory": "../../assets/openmoji",
+  "assetCount": 4495,
+  "assetsSha256": "482cb61125a43b0c56fbfc2dc01b48365b6f18ab912218a213638005dd0408e3",
+  "attribution": "OpenMoji, licensed under CC BY-SA 4.0"
+}

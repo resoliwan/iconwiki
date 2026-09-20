@@ -94,5 +94,9 @@ To add another library:
 
 ## Licensing
 
-Moa does not replace the licenses of the included libraries. Each asset remains subject to its source license. Review the linked license text before redistributing assets. OpenMoji uses CC BY-SA 4.0, while Font Awesome Free SVG icons use CC BY 4.0. Brand icons may also be subject to trademark rules independently of their copyright license.
+Moa's original source code is licensed under the [MIT License](./LICENSE).
+
+Included icons, emoji artwork, fonts, and metadata retain their respective upstream licenses and are not covered by Moa's MIT License. See [Third-Party Notices](./THIRD_PARTY_NOTICES.md) and the license texts in [`data/sources/`](./data/sources/).
+
+Brand icons may also be subject to their owners' trademark guidelines. Moa does not grant trademark rights or imply endorsement by any brand owner.
 # moa

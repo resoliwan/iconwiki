@@ -1,0 +1,24 @@
+{
+  "name": "Ionicons",
+  "version": "8.1.0",
+  "packageUrl": "https://registry.npmjs.org/ionicons/-/ionicons-8.1.0.tgz",
+  "upstreamUrl": "https://github.com/ionic-team/ionicons",
+  "sha256": "6ec604a301f9bb1a59ccc72a746cbb369bae87c5b45f6c67904dc878d9efb8b5",
+  "gitCommit": "7f482f9492a1726e8c25af397d7ceccf23f58591",
+  "styles": [
+    "filled",
+    "outline",
+    "sharp"
+  ],
+  "styleCounts": {
+    "filled": 515,
+    "outline": 421,
+    "sharp": 421
+  },
+  "assetCount": 1357,
+  "catalog": "../ionicons.json",
+  "catalogSha256": "38123c7067b828dd28e475ef3dbdbd071b41f65dc6b05f7d9fafe6fae1918c14",
+  "assets": "../../assets/ionicons/*/*.svg",
+  "license": "MIT",
+  "licenseFile": "IONICONS-LICENSE.txt"
+}

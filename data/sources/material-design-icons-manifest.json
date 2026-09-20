@@ -1,0 +1,12 @@
+{
+  "name": "Material Design Icons",
+  "version": "7.4.47",
+  "package": "@mdi/svg",
+  "packageUrl": "https://registry.npmjs.org/@mdi/svg/-/svg-7.4.47.tgz",
+  "packageSha256": "de92e5dc9ce46c392ab5c53aa7190b19f82b40cb48872a083f788c7e13e91fef",
+  "upstreamUrl": "https://pictogrammers.com/library/mdi/",
+  "assetCount": 7447,
+  "catalog": "../material-design-icons.json",
+  "license": "Apache-2.0",
+  "licenseFile": "MATERIAL-DESIGN-ICONS-LICENSE.txt"
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#151619">
+  <title>Moa · Icon Library</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='14' fill='%239bb8ff'/%3E%3Ctext x='24' y='34' font-size='31' text-anchor='middle'%3E✳%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <aside class="rail" aria-label="Library menu">
+    <a class="brand-mark" href="./" aria-label="Moa home">✳</a>
+    <button class="rail-button active" id="browse-button" aria-label="All images" title="All images"><span class="rail-symbol">▦</span><span>Library</span></button>
+    <button class="rail-button" id="matches-button" aria-label="Word matches" title="Word matches"><span class="rail-symbol">⇄</span><span>Matches <b id="match-count">0</b></span></button>
+    <a class="rail-bottom" href="./README.md" target="_blank" title="Help" aria-label="Help">?</a>
+  </aside>
+
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./">Moa<span>Icon Library</span></a>
+      <div class="search-box">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
+        <input id="search" type="search" placeholder="Search by name or keyword" aria-label="Search images" autocomplete="off" spellcheck="false">
+        <button class="smart-button" id="smart-search" type="button" aria-pressed="false" title="Translate and find related terms with Chrome AI">✦ Smart</button>
+        <kbd>/</kbd>
+      </div>
+      <div class="file-actions">
+        <button class="button subtle" id="open-matching">Open JSON</button>
+        <button class="button" id="export-matching">Export <span aria-hidden="true">↗</span></button>
+        <input type="file" id="matching-file" accept="application/json,.json" hidden>
+      </div>
+    </header>
+
+    <div class="workspace" id="workspace">
+      <aside class="detail" id="detail" aria-label="Image details" hidden></aside>
+      <main>
+        <div class="results-bar">
+          <div class="result-summary">
+            <span class="result-count" id="result-count" role="status">Loading…</span>
+            <span class="smart-status" id="smart-status" aria-live="polite" hidden></span>
+          </div>
+          <div class="view-options">
+            <select id="collection-filter" aria-label="Select library"><option value="">All libraries</option></select>
+            <select id="license-filter" aria-label="Select license class">
+              <option value="">All licenses</option>
+              <option value="permissive">Permissive</option>
+              <option value="attribution">Attribution / ShareAlike</option>
+              <option value="restricted">Restricted / Brand</option>
+            </select>
+            <select id="result-filter" aria-label="Select match type">
+              <option value="all">All matches</option>
+              <option value="direct">Direct only</option>
+              <option value="related">Related only</option>
+            </select>
+            <select id="language-filter" aria-label="Select input language">
+              <option value="auto">Auto language</option>
+              <option value="en">English</option>
+              <option value="ko">Korean</option>
+              <option value="ja">Japanese</option>
+              <option value="zh">Chinese</option>
+              <option value="es">Spanish</option>
+              <option value="fr">French</option>
+              <option value="de">German</option>
+              <option value="ru">Russian</option>
+            </select>
+            <label class="tone-toggle"><input type="checkbox" id="skin-tones"> Include skin tone variants</label>
+          </div>
+        </div>
+
+        <div class="emoji-grid" id="grid" aria-label="Image search results" aria-busy="true"></div>
+        <div class="empty-state" id="empty" hidden><span>⌕</span><h2>No matching images</h2><p>Try another word or a shorter search term.</p><button class="button" id="reset">Reset search</button></div>
+      </main>
+    </div>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+  <noscript>Enable JavaScript to search and view details.</noscript>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

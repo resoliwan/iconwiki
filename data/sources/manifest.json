@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://www.unicode.org/Public/17.0.0/emoji/emoji-test.txt",
+    "file": "emoji-test-17.0.txt",
+    "sha256": "1d8a944f88d7952f7ef7c5167fef3c67995bcae24543949710231b03a201acda"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/unicode-org/cldr/release-48/common/annotations/en.xml",
+    "file": "cldr-48-annotations-en.xml",
+    "sha256": "8511aadd046fdba2f0ffe590266ced8bbf48175ad139b2675d85d7141057b235"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/unicode-org/cldr/release-48/common/annotationsDerived/en.xml",
+    "file": "cldr-48-annotationsDerived-en.xml",
+    "sha256": "d76bd041c8c9e7b00b716aff8b7d9dbf509877010e191d5efd068be2553e066e"
+  },
+  {
+    "url": "https://www.unicode.org/license.txt",
+    "file": "UNICODE-LICENSE.txt",
+    "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96"
+  }
+]

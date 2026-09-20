@@ -1,0 +1,28 @@
+{
+  "name": "Microsoft Fluent UI System Icons",
+  "version": "1.1.341",
+  "package": "@fluentui/svg-icons",
+  "packageUrl": "https://registry.npmjs.org/@fluentui/svg-icons/-/svg-icons-1.1.341.tgz",
+  "packageSha256": "262ee509b6d1464ae4bcd3318ffbf9ecede78984b3fc05804e4bd025aed90b14",
+  "gitHead": "2e4da95009de778ae0f41ec6c17bc67c97f4dc56",
+  "upstreamUrl": "https://github.com/microsoft/fluentui-system-icons",
+  "canonicalSize": 24,
+  "styles": [
+    "regular",
+    "filled",
+    "color"
+  ],
+  "styleCounts": {
+    "regular": 2618,
+    "filled": 2654,
+    "color": 196
+  },
+  "assetCount": 5468,
+  "catalog": "../fluent-system-icons.json",
+  "catalogSha256": "e4751701337fe4513cab076d7df9416c3a516213c908d92bbfc95c4e91dda8e9",
+  "assets": "../../assets/fluent-system-icons/*/*.svg",
+  "license": "MIT",
+  "licenseUrl": "https://raw.githubusercontent.com/microsoft/fluentui-system-icons/2e4da95009de778ae0f41ec6c17bc67c97f4dc56/LICENSE",
+  "licenseSha256": "69bc45dc42b9acb96a69823adbc6ae538374e3c0bde169b855b32c48eaaef52f",
+  "licenseFile": "FLUENT-SYSTEM-ICONS-LICENSE.txt"
+}

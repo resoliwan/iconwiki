@@ -1,0 +1,13 @@
+{
+  "name": "Noto Emoji",
+  "version": "2.051",
+  "commit": "8998f5dd683424a73e2314a8c1f1e359c19e8742",
+  "upstreamUrl": "https://github.com/googlefonts/noto-emoji",
+  "style": "color SVG",
+  "assetCount": 3691,
+  "skippedUnqualifiedOrComponentAssets": 40,
+  "catalog": "../noto-emoji.json",
+  "catalogSha256": "118f6c753a627a41b426469cfbd7d935e07e4fcf79fa48fe1189b0a49baf6bf5",
+  "license": "Apache-2.0",
+  "licenseFile": "NOTO-EMOJI-SVG-LICENSE.txt"
+}

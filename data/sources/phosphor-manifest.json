@@ -1,0 +1,27 @@
+{
+  "name": "Phosphor Icons",
+  "version": "2.1.1",
+  "package": "@phosphor-icons/core",
+  "packageUrl": "https://registry.npmjs.org/@phosphor-icons/core/-/core-2.1.1.tgz",
+  "upstreamUrl": "https://github.com/phosphor-icons/core",
+  "sha256": "313332be6190b724da24107addd781799b48bf76b13963f24501112ffe1baadd",
+  "styles": [
+    "regular",
+    "fill",
+    "thin",
+    "light",
+    "bold",
+    "duotone"
+  ],
+  "styleCounts": {
+    "regular": 1512,
+    "fill": 1512,
+    "thin": 1512,
+    "light": 1512,
+    "bold": 1512,
+    "duotone": 1512
+  },
+  "assetCount": 9072,
+  "license": "MIT",
+  "licenseFile": "PHOSPHOR-LICENSE.txt"
+}
