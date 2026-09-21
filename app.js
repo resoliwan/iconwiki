@@ -5,7 +5,7 @@ const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
-const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'game-icons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons']);
+const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
