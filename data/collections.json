@@ -225,5 +225,59 @@
     "licenseClass": "permissive",
     "licenseUrl": "./data/sources/IONICONS-LICENSE.txt",
     "note": "Official Ionicons SVGs in filled, outline, and sharp styles. Logo icons may also be subject to trademark restrictions."
+  },
+  {
+    "id": "simple-icons",
+    "name": "Simple Icons",
+    "version": "16.32.0",
+    "catalog": "./data/simple-icons.json",
+    "sourceUrl": "https://simpleicons.org/",
+    "license": "CC0-1.0",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/SIMPLE-ICONS-LICENSE.txt",
+    "note": "Popular brand SVGs and official color metadata are self-hosted from Simple Icons. Brand names and logos remain subject to their owners' trademark rules."
+  },
+  {
+    "id": "game-icons",
+    "name": "Game Icons",
+    "catalog": "./data/game-icons.json",
+    "sourceUrl": "https://game-icons.net/",
+    "license": "CC-BY-3.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/GAME-ICONS-LICENSE.txt",
+    "note": "Game-oriented SVG artwork is self-hosted from Game-icons.net. Attribution to each icon's credited artist is required under CC BY 3.0."
+  },
+  {
+    "id": "pixelarticons",
+    "name": "Pixelarticons",
+    "version": "2.4.1",
+    "catalog": "./data/pixelarticons.json",
+    "sourceUrl": "https://pixelarticons.com/",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/PIXELARTICONS-LICENSE.txt",
+    "note": "The free 24 px Pixelarticons SVG set is self-hosted in regular, sharp, and solid styles."
+  },
+  {
+    "id": "weather-icons",
+    "name": "Weather Icons",
+    "version": "2.0.12",
+    "catalog": "./data/weather-icons.json",
+    "sourceUrl": "https://erikflowers.github.io/weather-icons/",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/WEATHER-ICONS-LICENSE.txt",
+    "note": "Weather, maritime, moon, wind, and meteorological SVG artwork is self-hosted from the final Weather Icons release."
+  },
+  {
+    "id": "fxemoji",
+    "name": "Mozilla FxEmojis",
+    "version": "0.0.2",
+    "catalog": "./data/fxemoji.json",
+    "sourceUrl": "https://github.com/mozilla/fxemoji",
+    "license": "CC-BY-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/FXEMOJI-LICENSE.md",
+    "note": "Firefox OS emoji SVG artwork is self-hosted from Mozilla's final upstream snapshot. Attribution: Mozilla Foundation (CC BY 4.0)."
   }
 ]

@@ -1,0 +1,25 @@
+{
+  "name": "Pixelarticons",
+  "version": "2.4.1",
+  "package": "pixelarticons",
+  "packageUrl": "https://registry.npmjs.org/pixelarticons/-/pixelarticons-2.4.1.tgz",
+  "packageSha256": "d18e8944e6479beb425bbcdc7f4df699b0841a92e6ce02d01eb433821be3435f",
+  "upstreamUrl": "https://github.com/halfmage/pixelarticons",
+  "styles": [
+    "regular",
+    "sharp",
+    "solid"
+  ],
+  "styleCounts": {
+    "regular": 651,
+    "sharp": 332,
+    "solid": 53
+  },
+  "assetCount": 1036,
+  "catalog": "../pixelarticons.json",
+  "catalogSha256": "17264f7938ae346877af294020fbe333c6e3e2c9c601660297956a8bd55ad3ef",
+  "assets": "../../assets/pixelarticons/*.svg",
+  "license": "MIT",
+  "licenseFile": "PIXELARTICONS-LICENSE.txt",
+  "scope": "Free SVGs shipped in the official npm package; Pro upgrade assets are excluded."
+}

@@ -1,0 +1,17 @@
+{
+  "name": "Simple Icons",
+  "version": "16.32.0",
+  "package": "simple-icons",
+  "packageUrl": "https://registry.npmjs.org/simple-icons/-/simple-icons-16.32.0.tgz",
+  "packageSha256": "df6676b2dca83e8807d60ef3a55b50c86b289cb98e4252c55d977d032e8b0c85",
+  "gitCommit": "3173436c1255ab7cdc9c38ab85ca0fca333688d9",
+  "upstreamUrl": "https://github.com/simple-icons/simple-icons",
+  "assetCount": 3461,
+  "catalog": "../simple-icons.json",
+  "catalogSha256": "6b54087a15487d3232bda696d232294395326ea02f3d8cd235f8009ba5decdf5",
+  "assets": "../../assets/simple-icons/*.svg",
+  "license": "CC0-1.0",
+  "licenseFile": "SIMPLE-ICONS-LICENSE.txt",
+  "trademarkNotice": "CC0 covers the Simple Icons project, but individual brand icons may be protected by separate licenses or trademarks; review per-icon metadata and brand guidelines before use.",
+  "disclaimerUrl": "https://github.com/simple-icons/simple-icons/blob/3173436c1255ab7cdc9c38ab85ca0fca333688d9/DISCLAIMER.md"
+}

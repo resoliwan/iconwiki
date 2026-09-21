@@ -1,0 +1,14 @@
+{
+  "name": "Weather Icons",
+  "version": "2.0.12",
+  "gitCommit": "bb80982bf1f43f2d57f9dd753e7413bf88beb9ed",
+  "archiveUrl": "https://github.com/erikflowers/weather-icons/archive/bb80982bf1f43f2d57f9dd753e7413bf88beb9ed.tar.gz",
+  "archiveSha256": "8029aa2d5c1662dec1df8631c2b134be0fc230a0015096b0a6fc31e977bfb31f",
+  "upstreamUrl": "https://github.com/erikflowers/weather-icons",
+  "assetCount": 219,
+  "catalog": "../weather-icons.json",
+  "catalogSha256": "ea5da4bd98baa366442e6be83e0ab543219a1cb83295edfbd81dd99096f895cb",
+  "assets": "../../assets/weather-icons/*.svg",
+  "license": "OFL-1.1",
+  "licenseFile": "WEATHER-ICONS-LICENSE.txt"
+}

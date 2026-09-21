@@ -1,0 +1,14 @@
+{
+  "name": "FxEmojis",
+  "version": "0.0.2",
+  "gitCommit": "270af343bee346d8221f87806d2b1eee0438431a",
+  "archiveUrl": "https://github.com/mozilla/fxemoji/archive/270af343bee346d8221f87806d2b1eee0438431a.tar.gz",
+  "archiveSha256": "752f06bbe9048272fbabe474a42943c5a4960d35fb1f44f488e320e2fc8a381d",
+  "upstreamUrl": "https://github.com/mozilla/fxemoji",
+  "assetCount": 1035,
+  "catalog": "../fxemoji.json",
+  "catalogSha256": "43db4e22d578cc76b775e2297b826b8611d44a07c4a529349cef197c3cf160f9",
+  "assets": "../../assets/fxemoji/**/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "FXEMOJI-LICENSE.md"
+}

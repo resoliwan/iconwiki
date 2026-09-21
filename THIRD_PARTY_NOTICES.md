@@ -27,6 +27,11 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 | Microsoft Fluent UI System Icons | 1.1.341 | MIT | [License](./data/sources/FLUENT-SYSTEM-ICONS-LICENSE.txt) | [Fluent UI System Icons](https://github.com/microsoft/fluentui-system-icons) |
 | Iconoir | 7.12.1 | MIT | [License](./data/sources/ICONOIR-LICENSE.txt) | [Iconoir](https://github.com/iconoir-icons/iconoir) |
 | Ionicons | 8.1.0 | MIT | [License](./data/sources/IONICONS-LICENSE.txt) | [Ionicons](https://github.com/ionic-team/ionicons) |
+| Simple Icons | 16.32.0 | CC0 1.0 | [License](./data/sources/SIMPLE-ICONS-LICENSE.txt) | [Simple Icons](https://simpleicons.org/) |
+| Game Icons | — | CC BY 3.0 | [License](./data/sources/GAME-ICONS-LICENSE.txt) | [Game-icons.net](https://game-icons.net/) |
+| Pixelarticons | 2.4.1 | MIT | [License](./data/sources/PIXELARTICONS-LICENSE.txt) | [Pixelarticons](https://pixelarticons.com/) |
+| Weather Icons | 2.0.12 | OFL 1.1 | [License](./data/sources/WEATHER-ICONS-LICENSE.txt) | [Weather Icons](https://erikflowers.github.io/weather-icons/) |
+| Mozilla FxEmojis | 0.0.2 | CC BY 4.0 for visual designs | [License](./data/sources/FXEMOJI-LICENSE.md) | [FxEmojis](https://github.com/mozilla/fxemoji) |
 
 ## Attribution notes
 
@@ -34,6 +39,8 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 - Twemoji artwork is provided under CC BY 4.0. See the local license for attribution requirements.
 - Tossface is provided by the Toss team under its custom license. Attribution and the bundled copyright/license notices are required; modification is prohibited.
 - Font Awesome Free SVG icons are provided by Fonticons, Inc. under CC BY 4.0. See the local license for attribution requirements.
+- Game Icons artwork is provided under CC BY 3.0. Each catalog entry includes its credited artist for attribution.
+- Mozilla FxEmojis visual designs are provided by the Mozilla Foundation under CC BY 4.0.
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
 Review the applicable upstream license before copying, modifying, or redistributing an asset.

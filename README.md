@@ -4,7 +4,7 @@ Free Icon & Emoji Browser
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Over 78,000 icons and emoji from 21 libraries.
+Over 88,000 icons and emoji from 26 libraries.
 
 ## Key features
 
@@ -59,7 +59,12 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | Microsoft Fluent UI System Icons | 1.1.341 | [MIT](./data/sources/FLUENT-SYSTEM-ICONS-LICENSE.txt) | 5,468 |
 | Iconoir | 7.12.1 | [MIT](./data/sources/ICONOIR-LICENSE.txt) | 1,671 |
 | Ionicons | 8.1.0 | [MIT](./data/sources/IONICONS-LICENSE.txt) | 1,357 |
-| **Total** |  |  | **78,209** |
+| Simple Icons | 16.32.0 | [CC0-1.0](./data/sources/SIMPLE-ICONS-LICENSE.txt) | 3,461 |
+| Game Icons | — | [CC-BY-3.0](./data/sources/GAME-ICONS-LICENSE.txt) | 4,239 |
+| Pixelarticons | 2.4.1 | [MIT](./data/sources/PIXELARTICONS-LICENSE.txt) | 1,036 |
+| Weather Icons | 2.0.12 | [OFL-1.1](./data/sources/WEATHER-ICONS-LICENSE.txt) | 219 |
+| Mozilla FxEmojis | 0.0.2 | [CC-BY-4.0](./data/sources/FXEMOJI-LICENSE.md) | 1,035 |
+| **Total** |  |  | **88,199** |
 
 ## Run locally
 

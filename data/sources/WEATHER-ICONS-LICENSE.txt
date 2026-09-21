@@ -1,0 +1,5 @@
+Weather Icons visual designs are licensed under the SIL Open Font License 1.1.
+Project code is licensed under the MIT License. Documentation is licensed under CC BY 3.0.
+
+Upstream license information: https://github.com/erikflowers/weather-icons#licensing
+SIL OFL 1.1: https://openfontlicense.org/open-font-license-official-text/
