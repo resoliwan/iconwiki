@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { prepareCatalog } from '../catalog.js';
-import { buildSmartResults, ChromeSmartSearch, guessLanguageFromScript, localTranslation, sanitizeExpansion } from '../smart-search.js';
+import { buildSmartResults, ChromeSmartSearch, guessLanguageFromScript, isDesktopChrome, localTranslation, sanitizeExpansion } from '../smart-search.js';
 
 const items = prepareCatalog([
   { id: 'a', collection: 'test', kind: 'image', src: 'a.svg', name: 'face', keywords: ['head'] },
@@ -16,10 +16,66 @@ test('script detection handles common non-Latin search words', () => {
   assert.equal(guessLanguageFromScript('jump'), null);
 });
 
+test('AI support is limited to desktop Google Chrome', () => {
+  assert.equal(isDesktopChrome({
+    userAgent: 'Mozilla/5.0 Chrome/148.0.0.0 Safari/537.36',
+    userAgentData: { brands: [{ brand: 'Google Chrome', version: '148' }], mobile: false },
+  }), true);
+  assert.equal(isDesktopChrome({
+    userAgent: 'Mozilla/5.0 Edg/148.0.0.0 Chrome/148.0.0.0 Safari/537.36',
+    userAgentData: { brands: [{ brand: 'Microsoft Edge', version: '148' }, { brand: 'Chromium', version: '148' }], mobile: false },
+  }), false);
+  assert.equal(isDesktopChrome({
+    userAgent: 'Mozilla/5.0 (Linux; Android 16) Chrome/148.0.0.0 Mobile Safari/537.36',
+    userAgentData: { brands: [{ brand: 'Google Chrome', version: '148' }], mobile: true },
+  }), false);
+});
+
+test('Chrome AI preparation shares one model download and reports its percentage', async () => {
+  let createCalls = 0;
+  const progress = [];
+  const smart = new ChromeSmartSearch({
+    LanguageModel: {
+      create: async ({ monitor }) => {
+        createCalls++;
+        monitor({ addEventListener: (_, listener) => listener({ loaded: 0.42 }) });
+        await Promise.resolve();
+        return { prompt: async () => JSON.stringify({ terms: [] }) };
+      },
+    },
+  }, null);
+  const first = smart.prepare((message, details) => progress.push([message, details]));
+  const second = smart.prepare();
+  assert.equal(await first, await second);
+  assert.equal(createCalls, 1);
+  assert.deepEqual(progress.at(-1), ['Downloading Chrome AI · 42%', { phase: 'download', percent: 42 }]);
+});
+
 test('common foreign visual words have an instant English fallback', () => {
   assert.equal(localTranslation(String.fromCodePoint(0xC5BC, 0xAD74), 'ko'), 'face');
   assert.equal(localTranslation(String.fromCodePoint(0xB098, 0xBB34), 'ko'), 'tree');
   assert.equal(localTranslation(String.fromCodePoint(0x9854), 'ja'), 'face');
+});
+
+test('ASCII searches stay English instead of relying on language detection', async () => {
+  let detectionCalls = 0;
+  const smart = new ChromeSmartSearch({
+    LanguageDetector: {
+      create: async () => ({
+        detect: async () => {
+          detectionCalls++;
+          return [{ detectedLanguage: 'mi', confidence: 0.9 }];
+        },
+      }),
+    },
+    LanguageModel: {
+      create: async () => ({ prompt: async () => JSON.stringify({ terms: ['animal'] }) }),
+    },
+  }, null);
+
+  const result = await smart.expand('kangaroo');
+  assert.equal(result.sourceLanguage, 'en');
+  assert.equal(detectionCalls, 0);
 });
 
 test('expansion terms are English, unique, and exclude the query', () => {

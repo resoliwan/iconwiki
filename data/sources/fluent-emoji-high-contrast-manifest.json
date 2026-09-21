@@ -1,0 +1,11 @@
+{
+  "name": "Fluent Emoji High Contrast",
+  "commit": "1ffb34c752ecf5d402f04cfb4b392c77f57c54bc",
+  "upstreamUrl": "https://github.com/microsoft/fluentui-emoji",
+  "style": "High Contrast SVG",
+  "assetCount": 3145,
+  "catalog": "../fluent-emoji-high-contrast.json",
+  "catalogSha256": "b5cd93ae5cf76191672530333adb9af8fcd7fed8f2e1727549fc8de34f94fb6e",
+  "license": "MIT",
+  "licenseFile": "FLUENT-EMOJI-LICENSE.txt"
+}

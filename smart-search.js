@@ -70,6 +70,16 @@ export function guessLanguageFromScript(value) {
   return null;
 }
 
+export function isDesktopChrome(navigatorLike = globalThis.navigator) {
+  const userAgent = navigatorLike?.userAgent || '';
+  const brands = navigatorLike?.userAgentData?.brands || [];
+  const isMobile = navigatorLike?.userAgentData?.mobile ?? /Android|Mobile|iPhone|iPad|iPod/i.test(userAgent);
+  const isGoogleChrome = brands.length
+    ? brands.some(({ brand }) => brand === 'Google Chrome')
+    : /Chrome\/\d+/i.test(userAgent) && !/EdgA?|OPR|Opera|SamsungBrowser|CriOS/i.test(userAgent);
+  return isGoogleChrome && !isMobile;
+}
+
 export function sanitizeExpansion(value, englishQuery) {
   const query = String(englishQuery).trim().toLowerCase();
   const seen = new Set([query]);
@@ -133,6 +143,7 @@ export class ChromeSmartSearch {
     this.storage = storage;
     this.detector = null;
     this.languageModel = null;
+    this.languageModelPromise = null;
     this.translators = new Map();
   }
 
@@ -145,7 +156,8 @@ export class ChromeSmartSearch {
       ...options,
       monitor(monitor) {
         monitor.addEventListener('downloadprogress', event => {
-          progress?.(`Downloading Chrome AI · ${Math.round(event.loaded * 100)}%`);
+          const percent = Math.round(event.loaded * 100);
+          progress?.(`Downloading Chrome AI · ${percent}%`, { phase: 'download', percent });
         });
       },
     });
@@ -153,20 +165,35 @@ export class ChromeSmartSearch {
 
   async ensureLanguageModel(progress) {
     if (!this.supported) throw new Error('Chrome Prompt API is unavailable in this browser.');
-    if (!this.languageModel) {
-      progress?.('Starting Chrome AI…');
-      this.languageModel = await this.createWithProgress(this.scope.LanguageModel, {
+    if (this.languageModel) return this.languageModel;
+    if (!this.languageModelPromise) {
+      progress?.('Preparing Chrome AI…', { phase: 'starting', percent: null });
+      this.languageModelPromise = this.createWithProgress(this.scope.LanguageModel, {
         expectedInputs: [{ type: 'text', languages: ['en'] }],
         expectedOutputs: [{ type: 'text', languages: ['en'] }],
-      }, progress);
+      }, progress).then(model => {
+        this.languageModel = model;
+        return model;
+      }).catch(error => {
+        this.languageModelPromise = null;
+        throw error;
+      });
     }
-    return this.languageModel;
+    return this.languageModelPromise;
+  }
+
+  async prepare(progress) {
+    return this.ensureLanguageModel(progress);
   }
 
   async detectLanguage(text, selectedLanguage, progress) {
     if (selectedLanguage && selectedLanguage !== 'auto') return selectedLanguage;
     const scriptLanguage = guessLanguageFromScript(text);
     if (scriptLanguage) return scriptLanguage;
+    // Short English search terms are easy for language detectors to misclassify
+    // (for example, "kangaroo" may be reported as Maori). Keep ASCII queries in
+    // English and reserve automatic detection for text that may need translation.
+    if (/^[\x00-\x7F]*$/.test(text)) return 'en';
     if (!('LanguageDetector' in this.scope)) return 'en';
     try {
       if (!this.detector) {

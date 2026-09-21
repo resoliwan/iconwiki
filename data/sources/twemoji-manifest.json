@@ -1,0 +1,21 @@
+{
+  "collection": "twemoji",
+  "name": "Twemoji",
+  "version": "17.0.3",
+  "commit": "b6b55fef1e8636b540a6d016a4729ca8cdf2e60b",
+  "unicodeVersion": "17.0",
+  "sourceUrl": "https://github.com/jdecked/twemoji",
+  "archiveUrl": "https://github.com/jdecked/twemoji/archive/b6b55fef1e8636b540a6d016a4729ca8cdf2e60b.tar.gz",
+  "archiveSha256": "705d79de1460e5e775f362f0d0f01fbe3ef8d65bf4648c490e4649704584f747",
+  "style": "color SVG",
+  "license": "CC-BY-4.0",
+  "licenseFile": "TWEMOJI-GRAPHICS-LICENSE.txt",
+  "catalog": "../twemoji.json",
+  "catalogSha256": "72379d4effee8d2464510753190ba017b6ea5263b0dacc03abbcdf0f3ddc6a77",
+  "assets": "../../assets/twemoji/*.svg",
+  "assetCount": 3953,
+  "assetsSha256": "03aaf61e33f9d26f66382815646dccc65b4c28ad64d67d5144ec2725a9e2b6a9",
+  "upstreamAssetCount": 4009,
+  "skippedNonCatalogAssets": 56,
+  "attribution": "Twemoji graphics licensed under CC BY 4.0"
+}

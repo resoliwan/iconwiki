@@ -4,18 +4,19 @@ Free Icon & Emoji Browser
 
 **Try Moa at [moa.aoo.kr](https://moa.aoo.kr)**
 
-Over 56,000 icons and emoji from 15 libraries.
+Over 78,000 icons and emoji from 21 libraries.
 
 ## Key features
 
 - Find icons by name, keyword, or category.
+- Narrow the current result set with a separate filter field.
 - Filter by library, license, match type, and skin tone.
 - Compare styles side by side.
 - Check each icon's source and license.
 
 ### Narrow your search
 
-Search for `face`, then add `smile` to narrow the results.
+Search for `face`, then enter `smile` in **Filter results** to narrow that result set. Press `Tab` to move between the two fields.
 
 ![Filtering search results by adding smile to face](./docs/search-demo.gif)
 
@@ -38,8 +39,14 @@ AI expansion and multilingual search require support for Chrome's built-in AI. S
 | Library | Version | License | Items |
 | --- | ---: | --- | ---: |
 | Unicode Emoji | 17.0 | [Unicode-3.0](./data/sources/UNICODE-LICENSE.txt) | 3,953 |
-| Google Noto Emoji | 2.051 | [Apache-2.0](./data/sources/NOTO-EMOJI-SVG-LICENSE.txt) | 3,691 |
+| Noto Color Emoji | 2.051 | [Apache-2.0](./data/sources/NOTO-EMOJI-SVG-LICENSE.txt) | 3,691 |
+| Noto Emoji | 3.006 | [OFL-1.1](./data/sources/NOTO-EMOJI-FONT-LICENSE.txt) | 3,953 |
 | Microsoft Fluent Emoji Color | — | [MIT](./data/sources/FLUENT-EMOJI-LICENSE.txt) | 3,145 |
+| Microsoft Fluent Emoji Flat | — | [MIT](./data/sources/FLUENT-EMOJI-LICENSE.txt) | 3,145 |
+| Microsoft Fluent Emoji High Contrast | — | [MIT](./data/sources/FLUENT-EMOJI-LICENSE.txt) | 3,145 |
+| Twemoji | 17.0.3 | [CC-BY-4.0](./data/sources/TWEMOJI-GRAPHICS-LICENSE.txt) | 3,953 |
+| Tossface | 1.6.1 | [Custom](./data/sources/TOSSFACE-LICENSE.txt) | 3,664 |
+| Blobmoji | 15.0 | [Apache-2.0](./data/sources/BLOBMOJI-LICENSE.txt) | 3,678 |
 | Google Material Symbols Outlined | — | [Apache-2.0](./data/sources/MATERIAL-SYMBOLS-LICENSE.txt) | 3,912 |
 | Pictogrammers Material Design Icons | 7.4.47 | [Apache-2.0](./data/sources/MATERIAL-DESIGN-ICONS-LICENSE.txt) | 7,447 |
 | OpenMoji Color | 17.0.0 | [CC-BY-SA-4.0](./data/sources/OPENMOJI-LICENSE.txt) | 4,495 |
@@ -52,7 +59,7 @@ AI expansion and multilingual search require support for Chrome's built-in AI. S
 | Microsoft Fluent UI System Icons | 1.1.341 | [MIT](./data/sources/FLUENT-SYSTEM-ICONS-LICENSE.txt) | 5,468 |
 | Iconoir | 7.12.1 | [MIT](./data/sources/ICONOIR-LICENSE.txt) | 1,671 |
 | Ionicons | 8.1.0 | [MIT](./data/sources/IONICONS-LICENSE.txt) | 1,357 |
-| **Total** |  |  | **56,671** |
+| **Total** |  |  | **78,209** |
 
 ## Run locally
 

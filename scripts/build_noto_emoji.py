@@ -99,7 +99,7 @@ def main() -> None:
         shutil.copyfile(checkout / "svg" / "LICENSE", SOURCES / "NOTO-EMOJI-SVG-LICENSE.txt")
 
     manifest = {
-        "name": "Noto Emoji",
+        "name": "Noto Color Emoji",
         "version": VERSION,
         "commit": COMMIT,
         "upstreamUrl": UPSTREAM_URL,
@@ -114,7 +114,7 @@ def main() -> None:
     (SOURCES / "noto-emoji-manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )
-    print(f"Built {len(icons):,} Noto Emoji SVGs from v{VERSION}.")
+    print(f"Built {len(icons):,} Noto Color Emoji SVGs from v{VERSION}.")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,13 @@
+{
+  "name": "Noto Emoji",
+  "version": "3.006",
+  "upstreamUrl": "https://fonts.google.com/noto/specimen/Noto+Emoji",
+  "style": "monochrome font",
+  "assetCount": 3953,
+  "font": "../../assets/noto-emoji-monochrome/NotoEmoji-Regular.ttf",
+  "fontSha256": "988621dc5c9a75eb6144f28faae30317a8e3421b68b28740747b3d739e2326b8",
+  "catalog": "../noto-emoji-monochrome.json",
+  "catalogSha256": "f91f688b6e81559524e2d6433581206a2bab84b4e63b31ade9bc66e2592bdba0",
+  "license": "OFL-1.1",
+  "licenseFile": "NOTO-EMOJI-FONT-LICENSE.txt"
+}

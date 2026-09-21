@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <path d="M128,12.8C128,5.735 122.265,0 115.2,0L12.8,0C5.735,0 0,5.735 0,12.8L0,115.2C0,122.265 5.735,128 12.8,128L115.2,128C122.265,128 128,122.265 128,115.2L128,12.8Z" style="fill:rgb(28,97,146);"/>
+    <g transform="matrix(1,0,0,1,78.0998,54.5493)">
+        <g id="text835">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:66.139px;fill:white;">2</text>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,13.4914,117.725)">
+        <g id="text893">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:66.139px;fill:white;">3</text>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,17.9889,54.6485)">
+        <g id="text917">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:66.139px;fill:white;">1</text>
+        </g>
+    </g>
+    <g transform="matrix(1,0,0,1,78.8273,117.857)">
+        <g id="text921">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:66.139px;fill:white;">4</text>
+        </g>
+    </g>
+</svg>

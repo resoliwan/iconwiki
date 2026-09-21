@@ -67,3 +67,9 @@ export function searchCatalogMatches(items, { query = '', group = '', collection
 export function searchCatalog(items, options = {}) {
   return searchCatalogMatches(items, options).map(row => row.item);
 }
+
+export function filterCatalogItems(items, query = '') {
+  if (!normalize(query)) return items;
+  const matchingIds = new Set(searchCatalogMatches(items, { query }).map(({ item }) => item.id));
+  return items.filter(item => matchingIds.has(item.id));
+}

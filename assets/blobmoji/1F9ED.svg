@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
+    <g transform="matrix(1.02239,-0.59028,0.59028,1.02239,-39.1926,37.5067)">
+        <g transform="matrix(0.866025,0.5,-0.5,0.866025,0,0)">
+            <circle cx="87.41" cy="22.441" r="44.16" style="fill:rgb(208,227,233);stroke:rgb(0,116,224);stroke-width:11.86px;"/>
+        </g>
+        <g>
+            <path d="M97.645,54.253L62.467,55.63L66.491,70.648L97.645,54.253Z" style="fill:rgb(206,13,0);fill-rule:nonzero;"/>
+            <path d="M31.312,72.027L66.491,70.649L62.467,55.631L31.312,72.027Z" style="fill:rgb(203,203,203);fill-rule:nonzero;"/>
+        </g>
+        <g transform="matrix(0.749829,0.432914,-0.432914,0.749829,72.4439,39.2051)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:18.799px;">N</text>
+        </g>
+        <g transform="matrix(0.749829,0.432914,-0.432914,0.749829,83.675,80.6494)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:18.799px;">E</text>
+        </g>
+        <g transform="matrix(0.749829,0.432914,-0.432914,0.749829,42.3158,91.7297)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:18.799px;">S</text>
+        </g>
+        <g transform="matrix(0.749829,0.432914,-0.432914,0.749829,31.6006,50.6783)">
+            <text x="0px" y="0px" style="font-family:'ComicNeue-Bold', 'Comic Neue';font-weight:700;font-size:18.799px;">W</text>
+        </g>
+    </g>
+</svg>

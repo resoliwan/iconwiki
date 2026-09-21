@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { prepareCatalog, searchCatalog, searchCatalogMatches } from '../catalog.js';
+import { filterCatalogItems, prepareCatalog, searchCatalog, searchCatalogMatches } from '../catalog.js';
 import { emptyMatching, isEnglishText, upsertMatch, validateMatching } from '../matching.js';
 
 const items = prepareCatalog([
@@ -25,6 +25,12 @@ test('search results identify exact and keyword match ranges', () => {
 
 test('multiple terms must all match', () => {
   assert.deepEqual(searchCatalog(items, { query: 'cat face' }).map(item => item.id), ['unicode:1F431']);
+});
+
+test('result filtering narrows an existing result set without changing its order', () => {
+  const catResults = searchCatalog(items, { query: 'cat' });
+  assert.deepEqual(filterCatalogItems(catResults, 'face').map(item => item.id), ['unicode:1F431']);
+  assert.deepEqual(filterCatalogItems(catResults, '').map(item => item.id), catResults.map(item => item.id));
 });
 
 test('plain words that look hexadecimal do not match icon codepoints', () => {

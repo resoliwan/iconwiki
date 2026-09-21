@@ -1,0 +1,14 @@
+{
+  "name": "Blobmoji",
+  "version": "15.0",
+  "commit": "7dd14d2b0141693485fd26bc35817bd290352a79",
+  "upstreamUrl": "https://github.com/C1710/blobmoji",
+  "style": "color SVG",
+  "assetCount": 3678,
+  "skippedNonRgiOrUnmatchedAssets": 320,
+  "catalog": "../blobmoji.json",
+  "catalogSha256": "d03a99b3e1acdac04da08107a6e9ed873f8c97d43c47c517f92869aadbde53a1",
+  "license": "Apache-2.0",
+  "licenseFile": "BLOBMOJI-LICENSE.txt",
+  "flagLicenseFile": "BLOBMOJI-FLAGS-LICENSE.txt"
+}

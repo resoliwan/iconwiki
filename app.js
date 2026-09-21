@@ -1,20 +1,30 @@
-import { loadCatalog } from './catalog.js';
-import { buildSmartResults, ChromeSmartSearch } from './smart-search.js?v=expansion-enter-1';
+import { filterCatalogItems, loadCatalog } from './catalog.js?v=result-filter-1';
+import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=ai-download-1';
 
 const $ = selector => document.querySelector(selector);
 const MAX_RENDERED_RESULTS = 600;
 const SMART_PREFERENCE_KEY = 'moa-ai-expansion-enabled';
 const FILTER_PIN_PREFERENCE_KEY = 'moa-filter-panel-pinned';
-const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons']);
+const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
   { id: 'restricted', name: 'Restricted / Brand' },
 ];
-const state = { items: [], collections: [], byId: new Map(), query: '', filterCollections: new Set(), filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false, selected: null, smartEnabled: false, smartExpansion: null, filtersPinned: false };
+const state = {
+  items: [], collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
+  filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false,
+  selected: null, smartEnabled: false, smartExpansion: null, filtersPinned: false,
+  smartStatus: { message: '', busy: false, phase: '', percent: null },
+  smartModelStatus: { message: '', busy: false, phase: '', percent: null },
+};
 const chromeSmartSearch = new ChromeSmartSearch();
+const smartSupported = isDesktopChrome() && chromeSmartSearch.supported;
+const SMART_UNSUPPORTED_MESSAGE = 'AI expansion is available only in desktop Chrome.';
 let smartTimer;
 let smartRequest = 0;
+let smartPrepareAttempt = null;
+let smartRetryArmed = false;
 let toastTimer;
 function toast(message) {
   $('#toast').textContent = message;
@@ -53,7 +63,10 @@ function saveSmartPreference() {
   catch { /* The toggle still works for the current page if storage is unavailable. */ }
 }
 function renderSmartToggle() {
-  $('#smart-search').checked = state.smartEnabled;
+  const toggle = $('#smart-search');
+  toggle.checked = state.smartEnabled;
+  toggle.closest('.inline-toggle').classList.toggle('unsupported', !smartSupported);
+  if (!smartSupported) toggle.closest('.inline-toggle').title = SMART_UNSUPPORTED_MESSAGE;
 }
 function readFilterPinPreference() {
   try { return localStorage.getItem(FILTER_PIN_PREFERENCE_KEY) === 'true'; }
@@ -129,13 +142,17 @@ function art(item) {
   } else if (item.kind === 'font') {
     node.classList.add('material-symbol');
     node.textContent = item.glyph;
-  } else node.textContent = item.emoji;
+  } else {
+    const monochrome = item.collection === 'noto-emoji-monochrome';
+    if (monochrome) node.classList.add('noto-emoji-monochrome');
+    node.textContent = monochrome ? item.emoji.replaceAll('\uFE0F', '\uFE0E') : item.emoji;
+  }
   return node;
 }
 function updateURL() {
   const url = new URL(location.href);
   const collectionOptions = state.collections.map(collection => ({ id: collection.id }));
-  for (const [key, value] of Object.entries({ q: state.query, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
+  for (const [key, value] of Object.entries({ q: state.query, filter: state.withinFilter, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
     if (value) url.searchParams.set(key, value);
     else url.searchParams.delete(key);
   }
@@ -146,16 +163,19 @@ function updateURL() {
 function readURL() {
   const params = new URLSearchParams(location.search);
   state.query = params.get('q') || '';
+  state.withinFilter = params.get('filter') || '';
   state.filterCollections = readSelection(params.get('collection'), state.collections);
   state.filterLicenseClasses = readSelection(params.get('license'), LICENSE_FILTERS);
   state.resultType = ['exact', 'keyword', 'similar'].includes(params.get('match')) ? params.get('match') : 'all';
   state.displayMode = params.get('display') === 'labels' ? 'labels' : 'images';
-  state.smartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
-  if (params.has('smart')) saveSmartPreference();
+  const requestedSmartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
+  state.smartEnabled = smartSupported && requestedSmartEnabled;
+  if (!smartSupported || params.has('smart')) saveSmartPreference();
   state.filtersPinned = readFilterPinPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = state.byId.has(params.get('id')) ? params.get('id') : null;
   $('#search').value = state.query;
+  $('#within-filter').value = state.withinFilter;
   $('#skin-tones').checked = state.skinTones;
   $('#result-filter').value = state.resultType;
   $('#display-mode').value = state.displayMode;
@@ -167,7 +187,16 @@ function renderExpansionTerms() {
   const panel = $('#expansion-panel');
   const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
   const terms = expansion?.terms || [];
-  panel.hidden = !state.smartEnabled || !terms.length;
+  const status = state.smartModelStatus.message ? state.smartModelStatus : state.smartStatus;
+  const showTerms = state.smartEnabled && terms.length > 0;
+  panel.hidden = !status.message && !showTerms;
+  const progress = $('#ai-progress');
+  progress.hidden = !status.message;
+  $('#ai-progress-label').textContent = status.message;
+  const progressBar = $('#ai-progress-bar');
+  const showPercent = status.phase === 'download' && Number.isFinite(status.percent);
+  progressBar.hidden = !showPercent;
+  progressBar.value = showPercent ? status.percent : 0;
   const fragment = document.createDocumentFragment();
   for (const term of terms) {
     fragment.append(el('span', 'expansion-term', term));
@@ -182,7 +211,7 @@ function renderGrid() {
     collections: [...state.filterCollections],
     licenseClasses: [...state.filterLicenseClasses],
   }, activeExpansion, state.resultType);
-  const { results } = search;
+  const results = filterCatalogItems(search.results, state.withinFilter);
   const renderedResults = results.slice(0, MAX_RENDERED_RESULTS);
   const fragment = document.createDocumentFragment();
   for (const item of renderedResults) {
@@ -308,11 +337,60 @@ function renderPanel() {
   panel.scrollTop = 0;
 }
 
-function setSmartStatus(message = '', busy = false) {
+function setSmartStatus(message = '', busy = false, details = {}) {
+  state.smartStatus = { message, busy, phase: details.phase || '', percent: details.percent ?? null };
   const toggle = $('#smart-search');
-  toggle.closest('.inline-toggle').classList.toggle('busy', busy);
-  toggle.setAttribute('aria-busy', String(busy));
-  toggle.closest('.inline-toggle').title = message || 'Expand related terms automatically, or press Enter to run again.';
+  const anyBusy = busy || state.smartModelStatus.busy;
+  toggle.closest('.inline-toggle').classList.toggle('busy', anyBusy);
+  toggle.setAttribute('aria-busy', String(anyBusy));
+  if (smartSupported) toggle.closest('.inline-toggle').title = message || 'Expand related terms automatically, or press Enter to run again.';
+  renderExpansionTerms();
+}
+
+function setSmartModelStatus(message = '', busy = false, details = {}) {
+  state.smartModelStatus = { message, busy, phase: details.phase || '', percent: details.percent ?? null };
+  const toggle = $('#smart-search');
+  const anyBusy = busy || state.smartStatus.busy;
+  toggle.closest('.inline-toggle').classList.toggle('busy', anyBusy);
+  toggle.setAttribute('aria-busy', String(anyBusy));
+  renderExpansionTerms();
+}
+
+function armChromeAIRetry() {
+  if (smartRetryArmed) return;
+  smartRetryArmed = true;
+  const resume = () => {
+    document.removeEventListener('pointerdown', resume, true);
+    document.removeEventListener('keydown', resume, true);
+    smartRetryArmed = false;
+    void prepareChromeAI({ allowRetry: false });
+  };
+  document.addEventListener('pointerdown', resume, { once: true, capture: true });
+  document.addEventListener('keydown', resume, { once: true, capture: true });
+}
+
+async function prepareChromeAI({ allowRetry = true } = {}) {
+  if (!smartSupported || chromeSmartSearch.languageModel) return chromeSmartSearch.languageModel;
+  if (smartPrepareAttempt) return smartPrepareAttempt;
+  setSmartModelStatus('Preparing Chrome AI…', true);
+  smartPrepareAttempt = chromeSmartSearch.prepare((message, details) => {
+    setSmartModelStatus(message, true, details);
+  });
+  try {
+    const model = await smartPrepareAttempt;
+    setSmartModelStatus();
+    return model;
+  } catch (error) {
+    smartPrepareAttempt = null;
+    if (allowRetry && !navigator.userActivation?.hasBeenActive) {
+      setSmartModelStatus('Click or type to start the Chrome AI download.');
+      armChromeAIRetry();
+      return null;
+    }
+    const message = error.message || 'Chrome AI could not be downloaded.';
+    setSmartModelStatus(message);
+    return null;
+  }
 }
 
 function setSmartExpansion(expansion) {
@@ -331,12 +409,12 @@ async function runSmartSearch({ refresh = false } = {}) {
   }
   setSmartStatus('Starting smart search…', true);
   try {
-    const expansion = await chromeSmartSearch.expand(query, 'auto', message => {
-      if (request === smartRequest) setSmartStatus(message, true);
+    const expansion = await chromeSmartSearch.expand(query, 'auto', (message, details) => {
+      if (request === smartRequest) setSmartStatus(message, true, details);
     }, partial => {
       if (request !== smartRequest || query !== state.query.trim()) return;
       setSmartExpansion(partial);
-      setSmartStatus('', true);
+      setSmartStatus('Finding related icons…', true);
       renderGrid();
     }, { refresh });
     if (request !== smartRequest || query !== state.query.trim()) return;
@@ -371,16 +449,42 @@ $('#search').addEventListener('input', event => {
   scheduleSmartSearch();
 });
 $('#search').addEventListener('keydown', event => {
+  if (event.key === 'Tab') {
+    event.preventDefault();
+    $('#within-filter').focus();
+    $('#within-filter').select();
+    return;
+  }
   if (event.key !== 'Enter' || event.isComposing || event.repeat) return;
   event.preventDefault();
   state.query = event.currentTarget.value;
   if (state.smartEnabled) runSmartSearch({ refresh: true });
   else renderGrid();
 });
+$('#within-filter').addEventListener('input', event => {
+  state.withinFilter = event.target.value;
+  renderGrid();
+});
+$('#within-filter').addEventListener('keydown', event => {
+  if (event.key !== 'Tab') return;
+  event.preventDefault();
+  $('#search').focus();
+  $('#search').select();
+});
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
 $('#display-mode').addEventListener('change', event => { state.displayMode = event.target.value; renderGrid(); });
 $('#smart-search').addEventListener('change', event => {
+  if (!smartSupported) {
+    event.target.checked = false;
+    state.smartEnabled = false;
+    saveSmartPreference();
+    renderSmartToggle();
+    renderExpansionTerms();
+    updateURL();
+    toast(SMART_UNSUPPORTED_MESSAGE);
+    return;
+  }
   state.smartEnabled = event.target.checked;
   saveSmartPreference();
   renderSmartToggle();
@@ -389,12 +493,15 @@ $('#smart-search').addEventListener('change', event => {
     setSmartExpansion(null);
     setSmartStatus();
     renderGrid();
-  } else runSmartSearch();
+  } else {
+    void prepareChromeAI({ allowRetry: false });
+    runSmartSearch();
+  }
 });
 function reset() {
   ++smartRequest;
-  state.query = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
-  $('#search').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
+  state.query = ''; state.withinFilter = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
+  $('#search').value = ''; $('#within-filter').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
   setSmartStatus(); renderGrid();
 }
 const multiFilters = [...document.querySelectorAll('.multi-filter')];
@@ -451,6 +558,8 @@ if ('ResizeObserver' in window) {
     if (height) document.documentElement.style.setProperty('--topbar-height', `${Math.ceil(height)}px`);
   }).observe($('.topbar'));
 }
+
+if (smartSupported) void prepareChromeAI();
 
 try {
   const { collections, items } = await loadCatalog();

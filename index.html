@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=checkbox-toggles-1">
+  <link rel="stylesheet" href="./styles.css?v=result-filter-1">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
@@ -23,11 +23,17 @@
       <a class="brand" href="./">Moa<span>Icon Library</span></a>
       <div class="search-box">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
-        <input id="search" type="search" placeholder="Search icons · spaces mean AND" aria-label="Search images" autocomplete="off" spellcheck="false">
+        <input id="search" type="search" placeholder="Search icons" aria-label="Search images" autocomplete="off" spellcheck="false">
+        <span class="search-divider" aria-hidden="true"></span>
+        <input id="within-filter" type="search" placeholder="Filter results" aria-label="Filter current results" autocomplete="off" spellcheck="false">
         <label class="inline-toggle ai-toggle" title="Expand related terms automatically, or press Enter to run again."><input id="smart-search" type="checkbox"> AI expansion</label>
       </div>
       <div class="expansion-panel" id="expansion-panel" hidden>
-        <strong>Expanded terms</strong>
+        <strong>AI expansion</strong>
+        <div class="ai-progress" id="ai-progress" role="status" aria-live="polite" hidden>
+          <span id="ai-progress-label"></span>
+          <progress id="ai-progress-bar" max="100" value="0" hidden></progress>
+        </div>
         <div class="expansion-terms" id="expansion-terms"></div>
       </div>
     </header>
@@ -78,6 +84,6 @@
   </div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js?v=checkbox-toggles-1"></script>
+  <script type="module" src="./app.js?v=result-filter-1"></script>
 </body>
 </html>

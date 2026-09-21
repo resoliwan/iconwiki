@@ -12,7 +12,7 @@
   },
   {
     "id": "noto-emoji",
-    "name": "Google Noto Emoji",
+    "name": "Noto Color Emoji",
     "version": "2.051",
     "catalog": "./data/noto-emoji.json",
     "sourceUrl": "https://github.com/googlefonts/noto-emoji",
@@ -20,6 +20,17 @@
     "licenseClass": "permissive",
     "licenseUrl": "./data/sources/NOTO-EMOJI-SVG-LICENSE.txt",
     "note": "Color SVG artwork is self-hosted from the official Noto Emoji release. Names and English keywords come from Unicode and CLDR."
+  },
+  {
+    "id": "noto-emoji-monochrome",
+    "name": "Noto Emoji",
+    "version": "3.006",
+    "catalog": "./data/noto-emoji-monochrome.json",
+    "sourceUrl": "https://fonts.google.com/noto/specimen/Noto+Emoji",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/NOTO-EMOJI-FONT-LICENSE.txt",
+    "note": "Monochrome Regular font artwork is self-hosted from Google Fonts. Names and English keywords come from Unicode and CLDR."
   },
   {
     "id": "fluent-emoji",
@@ -30,6 +41,59 @@
     "licenseClass": "permissive",
     "licenseUrl": "./data/sources/FLUENT-EMOJI-LICENSE.txt",
     "note": "Color SVG artwork and English metadata are self-hosted from the official Fluent Emoji repository."
+  },
+  {
+    "id": "fluent-emoji-flat",
+    "name": "Microsoft Fluent Emoji Flat",
+    "catalog": "./data/fluent-emoji-flat.json",
+    "sourceUrl": "https://github.com/microsoft/fluentui-emoji",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/FLUENT-EMOJI-LICENSE.txt",
+    "note": "Flat SVG artwork and English metadata are self-hosted from the official Fluent Emoji repository."
+  },
+  {
+    "id": "fluent-emoji-high-contrast",
+    "name": "Microsoft Fluent Emoji High Contrast",
+    "catalog": "./data/fluent-emoji-high-contrast.json",
+    "sourceUrl": "https://github.com/microsoft/fluentui-emoji",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/FLUENT-EMOJI-LICENSE.txt",
+    "note": "High Contrast SVG artwork is self-hosted from the official Fluent Emoji repository. Skin-tone entries use the same tone-neutral high-contrast artwork supplied upstream."
+  },
+  {
+    "id": "twemoji",
+    "name": "Twemoji",
+    "version": "17.0.3",
+    "catalog": "./data/twemoji.json",
+    "sourceUrl": "https://github.com/jdecked/twemoji",
+    "license": "CC-BY-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/TWEMOJI-GRAPHICS-LICENSE.txt",
+    "note": "Twemoji SVG artwork is self-hosted from the maintained jdecked release. Attribution: Twemoji (CC BY 4.0)."
+  },
+  {
+    "id": "tossface",
+    "name": "Tossface",
+    "version": "1.6.1",
+    "catalog": "./data/tossface.json",
+    "sourceUrl": "https://toss.im/tossface/copyright",
+    "license": "Tossface custom license",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/TOSSFACE-COPYRIGHT-NOTICE.txt",
+    "note": "Official Tossface SVG artwork is self-hosted without modification. Attribution: Tossface provided by the Toss team. Modification and sale of the typeface itself are prohibited; the latest official copyright guide controls."
+  },
+  {
+    "id": "blobmoji",
+    "name": "Blobmoji",
+    "version": "15.0",
+    "catalog": "./data/blobmoji.json",
+    "sourceUrl": "https://github.com/C1710/blobmoji",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/BLOBMOJI-LICENSE.txt",
+    "note": "Blobmoji SVG artwork is self-hosted from the final archived repository snapshot. Regional flag sources are public domain or otherwise copyright-exempt as documented upstream."
   },
   {
     "id": "material-symbols-outlined",
