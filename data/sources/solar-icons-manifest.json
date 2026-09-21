@@ -1,0 +1,32 @@
+{
+  "name": "Solar Icons",
+  "version": "1.2.12",
+  "packages": [
+    {
+      "name": "@iconify-json/solar",
+      "version": "1.2.12",
+      "url": "https://registry.npmjs.org/@iconify-json/solar/-/solar-1.2.12.tgz",
+      "sha256": "9a9eba8111fa3ae53721fe440d01282fbd3e662d582be721000a61ab8be734e0",
+      "assetCount": 8280
+    }
+  ],
+  "upstreamUrl": "https://www.figma.com/community/file/1166831539721848736",
+  "assetCount": 8280,
+  "catalog": "../solar-icons.json",
+  "catalogSha256": "c228786a375f679e8e606e5dc913e0819b5825e5e98c1a3eecde57cb9d6c0b1a",
+  "assets": "../../assets/solar-icons/**/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "SOLAR-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "SOLAR-ICONS-LICENSE.txt",
+      "url": "https://creativecommons.org/licenses/by/4.0/legalcode.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+    },
+    {
+      "file": "SOLAR-ICONS-NOTICE.txt",
+      "url": "https://raw.githubusercontent.com/saoudi-h/solar-icons/09eac32a6aa2facd7499de59e55e6c2b93bc32fc/LICENSE-THIRD-PARTY",
+      "sha256": "055cc14f0eca227d9af49d408e3c5d3407fb688158e123b28f67177e1ec5f7d8"
+    }
+  ]
+}

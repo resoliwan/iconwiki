@@ -1,0 +1,27 @@
+{
+  "name": "Flat Color Icons",
+  "version": "1.2.3",
+  "packages": [
+    {
+      "name": "@iconify-json/flat-color-icons",
+      "version": "1.2.3",
+      "url": "https://registry.npmjs.org/@iconify-json/flat-color-icons/-/flat-color-icons-1.2.3.tgz",
+      "sha256": "d8878a9b0f02d749bc8671eb7d47882eb711185cbcefbb365cbfb488773c4786",
+      "assetCount": 329
+    }
+  ],
+  "upstreamUrl": "https://github.com/icons8/flat-color-icons",
+  "assetCount": 329,
+  "catalog": "../flat-color-icons.json",
+  "catalogSha256": "06e826a6cc121b62bb530b383725b9611d6681ac1966f9608f3a91fc1bda31e9",
+  "assets": "../../assets/flat-color-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "FLAT-COLOR-ICONS-LICENSE.md",
+  "licenseSources": [
+    {
+      "file": "FLAT-COLOR-ICONS-LICENSE.md",
+      "url": "https://raw.githubusercontent.com/icons8/flat-color-icons/1bf90d5ff118bc6690120ff9fdfe234565b7e414/LICENSE.md",
+      "sha256": "0c029819d69e43042904a3e9d12d25934d08398ba739e4364d61519aa1c2711c"
+    }
+  ]
+}

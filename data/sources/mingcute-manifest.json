@@ -1,0 +1,27 @@
+{
+  "name": "MingCute Icons",
+  "version": "1.2.8",
+  "packages": [
+    {
+      "name": "@iconify-json/mingcute",
+      "version": "1.2.8",
+      "url": "https://registry.npmjs.org/@iconify-json/mingcute/-/mingcute-1.2.8.tgz",
+      "sha256": "fec65f4430ac70a968e0e7fc7741e7064ba91e6da992b905f75c9d70c717bd2c",
+      "assetCount": 3320
+    }
+  ],
+  "upstreamUrl": "https://github.com/mingcute-design/mingcute-icons",
+  "assetCount": 3320,
+  "catalog": "../mingcute.json",
+  "catalogSha256": "92b95b665a90f75c34a150886cb8a49beca8c3e5f158154714de147671f21677",
+  "assets": "../../assets/mingcute/**/*.svg",
+  "license": "Apache-2.0",
+  "licenseFile": "MINGCUTE-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "MINGCUTE-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/mingcute-design/mingcute-icons/ca98bb55513a22ff0dab713aaf7870b512944653/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ]
+}

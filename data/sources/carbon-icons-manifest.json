@@ -1,0 +1,27 @@
+{
+  "name": "Carbon Icons",
+  "version": "1.2.27",
+  "packages": [
+    {
+      "name": "@iconify-json/carbon",
+      "version": "1.2.27",
+      "url": "https://registry.npmjs.org/@iconify-json/carbon/-/carbon-1.2.27.tgz",
+      "sha256": "0ebce2313aabc58901cc4324f0ccccd03009cca0cc03fecd18cc570d9ba23139",
+      "assetCount": 2618
+    }
+  ],
+  "upstreamUrl": "https://github.com/carbon-design-system/carbon",
+  "assetCount": 2618,
+  "catalog": "../carbon-icons.json",
+  "catalogSha256": "4e1c59abe3980bf4eb1315d2044d5a29ccdaf18d62308cfa1092eb2f1a4927ba",
+  "assets": "../../assets/carbon-icons/**/*.svg",
+  "license": "Apache-2.0",
+  "licenseFile": "CARBON-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "CARBON-ICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/carbon-design-system/carbon/8472ccac7c2150ef317617063da6b82058812319/LICENSE",
+      "sha256": "037b3e9eaff51477b270e9082f54b99175e4dd893548654f00995045b68294b8"
+    }
+  ]
+}

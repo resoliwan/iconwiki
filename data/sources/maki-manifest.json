@@ -1,0 +1,27 @@
+{
+  "name": "Maki",
+  "version": "1.2.5",
+  "packages": [
+    {
+      "name": "@iconify-json/maki",
+      "version": "1.2.5",
+      "url": "https://registry.npmjs.org/@iconify-json/maki/-/maki-1.2.5.tgz",
+      "sha256": "cbf41d1b7262fad2eecdc6425ae5afed2de9b3512093c4c778fb456e788d7e12",
+      "assetCount": 215
+    }
+  ],
+  "upstreamUrl": "https://github.com/mapbox/maki",
+  "assetCount": 215,
+  "catalog": "../maki.json",
+  "catalogSha256": "379d9b1ac1b16b1bee5bc0bfcd4169ec0e99b805844d90a53152384c123c7a2d",
+  "assets": "../../assets/maki/**/*.svg",
+  "license": "CC0-1.0",
+  "licenseFile": "MAKI-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "MAKI-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/mapbox/maki/28e2a3602e4bde033a1dd388e86e9c117b425e34/LICENSE.txt",
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    }
+  ]
+}

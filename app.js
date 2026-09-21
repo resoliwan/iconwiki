@@ -5,7 +5,7 @@ const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
-const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'game-icons', 'pixelarticons', 'weather-icons']);
+const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'game-icons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
@@ -142,7 +142,7 @@ function art(item) {
   const node = el('span', 'emoji');
   node.setAttribute('aria-hidden', 'true');
   if (item.kind === 'image') {
-    if (MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color') node.classList.add('monochrome');
+    if (MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color' || item.collection === 'icon-park' && item.variant !== 'multi-color') node.classList.add('monochrome');
     const img = el('img');
     img.src = item.src;
     img.alt = '';

@@ -304,6 +304,116 @@
     "note": "Visual Studio Code editor and debugging SVGs are self-hosted from the official Codicons package. Attribution: Microsoft Codicons (CC BY 4.0)."
   },
   {
+    "id": "icon-park",
+    "name": "IconPark",
+    "version": "1.2.4",
+    "catalog": "./data/icon-park.json",
+    "sourceUrl": "https://github.com/bytedance/IconPark",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/ICON-PARK-LICENSE.txt",
+    "note": "Outline, solid, two-tone, and multi-color SVGs are self-hosted from pinned Iconify distributions of the official IconPark artwork."
+  },
+  {
+    "id": "mingcute",
+    "name": "MingCute Icons",
+    "version": "1.2.8",
+    "catalog": "./data/mingcute.json",
+    "sourceUrl": "https://github.com/mingcute-design/mingcute-icons",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/MINGCUTE-LICENSE.txt",
+    "note": "Core regular and filled SVGs are self-hosted from a pinned Iconify distribution of the official MingCute artwork."
+  },
+  {
+    "id": "carbon-icons",
+    "name": "Carbon Icons",
+    "version": "1.2.27",
+    "catalog": "./data/carbon-icons.json",
+    "sourceUrl": "https://github.com/carbon-design-system/carbon",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/CARBON-ICONS-LICENSE.txt",
+    "note": "IBM Carbon Design System SVG icons are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "ant-design-icons",
+    "name": "Ant Design Icons",
+    "version": "1.2.9",
+    "catalog": "./data/ant-design-icons.json",
+    "sourceUrl": "https://github.com/ant-design/ant-design-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/ANT-DESIGN-ICONS-LICENSE.txt",
+    "note": "Outlined, filled, and two-tone Ant Design SVGs are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "flat-color-icons",
+    "name": "Flat Color Icons",
+    "version": "1.2.3",
+    "catalog": "./data/flat-color-icons.json",
+    "sourceUrl": "https://github.com/icons8/flat-color-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/FLAT-COLOR-ICONS-LICENSE.md",
+    "note": "Icons8 flat-color SVG artwork is self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "maki",
+    "name": "Maki",
+    "version": "1.2.5",
+    "catalog": "./data/maki.json",
+    "sourceUrl": "https://github.com/mapbox/maki",
+    "license": "CC0-1.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/MAKI-LICENSE.txt",
+    "note": "Mapbox point-of-interest SVGs in official pixel-aligned sizes are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "clarity-icons",
+    "name": "Clarity Icons",
+    "version": "1.2.4",
+    "catalog": "./data/clarity-icons.json",
+    "sourceUrl": "https://github.com/vmware/clarity-assets",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/CLARITY-ICONS-LICENSE.txt",
+    "note": "Clarity Design System line and solid SVGs are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "eva-icons",
+    "name": "Eva Icons",
+    "version": "1.2.3",
+    "catalog": "./data/eva-icons.json",
+    "sourceUrl": "https://github.com/akveo/eva-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/EVA-ICONS-LICENSE.txt",
+    "note": "Eva outline and filled SVGs are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "css-gg",
+    "name": "css.gg",
+    "version": "1.2.2",
+    "catalog": "./data/css-gg.json",
+    "sourceUrl": "https://github.com/astrit/css.gg",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/CSS-GG-LICENSE.md",
+    "note": "css.gg SVG artwork is self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "solar-icons",
+    "name": "Solar Icons",
+    "version": "1.2.12",
+    "catalog": "./data/solar-icons.json",
+    "sourceUrl": "https://www.figma.com/community/file/1166831539721848736",
+    "license": "CC-BY-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/SOLAR-ICONS-LICENSE.txt",
+    "note": "Solar SVG artwork by 480 Design is self-hosted in six styles from a pinned Iconify distribution. Attribution: Solar Icons by 480 Design (CC BY 4.0)."
+  },
+  {
     "id": "game-icons",
     "name": "Game Icons",
     "catalog": "./data/game-icons.json",

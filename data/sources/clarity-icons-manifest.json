@@ -1,0 +1,27 @@
+{
+  "name": "Clarity Icons",
+  "version": "1.2.4",
+  "packages": [
+    {
+      "name": "@iconify-json/clarity",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/clarity/-/clarity-1.2.4.tgz",
+      "sha256": "6ea2d256f5fc8b4a1778d332533fab81daf4197d3809e2ac8df82ab54fd02f26",
+      "assetCount": 1103
+    }
+  ],
+  "upstreamUrl": "https://github.com/vmware/clarity-assets",
+  "assetCount": 1103,
+  "catalog": "../clarity-icons.json",
+  "catalogSha256": "b873ac5401d03fe07f3fd57dd7bd02b2a880bffe32fed75c31611eb694bb69b1",
+  "assets": "../../assets/clarity-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "CLARITY-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "CLARITY-ICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/vmware/clarity-assets/a84864f436294097ede3199e9be7c3fe9d95593e/LICENSE",
+      "sha256": "144757b53192e700f7fd7d7de1ef2d2e97f968556d4fbd3e7ca9bfce90a4482e"
+    }
+  ]
+}

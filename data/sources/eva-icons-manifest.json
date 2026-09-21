@@ -1,0 +1,27 @@
+{
+  "name": "Eva Icons",
+  "version": "1.2.3",
+  "packages": [
+    {
+      "name": "@iconify-json/eva",
+      "version": "1.2.3",
+      "url": "https://registry.npmjs.org/@iconify-json/eva/-/eva-1.2.3.tgz",
+      "sha256": "728a5f3f5ea238be5ce65ef3306042d188b9eda52d652f8108ab205264696a97",
+      "assetCount": 490
+    }
+  ],
+  "upstreamUrl": "https://github.com/akveo/eva-icons",
+  "assetCount": 490,
+  "catalog": "../eva-icons.json",
+  "catalogSha256": "4195efdc1d6830376c3b80483997c8fa747a1a5e774d97cba4f4e8a58596a377",
+  "assets": "../../assets/eva-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "EVA-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "EVA-ICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/akveo/eva-icons/70d2471ff88ab1385d3310b93a406243377b53d5/LICENSE.txt",
+      "sha256": "4788c563f8871931bce41ede59379a5277ac1a473e289f9100924149ce8bd311"
+    }
+  ]
+}

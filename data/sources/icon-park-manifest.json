@@ -1,0 +1,48 @@
+{
+  "name": "IconPark",
+  "version": "1.2.4",
+  "packages": [
+    {
+      "name": "@iconify-json/icon-park-outline",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/icon-park-outline/-/icon-park-outline-1.2.4.tgz",
+      "sha256": "e4c29776086e46ed7d113b7d44798a36ca74df6dcfb949da142db34714ab7c8a",
+      "assetCount": 2658
+    },
+    {
+      "name": "@iconify-json/icon-park-solid",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/icon-park-solid/-/icon-park-solid-1.2.4.tgz",
+      "sha256": "3af17a63c120891842d272ec34b4bec414e6c4801af8158a460b4c3cb4dc1248",
+      "assetCount": 1947
+    },
+    {
+      "name": "@iconify-json/icon-park-twotone",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/icon-park-twotone/-/icon-park-twotone-1.2.4.tgz",
+      "sha256": "579560dd7c0e1c6f53297129f3a32cdcf4292871e2c5e82e502840c7ce68eabb",
+      "assetCount": 1944
+    },
+    {
+      "name": "@iconify-json/icon-park",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/icon-park/-/icon-park-1.2.4.tgz",
+      "sha256": "c1a25212a31602aca93c3fa6f6b3288e89b9d7811afc132dfd78506e9d586b6f",
+      "assetCount": 2658
+    }
+  ],
+  "upstreamUrl": "https://github.com/bytedance/IconPark",
+  "assetCount": 9207,
+  "catalog": "../icon-park.json",
+  "catalogSha256": "6a97a9676e6bdf4794bbaf2883cbf55a002ed712aeba70efc248782a911fb65c",
+  "assets": "../../assets/icon-park/**/*.svg",
+  "license": "Apache-2.0",
+  "licenseFile": "ICON-PARK-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "ICON-PARK-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/bytedance/IconPark/8dc132da4c85671ba6a5962c87aa2bdafbf158e9/LICENSE",
+      "sha256": "81268f00802b1a9cffae4df43f78c3a0809845e03fef3da68f26ad2e4c49681e"
+    }
+  ]
+}

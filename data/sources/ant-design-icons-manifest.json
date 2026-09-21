@@ -1,0 +1,27 @@
+{
+  "name": "Ant Design Icons",
+  "version": "1.2.9",
+  "packages": [
+    {
+      "name": "@iconify-json/ant-design",
+      "version": "1.2.9",
+      "url": "https://registry.npmjs.org/@iconify-json/ant-design/-/ant-design-1.2.9.tgz",
+      "sha256": "d6351e677f9e51b7a15cf0702a0c151e5c663ec8a053ebf2aa79743ddf0438e2",
+      "assetCount": 848
+    }
+  ],
+  "upstreamUrl": "https://github.com/ant-design/ant-design-icons",
+  "assetCount": 848,
+  "catalog": "../ant-design-icons.json",
+  "catalogSha256": "32b0e1e4f69cd57c016c7eddc8b90e4559f7cd888bb9b8b4d10e266a901028b3",
+  "assets": "../../assets/ant-design-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "ANT-DESIGN-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "ANT-DESIGN-ICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/ant-design/ant-design-icons/7f2516ac91226d2b41f93b35cb5197c8d94f7189/LICENSE",
+      "sha256": "5d367fb0a07340571542eb4ee8eb1add62d37b71bad6786a57c2e9a86bf76c70"
+    }
+  ]
+}

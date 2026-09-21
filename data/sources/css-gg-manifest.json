@@ -1,0 +1,27 @@
+{
+  "name": "css.gg",
+  "version": "1.2.2",
+  "packages": [
+    {
+      "name": "@iconify-json/gg",
+      "version": "1.2.2",
+      "url": "https://registry.npmjs.org/@iconify-json/gg/-/gg-1.2.2.tgz",
+      "sha256": "ee7a061fb05fdadcc7fdcf7b11d6d4aec427a8695f92efd909a0af242028eb44",
+      "assetCount": 704
+    }
+  ],
+  "upstreamUrl": "https://github.com/astrit/css.gg",
+  "assetCount": 704,
+  "catalog": "../css-gg.json",
+  "catalogSha256": "51819f2e0ca23da6f5edd9403f2d2e0961f383c5de046fe003de4390aebc40c2",
+  "assets": "../../assets/css-gg/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "CSS-GG-LICENSE.md",
+  "licenseSources": [
+    {
+      "file": "CSS-GG-LICENSE.md",
+      "url": "https://raw.githubusercontent.com/astrit/css.gg/ad0428df5491082b29a81d64dbdc59b9602cc059/LICENSE.md",
+      "sha256": "901673e29904f76a9735f1430f9ee59867aae09692168d7abf1ba6adf01f8195"
+    }
+  ]
+}

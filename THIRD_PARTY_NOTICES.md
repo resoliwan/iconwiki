@@ -34,10 +34,22 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 | Octicons | 19.38.0 | MIT | [License](./data/sources/OCTICONS-LICENSE.txt) | [Octicons](https://github.com/primer/octicons) |
 | Radix Icons | 1.3.2 | MIT | [License](./data/sources/RADIX-ICONS-LICENSE.txt) | [Radix Icons](https://github.com/radix-ui/icons) |
 | Codicons | 0.0.46-24 | CC BY 4.0 | [License](./data/sources/CODICONS-LICENSE.txt) | [Codicons](https://github.com/microsoft/vscode-codicons) |
+| IconPark | 1.2.4 | Apache-2.0 | [License](./data/sources/ICON-PARK-LICENSE.txt) | [IconPark](https://github.com/bytedance/IconPark) |
+| MingCute Icons | 1.2.8 | Apache-2.0 | [License](./data/sources/MINGCUTE-LICENSE.txt) | [MingCute Icons](https://github.com/mingcute-design/mingcute-icons) |
+| Carbon Icons | 1.2.27 | Apache-2.0 | [License](./data/sources/CARBON-ICONS-LICENSE.txt) | [Carbon](https://github.com/carbon-design-system/carbon) |
+| Ant Design Icons | 1.2.9 | MIT | [License](./data/sources/ANT-DESIGN-ICONS-LICENSE.txt) | [Ant Design Icons](https://github.com/ant-design/ant-design-icons) |
+| Flat Color Icons | 1.2.3 | MIT | [License](./data/sources/FLAT-COLOR-ICONS-LICENSE.md) | [Icons8 Flat Color Icons](https://github.com/icons8/flat-color-icons) |
+| Maki | 1.2.5 | CC0 1.0 | [License](./data/sources/MAKI-LICENSE.txt) | [Maki](https://github.com/mapbox/maki) |
+| Clarity Icons | 1.2.4 | MIT | [License](./data/sources/CLARITY-ICONS-LICENSE.txt) | [Clarity Assets](https://github.com/vmware/clarity-assets) |
+| Eva Icons | 1.2.3 | MIT | [License](./data/sources/EVA-ICONS-LICENSE.txt) | [Eva Icons](https://github.com/akveo/eva-icons) |
+| css.gg | 1.2.2 | MIT | [License](./data/sources/CSS-GG-LICENSE.md) | [css.gg](https://github.com/astrit/css.gg) |
+| Solar Icons | 1.2.12 | CC BY 4.0 | [License](./data/sources/SOLAR-ICONS-LICENSE.txt) · [Attribution notice](./data/sources/SOLAR-ICONS-NOTICE.txt) | [Solar Icons by 480 Design](https://www.figma.com/community/file/1166831539721848736) |
 | Game Icons | — | CC BY 3.0 | [License](./data/sources/GAME-ICONS-LICENSE.txt) | [Game-icons.net](https://game-icons.net/) |
 | Pixelarticons | 2.4.1 | MIT | [License](./data/sources/PIXELARTICONS-LICENSE.txt) | [Pixelarticons](https://pixelarticons.com/) |
 | Weather Icons | 2.0.12 | OFL 1.1 | [License](./data/sources/WEATHER-ICONS-LICENSE.txt) | [Weather Icons](https://erikflowers.github.io/weather-icons/) |
 | Mozilla FxEmojis | 0.0.2 | CC BY 4.0 for visual designs | [License](./data/sources/FXEMOJI-LICENSE.md) | [FxEmojis](https://github.com/mozilla/fxemoji) |
+
+For the ten Iconify-normalized additions, the version shown is the pinned `@iconify-json` package version. Their manifests in `data/sources` record exact package URLs and SHA-256 checksums.
 
 ## Attribution notes
 
@@ -48,6 +60,7 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 - Game Icons artwork is provided under CC BY 3.0. Each catalog entry includes its credited artist for attribution.
 - Mozilla FxEmojis visual designs are provided by the Mozilla Foundation under CC BY 4.0.
 - Codicons artwork is provided by Microsoft under CC BY 4.0.
+- Solar Icons artwork is provided by 480 Design under CC BY 4.0. Credit 480 Design and link to the license when using the artwork.
 - Devicon technology logos and Octicons GitHub marks may be subject to separate trademark and logo-usage rules.
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
