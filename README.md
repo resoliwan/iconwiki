@@ -32,7 +32,7 @@ Enter `캥거루` (Korean for “kangaroo”) to find matching icons.
 
 ![Searching Moa for kangaroo in Korean](./docs/korean-search-demo.gif)
 
-AI expansion and multilingual search require support for Chrome's built-in AI. Standard search works without it.
+AI expansion and multilingual search are supported only in desktop Google Chrome with its built-in AI available. Standard search works in other browsers without AI expansion.
 
 ## Included libraries
 

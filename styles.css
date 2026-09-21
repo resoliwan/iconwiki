@@ -18,7 +18,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .rail-button.active { color:var(--blue); }
 .rail-button.active .rail-symbol { background:#004a77; color:#c2e7ff; }
 .rail-button:hover .rail-symbol { background:var(--raised); }
-.rail-bottom { margin-top:auto; width:28px; height:28px; border:2px solid var(--muted); border-radius:50%; display:grid; place-items:center; color:var(--muted); font-size:17px; }
+.rail-github { margin-top:auto; width:40px; height:40px; border-radius:50%; display:grid; place-items:center; color:var(--muted); }
+.rail-github:hover { background:var(--raised); }
+.rail-github img { width:24px; height:24px; filter:brightness(0) invert(.78); }
+.rail-bottom { width:28px; height:28px; border:2px solid var(--muted); border-radius:50%; display:grid; place-items:center; color:var(--muted); font-size:17px; }
 .shell { margin-left:96px; }
 .topbar { position:sticky; top:0; z-index:4; min-height:88px; padding:16px 32px; display:grid; grid-template-columns:208px minmax(0,1fr); align-items:center; gap:12px 32px; background:var(--bg); }
 .brand { font-size:26px; font-weight:500; white-space:nowrap; letter-spacing:-.7px; }

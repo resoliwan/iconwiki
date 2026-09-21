@@ -20,12 +20,18 @@ const state = {
 };
 const chromeSmartSearch = new ChromeSmartSearch();
 const smartSupported = isDesktopChrome() && chromeSmartSearch.supported;
-const SMART_UNSUPPORTED_MESSAGE = 'AI expansion is available only in desktop Chrome.';
+const SMART_UNSUPPORTED_MESSAGE = 'AI expansion is supported only in desktop Google Chrome. This browser is not supported.';
 let smartTimer;
 let smartRequest = 0;
 let smartPrepareAttempt = null;
 let smartRetryArmed = false;
 let toastTimer;
+function smartErrorMessage(error, fallback) {
+  const message = error?.message || fallback;
+  return /not eligible|not supported|unavailable in this browser/i.test(message)
+    ? SMART_UNSUPPORTED_MESSAGE
+    : message;
+}
 function toast(message) {
   $('#toast').textContent = message;
   $('#toast').hidden = false;
@@ -387,7 +393,7 @@ async function prepareChromeAI({ allowRetry = true } = {}) {
       armChromeAIRetry();
       return null;
     }
-    const message = error.message || 'Chrome AI could not be downloaded.';
+    const message = smartErrorMessage(error, 'Chrome AI could not be downloaded.');
     setSmartModelStatus(message);
     return null;
   }
@@ -427,7 +433,7 @@ async function runSmartSearch({ refresh = false } = {}) {
   } catch (error) {
     if (request !== smartRequest) return;
     setSmartExpansion(null);
-    const message = error.message || 'Chrome AI could not expand this search.';
+    const message = smartErrorMessage(error, 'Chrome AI could not expand this search.');
     setSmartStatus(message);
     toast(message);
     renderGrid();
