@@ -1,8 +1,37 @@
-# Moa
+# Moa — Free icon libraries, all in one place.
 
-Moa is a local, static icon browser built to make searching across icon and emoji libraries fast and easy.
+Free Icon & Emoji Browser
 
-It loads each catalog into browser memory, searches English names and keywords, displays every result at a consistent size, and opens a detail panel when an item is selected.
+**Try Moa at [moa.aoo.kr](https://moa.aoo.kr)**
+
+Over 56,000 icons and emoji from 15 libraries.
+
+## Key features
+
+- Find icons by name, keyword, or category.
+- Filter by library, license, match type, and skin tone.
+- Compare styles side by side.
+- Check each icon's source and license.
+
+### Narrow your search
+
+Search for `face`, then add `smile` to narrow the results.
+
+![Filtering search results by adding smile to face](./docs/search-demo.gif)
+
+### Discover related icons
+
+Turn on **AI expansion** to include related search terms.
+
+![Searching for kangaroo and expanding the results with AI](./docs/ai-expansion-demo.gif)
+
+### Search in your language
+
+Enter `캥거루` (Korean for “kangaroo”) to find matching icons.
+
+![Searching Moa for kangaroo in Korean](./docs/korean-search-demo.gif)
+
+AI expansion and multilingual search require support for Chrome's built-in AI. Standard search works without it.
 
 ## Included libraries
 
@@ -25,59 +54,24 @@ It loads each catalog into browser memory, searches English names and keywords, 
 | Ionicons | 8.1.0 | [MIT](./data/sources/IONICONS-LICENSE.txt) | 1,357 |
 | **Total** |  |  | **56,671** |
 
-Counts describe the catalogs currently generated in this repository. Unicode Emoji uses the device emoji font; the other collections use self-hosted assets.
-
-## Features
-
-- Search English names, keywords, tags, aliases, and categories.
-- Translate non-English searches to English and generate related terms with Chrome's built-in AI.
-- Select multiple libraries and license classes with checkbox filters, then narrow results by exact, keyword, or similar match and skin tone variants.
-- Switch between labeled cards and an images-only grid.
-- Turn AI expansion on once to keep using every generated related term across searches; the active terms remain visible below the search box.
-- Compare emoji, color artwork, outline icons, filled icons, and alternate weights in one grid.
-- Open an item to inspect its source, identifier, keywords, license, and asset path.
-- Run as a static site with no application server or database.
-
-License classes are intentionally broad: **Permissive** covers MIT, ISC, Apache-2.0, and Unicode-3.0; **Attribution / ShareAlike** covers CC BY and CC BY-SA assets; **Restricted / Brand** identifies brand marks and other assets that may require additional permission. Commercial use is not a separate class because it can be allowed across more than one class when each license condition is followed.
-
 ## Run locally
 
 ```bash
 npm start
 ```
 
-Then open [http://127.0.0.1:4174](http://127.0.0.1:4174).
+Open [localhost:4174](http://127.0.0.1:4174).
 
-The HTTP server is only used to serve static files. Search and filtering run entirely in the browser.
-
-## Chrome smart search
-
-Turn **AI expansion** on to use Chrome's built-in AI. The setting is remembered for later searches and page reloads. Non-English input is detected and translated to English with the Language Detector and Translator APIs. The Prompt API then generates related English icon terms, which are shown below the search box and applied together. Exact and keyword matches remain first, and the match filter can isolate exact, keyword, or similar results.
-
-Chrome downloads its built-in models when needed. Expanded searches are cached in browser storage. If a built-in API is unavailable, direct local search continues to work.
-
-## Rebuild the catalogs
+Rebuild the icon catalogs:
 
 ```bash
 npm run data
 ```
 
-The build scripts download or read each upstream source, generate compact catalog JSON, copy the required assets into the repository, and rebuild `data/collections.json`.
+## License
 
-To add another library:
+Moa's code is licensed under the [MIT License](./LICENSE). Icons and emoji retain their original licenses, listed above and in [Third-Party Notices](./THIRD_PARTY_NOTICES.md).
 
-1. Add a builder in `scripts/`.
-2. Generate its catalog JSON in `data/`.
-3. Store its assets under `assets/` when required.
-4. Add its license text under `data/sources/`.
-5. Register the collection in `scripts/build_collections.py`.
-6. Add the builder to the `data` script in `package.json`.
+---
 
-## Licensing
-
-Moa's original source code is licensed under the [MIT License](./LICENSE).
-
-Included icons, emoji artwork, fonts, and metadata retain their respective upstream licenses and are not covered by Moa's MIT License. See [Third-Party Notices](./THIRD_PARTY_NOTICES.md) and the license texts in [`data/sources/`](./data/sources/).
-
-Brand icons may also be subject to their owners' trademark guidelines. Moa does not grant trademark rights or imply endorsement by any brand owner.
-# moa
+**Moa** comes from **모아**, Korean for “collect” or “gather together.”
