@@ -1,4 +1,4 @@
-import { normalize, searchCatalogMatches } from './catalog.js';
+import { normalize, searchCatalogMatches } from './catalog.js?v=progressive-results-1';
 
 const CACHE_KEY = 'iconwiki.smart-search.v1';
 const SUPPORTED_TRANSLATION_LANGUAGES = new Set([
@@ -120,8 +120,10 @@ export function buildSmartResults(items, options, expansion = null, resultType =
   }
   const exact = directMatches.filter(row => row.matchType === 'exact').map(row => row.item);
   const keyword = directMatches.filter(row => row.matchType === 'keyword').map(row => row.item);
+  const prefix = directMatches.filter(row => row.matchType === 'prefix').map(row => row.item);
   const results = resultType === 'exact' ? exact
     : resultType === 'keyword' ? keyword
+      : resultType === 'prefix' ? prefix
       : resultType === 'similar' ? related
         : [...direct, ...related];
   return { results, directIds, relatedIds, relatedTermById, matchTypeById, effectiveQuery };

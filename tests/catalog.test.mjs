@@ -12,7 +12,7 @@ const items = prepareCatalog([
 ]);
 
 test('direct name matches rank before exact keyword matches', () => {
-  assert.deepEqual(searchCatalog(items, { query: 'cat' }).map(item => item.id), ['unicode:1F408', 'unicode:1F431', 'material-symbols-outlined:pets']);
+  assert.deepEqual(searchCatalog(items, { query: 'cat' }).map(item => item.id), ['unicode:1F408', 'unicode:1F431', 'material-symbols-outlined:pets', 'unicode:1FA9D']);
 });
 
 test('search results identify exact and keyword match ranges', () => {
@@ -20,6 +20,7 @@ test('search results identify exact and keyword match ranges', () => {
     ['unicode:1F408', 'exact'],
     ['unicode:1F431', 'keyword'],
     ['material-symbols-outlined:pets', 'keyword'],
+    ['unicode:1FA9D', 'prefix'],
   ]);
 });
 
@@ -41,9 +42,24 @@ test('plain words that look hexadecimal do not match icon codepoints', () => {
   assert.deepEqual(searchCatalog(codepointLike, { query: 'U+FACE' }).map(item => item.id), ['x']);
 });
 
-test('search does not match word prefixes or standalone components', () => {
-  assert.equal(searchCatalog(items, { query: 'cat' }).some(item => item.id === 'unicode:1FA9D'), false);
+test('direct searches rank before word-prefix matches and exclude standalone components', () => {
+  assert.equal(searchCatalog(items, { query: 'cat' }).at(-1)?.id, 'unicode:1FA9D');
   assert.equal(searchCatalog(items, { query: 'skin', skinTones: true }).some(item => item.id === 'unicode:1F3FB'), false);
+});
+
+test('two-character prefixes support typeahead while one-character prefixes stay disabled', () => {
+  const prefixItems = prepareCatalog([
+    { id: 'kangaroo', collection: 'test', kind: 'image', src: 'kangaroo.svg', name: 'kangaroo' },
+    { id: 'kanban', collection: 'test', kind: 'image', src: 'kanban.svg', name: 'board', keywords: ['kanban'] },
+    { id: 'catch', collection: 'test', kind: 'image', src: 'catch.svg', name: 'catch' },
+  ]);
+  assert.deepEqual(searchCatalogMatches(prefixItems, { query: 'kan' }).map(row => [row.item.id, row.matchType]), [
+    ['kangaroo', 'prefix'],
+    ['kanban', 'prefix'],
+  ]);
+  assert.deepEqual(searchCatalog(prefixItems, { query: 'ka' }).map(item => item.id), ['kangaroo', 'kanban']);
+  assert.deepEqual(searchCatalog(prefixItems, { query: 'k' }), []);
+  assert.deepEqual(searchCatalog(prefixItems, { query: 'catch' }).map(item => item.id), ['catch']);
 });
 
 test('font icons use the same search and collection filter', () => {

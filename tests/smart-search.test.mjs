@@ -98,6 +98,18 @@ test('only expansion terms supplied by the active AI search contribute similar r
   assert.deepEqual(buildSmartResults(items, { query: 'face' }, oneTerm, 'similar').results.map(item => item.id), ['c']);
 });
 
+test('prefix matches can be selected as their own result range', () => {
+  const catalog = prepareCatalog([
+    { id: 'kangaroo', collection: 'test', kind: 'image', src: 'kangaroo.svg', name: 'kangaroo' },
+    { id: 'kanban', collection: 'test', kind: 'image', src: 'kanban.svg', name: 'kanban' },
+  ]);
+  assert.deepEqual(buildSmartResults(catalog, { query: 'kan' }, null, 'prefix').results.map(item => item.id), [
+    'kangaroo',
+    'kanban',
+  ]);
+  assert.deepEqual(buildSmartResults(catalog, { query: 'kan' }, null, 'exact').results, []);
+});
+
 test('Chrome smart search translates foreign input before expanding English terms', async () => {
   const storageValues = new Map();
   const storage = {

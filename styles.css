@@ -91,6 +91,9 @@ main { grid-area:results; min-width:0; padding:32px 32px 48px; }
 .related-mark { position:absolute; top:8px; left:8px; }
 .match-mark.exact { background:#0f5223; color:#c4eed0; }
 .match-mark.keyword { background:#534600; color:#ffe16b; }
+.match-mark.prefix { background:#44308f; color:#e3d9ff; }
+.load-more { display:block; margin:28px auto 0; }
+.load-more[hidden] { display:none; }
 .emoji-grid.image-only { grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:12px; }
 .emoji-grid.image-only .emoji-card { height:112px; padding:16px; gap:0; }
 .emoji-grid.image-only .emoji { width:48px; height:48px; font-size:44px; }

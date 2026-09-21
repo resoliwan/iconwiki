@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=github-link-1">
+  <link rel="stylesheet" href="./styles.css?v=progressive-results-1">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
@@ -61,6 +61,7 @@
               <option value="all">All match ranges</option>
               <option value="exact">Exact</option>
               <option value="keyword">Keyword</option>
+              <option value="prefix">Prefix</option>
               <option value="similar">Similar</option>
             </select>
             <label class="filter-label" for="display-mode">Display</label>
@@ -78,6 +79,7 @@
         </section>
 
         <div class="emoji-grid" id="grid" aria-label="Image search results" aria-busy="true"></div>
+        <button class="button load-more" id="load-more" type="button" aria-controls="grid" hidden>Load more</button>
         <div class="empty-state" id="empty" hidden><span>⌕</span><h2>No matching images</h2><p>Try another word or a shorter search term.</p><button class="button" id="reset">Reset search</button></div>
       </main>
       <aside class="detail" id="detail" aria-label="Image details" hidden></aside>
@@ -85,6 +87,6 @@
   </div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js?v=chrome-support-1"></script>
+  <script type="module" src="./app.js?v=progressive-results-1"></script>
 </body>
 </html>

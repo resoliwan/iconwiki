@@ -44,10 +44,12 @@ export function searchCatalogMatches(items, { query = '', group = '', collection
     ? terms.map(term => term.replace(/^(?:u\+|0x)/, '')).join(' ')
     : '';
   const scored = [];
+  const eligible = [];
   for (const item of items) {
     if (item.status === 'component' || group && item.group !== group || collection && item.collection !== collection ||
         allowedCollections && !allowedCollections.has(item.collection) || licenseClass && item.licenseClass !== licenseClass ||
         allowedLicenseClasses && !allowedLicenseClasses.has(item.licenseClass) || !skinTones && item.skinTone) continue;
+    eligible.push(item);
     if (!q) { scored.push({ item, score: 0, matchType: 'browse' }); continue; }
     if (normalize(item.emoji || '') === q || normalize(item.id) === q || codeQuery && item._codes === codeQuery) {
       scored.push({ item, score: 1000, matchType: 'exact' });
@@ -59,6 +61,21 @@ export function searchCatalogMatches(items, { query = '', group = '', collection
       scored.push({ item, score: 600, matchType: 'keyword' });
     } else if (terms.every(term => [...item._nameTokens, ...item._keywordTokens].includes(term))) {
       scored.push({ item, score: 100, matchType: 'keyword' });
+    }
+  }
+  // Add partially typed words after stronger exact and keyword matches. A
+  // two-character minimum supports typeahead without letting a single
+  // keystroke flood the grid with loosely related results.
+  if (terms.length && terms.every(term => term.length >= 2)) {
+    const matchedIds = new Set(scored.map(({ item }) => item.id));
+    for (const item of eligible) {
+      if (matchedIds.has(item.id)) continue;
+      const nameMatch = terms.every(term => item._nameTokens.some(token => token.startsWith(term)));
+      if (nameMatch) scored.push({ item, score: 80, matchType: 'prefix' });
+      else if (terms.every(term => item._nameTokens.some(token => token.startsWith(term)) ||
+          item._keywordTokens.some(token => token.startsWith(term)))) {
+        scored.push({ item, score: 50, matchType: 'prefix' });
+      }
     }
   }
   return scored.sort((a, b) => b.score - a.score || a.item._order - b.item._order);

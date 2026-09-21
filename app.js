@@ -1,8 +1,8 @@
-import { filterCatalogItems, loadCatalog } from './catalog.js?v=result-filter-1';
-import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=ai-download-1';
+import { filterCatalogItems, loadCatalog } from './catalog.js?v=progressive-results-1';
+import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=progressive-results-1';
 
 const $ = selector => document.querySelector(selector);
-const MAX_RENDERED_RESULTS = 600;
+const RESULT_BATCH_SIZE = 100;
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast']);
@@ -26,6 +26,9 @@ let smartRequest = 0;
 let smartPrepareAttempt = null;
 let smartRetryArmed = false;
 let toastTimer;
+let currentResults = [];
+let currentSearch = null;
+let renderedResultCount = 0;
 function smartErrorMessage(error, fallback) {
   const message = error?.message || fallback;
   return /not eligible|not supported|unavailable in this browser/i.test(message)
@@ -172,7 +175,7 @@ function readURL() {
   state.withinFilter = params.get('filter') || '';
   state.filterCollections = readSelection(params.get('collection'), state.collections);
   state.filterLicenseClasses = readSelection(params.get('license'), LICENSE_FILTERS);
-  state.resultType = ['exact', 'keyword', 'similar'].includes(params.get('match')) ? params.get('match') : 'all';
+  state.resultType = ['exact', 'keyword', 'prefix', 'similar'].includes(params.get('match')) ? params.get('match') : 'all';
   state.displayMode = params.get('display') === 'labels' ? 'labels' : 'images';
   const requestedSmartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
   state.smartEnabled = smartSupported && requestedSmartEnabled;
@@ -209,46 +212,67 @@ function renderExpansionTerms() {
   }
   $('#expansion-terms').replaceChildren(fragment);
 }
+function resultCard(item, search) {
+  const card = button('', 'emoji-card', () => select(item.id));
+  card.dataset.id = item.id;
+  card.setAttribute('aria-label', item.name);
+  card.setAttribute('aria-pressed', String(state.selected === item.id));
+  const matchType = search.matchTypeById.get(item.id);
+  card.title = `${item.name}\n${item.id}${matchType && matchType !== 'browse' ? `\n${matchType} match` : ''}`;
+  card.append(art(item));
+  if (state.displayMode === 'labels') {
+    const caption = el('span', 'card-caption');
+    caption.append(el('span', 'card-name', item.name));
+    if (matchType && matchType !== 'browse') {
+      const mark = el('span', `match-mark ${matchType}`, matchType.toUpperCase());
+      mark.title = matchType === 'similar'
+        ? `AI expansion term: ${search.relatedTermById.get(item.id)}`
+        : `${matchType} match`;
+      caption.append(mark);
+    }
+    card.append(caption);
+  }
+  return card;
+}
+function renderNextResultBatch() {
+  if (!currentSearch || renderedResultCount >= currentResults.length) {
+    $('#load-more').hidden = true;
+    return;
+  }
+  const end = Math.min(renderedResultCount + RESULT_BATCH_SIZE, currentResults.length);
+  const fragment = document.createDocumentFragment();
+  for (const item of currentResults.slice(renderedResultCount, end)) {
+    fragment.append(resultCard(item, currentSearch));
+  }
+  $('#grid').append(fragment);
+  renderedResultCount = end;
+  const remaining = currentResults.length - renderedResultCount;
+  const loadMore = $('#load-more');
+  loadMore.hidden = remaining === 0;
+  loadMore.textContent = remaining
+    ? `Load ${Math.min(RESULT_BATCH_SIZE, remaining).toLocaleString()} more`
+    : '';
+  $('#result-count').textContent = remaining
+    ? `${currentResults.length.toLocaleString()} results · showing ${renderedResultCount.toLocaleString()}`
+    : `${currentResults.length.toLocaleString()} results`;
+}
 function renderGrid() {
   const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
   const activeExpansion = state.smartEnabled ? expansion : null;
-  const search = buildSmartResults(state.items, {
+  currentSearch = buildSmartResults(state.items, {
     ...state,
     collections: [...state.filterCollections],
     licenseClasses: [...state.filterLicenseClasses],
   }, activeExpansion, state.resultType);
-  const results = filterCatalogItems(search.results, state.withinFilter);
-  const renderedResults = results.slice(0, MAX_RENDERED_RESULTS);
-  const fragment = document.createDocumentFragment();
-  for (const item of renderedResults) {
-    const card = button('', 'emoji-card', () => select(item.id));
-    card.dataset.id = item.id;
-    card.setAttribute('aria-label', item.name);
-    card.setAttribute('aria-pressed', String(state.selected === item.id));
-    const matchType = search.matchTypeById.get(item.id);
-    card.title = `${item.name}\n${item.id}${matchType && matchType !== 'browse' ? `\n${matchType} match` : ''}`;
-    card.append(art(item));
-    if (state.displayMode === 'labels') {
-      const caption = el('span', 'card-caption');
-      caption.append(el('span', 'card-name', item.name));
-      if (matchType && matchType !== 'browse') {
-        const mark = el('span', `match-mark ${matchType}`, matchType.toUpperCase());
-        mark.title = matchType === 'similar'
-          ? `AI expansion term: ${search.relatedTermById.get(item.id)}`
-          : `${matchType} match`;
-        caption.append(mark);
-      }
-      card.append(caption);
-    }
-    fragment.append(card);
-  }
-  $('#grid').replaceChildren(fragment);
+  currentResults = filterCatalogItems(currentSearch.results, state.withinFilter);
+  renderedResultCount = 0;
+  $('#grid').replaceChildren();
   $('#grid').classList.toggle('image-only', state.displayMode === 'images');
   $('#grid').setAttribute('aria-busy', 'false');
-  $('#empty').hidden = results.length > 0;
-  $('#result-count').textContent = results.length > MAX_RENDERED_RESULTS
-    ? `${results.length.toLocaleString()} results · showing first ${MAX_RENDERED_RESULTS.toLocaleString()}`
-    : `${results.length.toLocaleString()} results`;
+  $('#empty').hidden = currentResults.length > 0;
+  $('#result-count').textContent = `${currentResults.length.toLocaleString()} results`;
+  $('#load-more').hidden = true;
+  renderNextResultBatch();
   renderExpansionTerms();
   updateURL();
 }
@@ -263,8 +287,9 @@ function closePanel() {
   const oldId = state.selected;
   state.selected = null;
   renderPanel();
-  renderGrid();
   const old = [...$('#grid').children].find(node => node.dataset.id === oldId);
+  for (const card of $('#grid').children) card.setAttribute('aria-pressed', 'false');
+  updateURL();
   (old || $('#search')).focus({ preventScroll: true });
 }
 function select(id) {
@@ -524,6 +549,12 @@ document.addEventListener('pointerdown', event => {
 });
 $('#reset').addEventListener('click', reset);
 $('#reset-filters').addEventListener('click', reset);
+$('#load-more').addEventListener('click', renderNextResultBatch);
+if ('IntersectionObserver' in window) {
+  new IntersectionObserver(entries => {
+    if (!$('#load-more').hidden && entries.some(entry => entry.isIntersecting)) renderNextResultBatch();
+  }, { rootMargin: '400px 0px' }).observe($('#load-more'));
+}
 function setFiltersOpen(open, { focus = true } = {}) {
   if (!open && state.filtersPinned) return;
   $('#filters-panel').hidden = !open;
