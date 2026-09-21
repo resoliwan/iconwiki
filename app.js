@@ -4,13 +4,14 @@ import { buildSmartResults, ChromeSmartSearch } from './smart-search.js?v=expans
 const $ = selector => document.querySelector(selector);
 const MAX_RENDERED_RESULTS = 600;
 const SMART_PREFERENCE_KEY = 'moa-ai-expansion-enabled';
+const FILTER_PIN_PREFERENCE_KEY = 'moa-filter-panel-pinned';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
   { id: 'restricted', name: 'Restricted / Brand' },
 ];
-const state = { items: [], collections: [], byId: new Map(), query: '', filterCollections: new Set(), filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false, selected: null, smartEnabled: false, smartExpansion: null };
+const state = { items: [], collections: [], byId: new Map(), query: '', filterCollections: new Set(), filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false, selected: null, smartEnabled: false, smartExpansion: null, filtersPinned: false };
 const chromeSmartSearch = new ChromeSmartSearch();
 let smartTimer;
 let smartRequest = 0;
@@ -52,9 +53,21 @@ function saveSmartPreference() {
   catch { /* The toggle still works for the current page if storage is unavailable. */ }
 }
 function renderSmartToggle() {
-  const toggle = $('#smart-search');
-  toggle.setAttribute('aria-checked', String(state.smartEnabled));
-  $('#smart-state').textContent = state.smartEnabled ? 'ON' : 'OFF';
+  $('#smart-search').checked = state.smartEnabled;
+}
+function readFilterPinPreference() {
+  try { return localStorage.getItem(FILTER_PIN_PREFERENCE_KEY) === 'true'; }
+  catch { return false; }
+}
+function saveFilterPinPreference() {
+  try { localStorage.setItem(FILTER_PIN_PREFERENCE_KEY, String(state.filtersPinned)); }
+  catch { /* The toggle still works for the current page if storage is unavailable. */ }
+}
+function renderFilterPinToggle() {
+  const toggle = $('#filter-pin');
+  toggle.checked = state.filtersPinned;
+  $('#filters-panel').classList.toggle('pinned', state.filtersPinned);
+  $('#close-filters').disabled = state.filtersPinned;
 }
 function renderMultiFilter({ root, summary, container, options, selected, allLabel, singularLabel, pluralLabel, update }) {
   const selectedNames = options.filter(option => selected.has(option.id)).map(option => option.name);
@@ -139,6 +152,7 @@ function readURL() {
   state.displayMode = params.get('display') === 'labels' ? 'labels' : 'images';
   state.smartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
   if (params.has('smart')) saveSmartPreference();
+  state.filtersPinned = readFilterPinPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = state.byId.has(params.get('id')) ? params.get('id') : null;
   $('#search').value = state.query;
@@ -146,6 +160,7 @@ function readURL() {
   $('#result-filter').value = state.resultType;
   $('#display-mode').value = state.displayMode;
   renderSmartToggle();
+  renderFilterPinToggle();
   renderFilterControls();
 }
 function renderExpansionTerms() {
@@ -295,10 +310,9 @@ function renderPanel() {
 
 function setSmartStatus(message = '', busy = false) {
   const toggle = $('#smart-search');
-  toggle.classList.toggle('busy', busy);
+  toggle.closest('.inline-toggle').classList.toggle('busy', busy);
   toggle.setAttribute('aria-busy', String(busy));
-  toggle.title = message || 'Expand related terms automatically, or press Enter to run again.';
-  $('#smart-state').textContent = busy ? '…' : state.smartEnabled ? 'ON' : 'OFF';
+  toggle.closest('.inline-toggle').title = message || 'Expand related terms automatically, or press Enter to run again.';
 }
 
 function setSmartExpansion(expansion) {
@@ -366,8 +380,8 @@ $('#search').addEventListener('keydown', event => {
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
 $('#display-mode').addEventListener('change', event => { state.displayMode = event.target.value; renderGrid(); });
-$('#smart-search').addEventListener('click', () => {
-  state.smartEnabled = !state.smartEnabled;
+$('#smart-search').addEventListener('change', event => {
+  state.smartEnabled = event.target.checked;
   saveSmartPreference();
   renderSmartToggle();
   if (!state.smartEnabled) {
@@ -397,18 +411,33 @@ document.addEventListener('pointerdown', event => {
 });
 $('#reset').addEventListener('click', reset);
 $('#reset-filters').addEventListener('click', reset);
-function setFiltersOpen(open) {
+function setFiltersOpen(open, { focus = true } = {}) {
+  if (!open && state.filtersPinned) return;
   $('#filters-panel').hidden = !open;
   $('#workspace').classList.toggle('filters-closed', !open);
   $('#browse-button').classList.toggle('active', open);
   $('#browse-button').setAttribute('aria-expanded', String(open));
   if (!open) {
     for (const filter of multiFilters) filter.open = false;
-    $('#browse-button').focus({ preventScroll: true });
-  } else $('#close-filters').focus({ preventScroll: true });
+    if (focus) $('#browse-button').focus({ preventScroll: true });
+  } else if (focus) $('#filter-pin').focus({ preventScroll: true });
 }
 $('#close-filters').addEventListener('click', () => setFiltersOpen(false));
-$('#browse-button').addEventListener('click', () => setFiltersOpen($('#filters-panel').hidden));
+$('#filter-pin').addEventListener('change', event => {
+  state.filtersPinned = event.target.checked;
+  saveFilterPinPreference();
+  renderFilterPinToggle();
+  if (state.filtersPinned) setFiltersOpen(true, { focus: false });
+});
+$('#browse-button').addEventListener('click', () => {
+  const panelOpen = !$('#filters-panel').hidden;
+  if (panelOpen && state.filtersPinned) {
+    state.filtersPinned = false;
+    saveFilterPinPreference();
+    renderFilterPinToggle();
+  }
+  setFiltersOpen(!panelOpen);
+});
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape' && !$('#detail').hidden) closePanel();
   if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.metaKey && !event.ctrlKey) {

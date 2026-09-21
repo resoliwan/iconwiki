@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=filters-2">
+  <link rel="stylesheet" href="./styles.css?v=checkbox-toggles-1">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
@@ -24,7 +24,7 @@
       <div class="search-box">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
         <input id="search" type="search" placeholder="Search icons · spaces mean AND" aria-label="Search images" autocomplete="off" spellcheck="false">
-        <button class="smart-button" id="smart-search" type="button" role="switch" aria-checked="false" title="Expand related terms automatically, or press Enter to run again."><span aria-hidden="true">✦</span> AI expansion <b id="smart-state">OFF</b></button>
+        <label class="inline-toggle ai-toggle" title="Expand related terms automatically, or press Enter to run again."><input id="smart-search" type="checkbox"> AI expansion</label>
       </div>
       <div class="expansion-panel" id="expansion-panel" hidden>
         <strong>Expanded terms</strong>
@@ -33,8 +33,11 @@
     </header>
 
     <div class="workspace" id="workspace">
-      <aside class="filters" id="filters-panel" aria-label="Search filters">
-        <div class="filters-heading"><h2><span class="ui-symbol" aria-hidden="true">tune</span> Filters</h2><div class="filter-actions"><button class="text-button" id="reset-filters" type="button">Reset all</button><button class="close-button" id="close-filters" type="button" aria-label="Close filters" title="Close filters">×</button></div></div>
+      <main>
+        <section class="filters" id="filters-panel" aria-label="Search filters">
+          <div class="result-summary">
+            <span class="result-count" id="result-count" role="status">Loading…</span>
+          </div>
           <div class="view-options">
             <span class="filter-label" id="library-label">Library</span>
             <details class="multi-filter" id="collection-filter">
@@ -59,16 +62,13 @@
               <option value="labels">Images + labels</option>
             </select>
             <label class="tone-toggle"><input type="checkbox" id="skin-tones"> Include skin tone variants</label>
+            <label class="tone-toggle"><input type="checkbox" id="filter-pin"> Pin filters</label>
           </div>
-      </aside>
-      <main>
-        <div class="library-heading"><p>ICONS &amp; EMOJI</p><h1>Find the icons for your project</h1></div>
-        <div class="results-bar">
-          <div class="result-summary">
-            <span class="result-count" id="result-count" role="status">Loading…</span>
+          <div class="filter-actions">
+            <button class="text-button" id="reset-filters" type="button">Reset</button>
+            <button class="close-button" id="close-filters" type="button" aria-label="Hide filters" title="Hide filters">×</button>
           </div>
-
-        </div>
+        </section>
 
         <div class="emoji-grid" id="grid" aria-label="Image search results" aria-busy="true"></div>
         <div class="empty-state" id="empty" hidden><span>⌕</span><h2>No matching images</h2><p>Try another word or a shorter search term.</p><button class="button" id="reset">Reset search</button></div>
@@ -78,6 +78,6 @@
   </div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js?v=expansion-enter-1"></script>
+  <script type="module" src="./app.js?v=checkbox-toggles-1"></script>
 </body>
 </html>
