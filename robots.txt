@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iconwiki.aoo.kr/sitemap.xml
