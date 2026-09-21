@@ -18,19 +18,19 @@ Over 78,000 icons and emoji from 21 libraries.
 
 Search for `face`, then enter `smile` in **Filter results** to narrow that result set. Press `Tab` to move between the two fields.
 
-![Filtering search results by adding smile to face](./docs/search-demo.gif)
+<img src="./docs/search-demo.gif?raw=1" alt="Filtering search results by adding smile to face" width="1280" loading="eager">
 
 ### Discover related icons
 
 Turn on **AI expansion** to include related search terms.
 
-![Searching for kangaroo and expanding the results with AI](./docs/ai-expansion-demo.gif)
+<img src="./docs/ai-expansion-demo.gif?raw=1" alt="Searching for kangaroo and expanding the results with AI" width="1280" loading="eager">
 
 ### Search in your language
 
 Enter `캥거루` (Korean for “kangaroo”) to find matching icons.
 
-![Searching Moa for kangaroo in Korean](./docs/korean-search-demo.gif)
+<img src="./docs/korean-search-demo.gif?raw=1" alt="Searching Moa for kangaroo in Korean" width="1280" loading="eager">
 
 AI expansion and multilingual search are supported only in desktop Google Chrome with its built-in AI available. Standard search works in other browsers without AI expansion.
 
