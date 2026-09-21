@@ -9,7 +9,7 @@ const root = path.resolve(import.meta.dirname, '..');
 test('every registered collection has valid unique assets', () => {
   const collections = JSON.parse(fs.readFileSync(path.join(root, 'data/collections.json'), 'utf8'));
   const licenseClasses = new Set(['permissive', 'attribution', 'restricted']);
-  assert.equal(collections.length, 26);
+  assert.equal(collections.length, 32);
   assert.equal(collections.find(collection => collection.id === 'noto-emoji')?.name, 'Noto Color Emoji');
   assert.equal(collections.find(collection => collection.id === 'noto-emoji-monochrome')?.name, 'Noto Emoji');
   assert.equal(fs.existsSync(path.join(root, 'assets/noto-emoji-monochrome/NotoEmoji-Regular.ttf')), true);
@@ -30,5 +30,5 @@ test('every registered collection has valid unique assets', () => {
     }
     items.push(...catalog);
   }
-  assert.equal(prepareCatalog(items).length, 88_199);
+  assert.equal(prepareCatalog(items).length, 93_858);
 });

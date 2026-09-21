@@ -1,0 +1,14 @@
+{
+  "name": "flag-icons",
+  "version": "7.5.0",
+  "package": "flag-icons",
+  "packageUrl": "https://registry.npmjs.org/flag-icons/-/flag-icons-7.5.0.tgz",
+  "packageSha256": "c0b80bf0e08006a60f56621d6bc49f8c7131f4d1fef6737a165a673431f4b518",
+  "upstreamUrl": "https://github.com/lipis/flag-icons",
+  "assetCount": 542,
+  "catalog": "../flag-icons.json",
+  "catalogSha256": "f3eb8c3542b3954db224a8a61653eaab70d6d851f4cd3697348dc728e4601671",
+  "assets": "../../assets/flag-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "FLAG-ICONS-LICENSE.txt"
+}

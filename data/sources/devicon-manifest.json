@@ -1,0 +1,14 @@
+{
+  "name": "Devicon",
+  "version": "2.17.0",
+  "package": "devicon",
+  "packageUrl": "https://registry.npmjs.org/devicon/-/devicon-2.17.0.tgz",
+  "packageSha256": "e611f56ef1eeb17c00940f970d44d8ca086439ae7892b496a46b81a7f9a38d5a",
+  "upstreamUrl": "https://github.com/devicons/devicon",
+  "assetCount": 1877,
+  "catalog": "../devicon.json",
+  "catalogSha256": "4bcf18c9b9dcdb73b1b7a7fc3f5dfe5baec4d41cd40bcd9e178f4ac5607c3a89",
+  "assets": "../../assets/devicon/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "DEVICON-LICENSE.txt"
+}

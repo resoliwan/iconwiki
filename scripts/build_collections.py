@@ -139,6 +139,42 @@ collections = [
         "note": "Popular brand SVGs and official color metadata are self-hosted from Simple Icons. Brand names and logos remain subject to their owners' trademark rules.",
     },
     {
+        "id": "health-icons", "name": "Health Icons", "version": "2.0.0",
+        "catalog": "./data/health-icons.json", "sourceUrl": "https://github.com/resolvetosavelives/healthicons",
+        "license": "MIT", "licenseClass": "permissive", "licenseUrl": "./data/sources/HEALTH-ICONS-LICENSE.txt",
+        "note": "Medical and public-health SVGs in filled and outline styles are self-hosted from the official Health Icons package.",
+    },
+    {
+        "id": "devicon", "name": "Devicon", "version": "2.17.0",
+        "catalog": "./data/devicon.json", "sourceUrl": "https://github.com/devicons/devicon",
+        "license": "MIT", "licenseClass": "permissive", "licenseUrl": "./data/sources/DEVICON-LICENSE.txt",
+        "note": "Programming language and developer-tool SVGs are self-hosted in their official color, monochrome, and wordmark variants. Names and logos may have separate trademark rules.",
+    },
+    {
+        "id": "flag-icons", "name": "flag-icons", "version": "7.5.0",
+        "catalog": "./data/flag-icons.json", "sourceUrl": "https://github.com/lipis/flag-icons",
+        "license": "MIT", "licenseClass": "permissive", "licenseUrl": "./data/sources/FLAG-ICONS-LICENSE.txt",
+        "note": "Country and organization flag SVGs are self-hosted in 4:3 and 1:1 formats.",
+    },
+    {
+        "id": "octicons", "name": "Octicons", "version": "19.38.0",
+        "catalog": "./data/octicons.json", "sourceUrl": "https://github.com/primer/octicons",
+        "license": "MIT", "licenseClass": "permissive", "licenseUrl": "./data/sources/OCTICONS-LICENSE.txt",
+        "note": "GitHub's Primer UI icons are self-hosted in all official 12, 16, and 24 px variants. GitHub marks remain subject to GitHub's logo guidelines.",
+    },
+    {
+        "id": "radix-icons", "name": "Radix Icons", "version": "1.3.2",
+        "catalog": "./data/radix-icons.json", "sourceUrl": "https://github.com/radix-ui/icons",
+        "license": "MIT", "licenseClass": "permissive", "licenseUrl": "./data/sources/RADIX-ICONS-LICENSE.txt",
+        "note": "The complete 15×15 Radix UI icon set is self-hosted from the source revision pinned by the official React package.",
+    },
+    {
+        "id": "codicons", "name": "Codicons", "version": "0.0.46-24",
+        "catalog": "./data/codicons.json", "sourceUrl": "https://github.com/microsoft/vscode-codicons",
+        "license": "CC-BY-4.0", "licenseClass": "attribution", "licenseUrl": "./data/sources/CODICONS-LICENSE.txt",
+        "note": "Visual Studio Code editor and debugging SVGs are self-hosted from the official Codicons package. Attribution: Microsoft Codicons (CC BY 4.0).",
+    },
+    {
         "id": "game-icons", "name": "Game Icons",
         "catalog": "./data/game-icons.json", "sourceUrl": "https://game-icons.net/",
         "license": "CC-BY-3.0", "licenseClass": "attribution", "licenseUrl": "./data/sources/GAME-ICONS-LICENSE.txt",

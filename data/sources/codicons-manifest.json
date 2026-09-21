@@ -1,0 +1,14 @@
+{
+  "name": "Codicons",
+  "version": "0.0.46-24",
+  "package": "@vscode/codicons",
+  "packageUrl": "https://registry.npmjs.org/@vscode/codicons/-/codicons-0.0.46-24.tgz",
+  "packageSha256": "d77bf2ed152e82c4b81288c5271a3481c61559d1a5416593756e3b0fe8a02bf1",
+  "upstreamUrl": "https://github.com/microsoft/vscode-codicons",
+  "assetCount": 639,
+  "catalog": "../codicons.json",
+  "catalogSha256": "7ef4a539659fe601b512744f5a25beab3c54af7741613d615e0075bd55b9ea16",
+  "assets": "../../assets/codicons/**/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "CODICONS-LICENSE.txt"
+}

@@ -4,7 +4,7 @@ Free Icon & Emoji Browser
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Over 88,000 icons and emoji from 26 libraries.
+Over 93,000 icons and emoji from 32 libraries.
 
 ## Key features
 
@@ -60,11 +60,17 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | Iconoir | 7.12.1 | [MIT](./data/sources/ICONOIR-LICENSE.txt) | 1,671 |
 | Ionicons | 8.1.0 | [MIT](./data/sources/IONICONS-LICENSE.txt) | 1,357 |
 | Simple Icons | 16.32.0 | [CC0-1.0](./data/sources/SIMPLE-ICONS-LICENSE.txt) | 3,461 |
+| Health Icons | 2.0.0 | [MIT](./data/sources/HEALTH-ICONS-LICENSE.txt) | 1,514 |
+| Devicon | 2.17.0 | [MIT](./data/sources/DEVICON-LICENSE.txt) | 1,877 |
+| flag-icons | 7.5.0 | [MIT](./data/sources/FLAG-ICONS-LICENSE.txt) | 542 |
+| Octicons | 19.38.0 | [MIT](./data/sources/OCTICONS-LICENSE.txt) | 769 |
+| Radix Icons | 1.3.2 | [MIT](./data/sources/RADIX-ICONS-LICENSE.txt) | 318 |
+| Codicons | 0.0.46-24 | [CC-BY-4.0](./data/sources/CODICONS-LICENSE.txt) | 639 |
 | Game Icons | — | [CC-BY-3.0](./data/sources/GAME-ICONS-LICENSE.txt) | 4,239 |
 | Pixelarticons | 2.4.1 | [MIT](./data/sources/PIXELARTICONS-LICENSE.txt) | 1,036 |
 | Weather Icons | 2.0.12 | [OFL-1.1](./data/sources/WEATHER-ICONS-LICENSE.txt) | 219 |
 | Mozilla FxEmojis | 0.0.2 | [CC-BY-4.0](./data/sources/FXEMOJI-LICENSE.md) | 1,035 |
-| **Total** |  |  | **88,199** |
+| **Total** |  |  | **93,858** |
 
 ## Run locally
 

@@ -28,6 +28,12 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 | Iconoir | 7.12.1 | MIT | [License](./data/sources/ICONOIR-LICENSE.txt) | [Iconoir](https://github.com/iconoir-icons/iconoir) |
 | Ionicons | 8.1.0 | MIT | [License](./data/sources/IONICONS-LICENSE.txt) | [Ionicons](https://github.com/ionic-team/ionicons) |
 | Simple Icons | 16.32.0 | CC0 1.0 | [License](./data/sources/SIMPLE-ICONS-LICENSE.txt) | [Simple Icons](https://simpleicons.org/) |
+| Health Icons | 2.0.0 | MIT | [License](./data/sources/HEALTH-ICONS-LICENSE.txt) | [Health Icons](https://github.com/resolvetosavelives/healthicons) |
+| Devicon | 2.17.0 | MIT | [License](./data/sources/DEVICON-LICENSE.txt) | [Devicon](https://github.com/devicons/devicon) |
+| flag-icons | 7.5.0 | MIT | [License](./data/sources/FLAG-ICONS-LICENSE.txt) | [flag-icons](https://github.com/lipis/flag-icons) |
+| Octicons | 19.38.0 | MIT | [License](./data/sources/OCTICONS-LICENSE.txt) | [Octicons](https://github.com/primer/octicons) |
+| Radix Icons | 1.3.2 | MIT | [License](./data/sources/RADIX-ICONS-LICENSE.txt) | [Radix Icons](https://github.com/radix-ui/icons) |
+| Codicons | 0.0.46-24 | CC BY 4.0 | [License](./data/sources/CODICONS-LICENSE.txt) | [Codicons](https://github.com/microsoft/vscode-codicons) |
 | Game Icons | — | CC BY 3.0 | [License](./data/sources/GAME-ICONS-LICENSE.txt) | [Game-icons.net](https://game-icons.net/) |
 | Pixelarticons | 2.4.1 | MIT | [License](./data/sources/PIXELARTICONS-LICENSE.txt) | [Pixelarticons](https://pixelarticons.com/) |
 | Weather Icons | 2.0.12 | OFL 1.1 | [License](./data/sources/WEATHER-ICONS-LICENSE.txt) | [Weather Icons](https://erikflowers.github.io/weather-icons/) |
@@ -41,6 +47,8 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 - Font Awesome Free SVG icons are provided by Fonticons, Inc. under CC BY 4.0. See the local license for attribution requirements.
 - Game Icons artwork is provided under CC BY 3.0. Each catalog entry includes its credited artist for attribution.
 - Mozilla FxEmojis visual designs are provided by the Mozilla Foundation under CC BY 4.0.
+- Codicons artwork is provided by Microsoft under CC BY 4.0.
+- Devicon technology logos and Octicons GitHub marks may be subject to separate trademark and logo-usage rules.
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
 Review the applicable upstream license before copying, modifying, or redistributing an asset.

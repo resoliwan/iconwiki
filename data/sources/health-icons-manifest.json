@@ -1,0 +1,14 @@
+{
+  "name": "Health Icons",
+  "version": "2.0.0",
+  "package": "healthicons",
+  "packageUrl": "https://registry.npmjs.org/healthicons/-/healthicons-2.0.0.tgz",
+  "packageSha256": "7d29cfc4ffb495319c27b34c9ac96ddc9781c7b3dc3b96eef3d34fe4d3ef9f03",
+  "upstreamUrl": "https://github.com/resolvetosavelives/healthicons",
+  "assetCount": 1514,
+  "catalog": "../health-icons.json",
+  "catalogSha256": "7690c1c45657a8c007bdf30ee10fe84165bf0279a695064a400cbead74021794",
+  "assets": "../../assets/health-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "HEALTH-ICONS-LICENSE.txt"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Octicons",
+  "version": "19.38.0",
+  "package": "@primer/octicons",
+  "packageUrl": "https://registry.npmjs.org/@primer/octicons/-/octicons-19.38.0.tgz",
+  "packageSha256": "296ea6c40b599d955d3bb3821215c67a46e33475913c8affa4ef426f2187436e",
+  "upstreamUrl": "https://github.com/primer/octicons",
+  "assetCount": 769,
+  "catalog": "../octicons.json",
+  "catalogSha256": "7a173fc6fd3e90a726c42fd0dc0bbdac64881c65e22565298331900c320505ca",
+  "assets": "../../assets/octicons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "OCTICONS-LICENSE.txt"
+}

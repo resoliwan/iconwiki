@@ -1,0 +1,14 @@
+{
+  "name": "Radix Icons",
+  "version": "1.3.2",
+  "package": "@radix-ui/react-icons",
+  "packageUrl": "https://registry.npmjs.org/@radix-ui/react-icons/-/react-icons-1.3.2.tgz",
+  "packageSha256": "140482246ef0e254ad1d2324f746688b70ee352cedfc9ed0e2ad45d3f1542d1f",
+  "upstreamUrl": "https://github.com/radix-ui/icons",
+  "assetCount": 318,
+  "catalog": "../radix-icons.json",
+  "catalogSha256": "7995e752644ee975e99e57f4634e82cad0ed1d5788b1097167e83be7c01390a0",
+  "assets": "../../assets/radix-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "RADIX-ICONS-LICENSE.txt"
+}
