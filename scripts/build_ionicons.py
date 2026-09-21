@@ -25,7 +25,7 @@ SVG_PREFIX = "package/dist/svg/"
 METADATA_PATH = "package/dist/ionicons.json"
 PACKAGE_PATH = "package/package.json"
 LICENSE_PATH = "package/LICENSE"
-USER_AGENT = "moa-icon-catalog/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def download(url: str) -> bytes:

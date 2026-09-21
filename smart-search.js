@@ -1,6 +1,6 @@
 import { normalize, searchCatalogMatches } from './catalog.js';
 
-const CACHE_KEY = 'moa.smart-search.v1';
+const CACHE_KEY = 'iconwiki.smart-search.v1';
 const SUPPORTED_TRANSLATION_LANGUAGES = new Set([
   'ar', 'bg', 'bn', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'he', 'hi',
   'hr', 'hu', 'id', 'it', 'ja', 'kn', 'ko', 'lt', 'mr', 'nl', 'no', 'pl', 'pt',

@@ -1,8 +1,8 @@
 # Third-Party Notices
 
-Moa's original source code is licensed under the [MIT License](./LICENSE).
+Icon Wiki's original source code is licensed under the [MIT License](./LICENSE).
 
-The icons, emoji artwork, fonts, and related metadata distributed with Moa are third-party works. They are not relicensed under Moa's MIT License and remain subject to their respective upstream licenses.
+The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki are third-party works. They are not relicensed under Icon Wiki's MIT License and remain subject to their respective upstream licenses.
 
 | Library | Version | License | Local license | Upstream source |
 | --- | ---: | --- | --- | --- |
@@ -34,6 +34,6 @@ The icons, emoji artwork, fonts, and related metadata distributed with Moa are t
 - Twemoji artwork is provided under CC BY 4.0. See the local license for attribution requirements.
 - Tossface is provided by the Toss team under its custom license. Attribution and the bundled copyright/license notices are required; modification is prohibited.
 - Font Awesome Free SVG icons are provided by Fonticons, Inc. under CC BY 4.0. See the local license for attribution requirements.
-- Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Moa does not grant trademark rights or imply endorsement by any brand owner.
+- Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
 Review the applicable upstream license before copying, modifying, or redistributing an asset.

@@ -18,7 +18,7 @@ FONT_URL = "https://fonts.gstatic.com/s/notoemoji/v65/bMrnmSyK7YY-MEu6aWjPDs-ar6
 LICENSE_URL = "https://raw.githubusercontent.com/google/fonts/e44c4b011a820c2cbe2fd2cfa8052037d7edb571/ofl/notoemoji/OFL.txt"
 UPSTREAM_URL = "https://fonts.google.com/noto/specimen/Noto+Emoji"
 FONT_SHA256 = "988621dc5c9a75eb6144f28faae30317a8e3421b68b28740747b3d739e2326b8"
-USER_AGENT = "Mozilla/5.0 (compatible; Moa catalog builder)"
+USER_AGENT = "Mozilla/5.0 (compatible; Icon Wiki catalog builder)"
 
 
 def fetch(url: str) -> bytes:

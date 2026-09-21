@@ -22,7 +22,7 @@ ARCHIVE_SHA256 = "42bd31001127631a20270e7bd87ac13647bfcd628dd533e2ff31497068b4f7
 UPSTREAM_URL = "https://github.com/tailwindlabs/heroicons"
 SIZE = 24
 STYLES = ("outline", "solid")
-USER_AGENT = "local-icon-library/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def download(url: str) -> bytes:

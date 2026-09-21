@@ -23,7 +23,7 @@ PACKAGE_SHA256 = "6a8ccf0c36a718c319238820d3af5dc25b3524e91f8d6df16c5c65c728b612
 UPSTREAM_URL = "https://github.com/iconoir-icons/iconoir"
 STYLES = ("regular", "solid")
 EXPECTED_COUNTS = {"regular": 1_383, "solid": 288}
-USER_AGENT = "moa-icon-catalog/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def download(url: str) -> bytes:

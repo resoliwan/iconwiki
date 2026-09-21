@@ -27,7 +27,7 @@ SVG_PREFIX = f"{ARCHIVE_ROOT}/icons/"
 CODEPOINTS_PATH = f"{ARCHIVE_ROOT}/font/bootstrap-icons.json"
 LICENSE_PATH = f"{ARCHIVE_ROOT}/LICENSE"
 EXPECTED_COUNT = 2_078
-USER_AGENT = "moa-icon-catalog/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def fetch(url: str) -> bytes:

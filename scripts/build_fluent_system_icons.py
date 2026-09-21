@@ -37,7 +37,7 @@ EXPECTED_COUNTS = {"regular": 2_618, "filled": 2_654, "color": 196}
 ICON_PATTERN = re.compile(
     rf"^package/icons/(?P<slug>.+)_{SIZE}_(?P<style>{'|'.join(STYLES)})\.svg$"
 )
-USER_AGENT = "moa-icon-catalog/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def download(url: str) -> bytes:

@@ -21,7 +21,7 @@ PACKAGE_URL = f"https://registry.npmjs.org/@phosphor-icons/core/-/core-{VERSION}
 PACKAGE_SHA256 = "313332be6190b724da24107addd781799b48bf76b13963f24501112ffe1baadd"
 UPSTREAM_URL = "https://github.com/phosphor-icons/core"
 STYLES = ("regular", "fill", "thin", "light", "bold", "duotone")
-USER_AGENT = "local-icon-library/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def download(url: str) -> bytes:

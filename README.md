@@ -1,8 +1,8 @@
-# Moa — Free icon libraries, all in one place.
+# Icon Wiki — Free icon libraries, all in one place.
 
 Free Icon & Emoji Browser
 
-**Try Moa at [moa.aoo.kr](https://moa.aoo.kr)**
+**Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
 Over 78,000 icons and emoji from 21 libraries.
 
@@ -30,7 +30,7 @@ Turn on **AI expansion** to include related search terms.
 
 Enter `캥거루` (Korean for “kangaroo”) to find matching icons.
 
-<img src="./docs/korean-search-demo.gif?raw=1" alt="Searching Moa for kangaroo in Korean" width="1280" loading="eager">
+<img src="./docs/korean-search-demo.gif?raw=1" alt="Searching Icon Wiki for kangaroo in Korean" width="1280" loading="eager">
 
 AI expansion and multilingual search are supported only in desktop Google Chrome with its built-in AI available. Standard search works in other browsers without AI expansion.
 
@@ -77,8 +77,4 @@ npm run data
 
 ## License
 
-Moa's code is licensed under the [MIT License](./LICENSE). Icons and emoji retain their original licenses, listed above and in [Third-Party Notices](./THIRD_PARTY_NOTICES.md).
-
----
-
-**Moa** comes from **모아**, Korean for “collect” or “gather together.”
+Icon Wiki's code is licensed under the [MIT License](./LICENSE). Icons and emoji retain their original licenses, listed above and in [Third-Party Notices](./THIRD_PARTY_NOTICES.md).

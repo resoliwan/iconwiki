@@ -24,7 +24,7 @@ UPSTREAM_URL = "https://pictogrammers.com/library/mdi/"
 
 
 def download(url: str) -> bytes:
-    request = urllib.request.Request(url, headers={"User-Agent": "local-icon-library/1.0"})
+    request = urllib.request.Request(url, headers={"User-Agent": "iconwiki/1.0"})
     with urllib.request.urlopen(request, timeout=180) as response:
         return response.read()
 

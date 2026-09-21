@@ -81,7 +81,7 @@ def sha256_file(path: Path) -> str:
 
 def download(url: str) -> bytes:
     request = urllib.request.Request(
-        url, headers={"User-Agent": "Moa catalog builder (Tossface attribution)"}
+        url, headers={"User-Agent": "Icon Wiki catalog builder (Tossface attribution)"}
     )
     with urllib.request.urlopen(request, timeout=300) as response:
         return response.read()

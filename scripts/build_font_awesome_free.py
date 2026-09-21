@@ -30,7 +30,7 @@ METADATA_PATH = f"{ARCHIVE_ROOT}/metadata/icons.json"
 LICENSE_PATH = f"{ARCHIVE_ROOT}/LICENSE.txt"
 STYLES = ("brands", "regular", "solid")
 EXPECTED_STYLE_COUNTS = {"brands": 609, "regular": 273, "solid": 2_001}
-USER_AGENT = "moa-icon-catalog/1.0"
+USER_AGENT = "iconwiki/1.0"
 
 
 def fetch(url: str) -> bytes:

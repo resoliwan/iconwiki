@@ -3,8 +3,8 @@ import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-s
 
 const $ = selector => document.querySelector(selector);
 const MAX_RENDERED_RESULTS = 600;
-const SMART_PREFERENCE_KEY = 'moa-ai-expansion-enabled';
-const FILTER_PIN_PREFERENCE_KEY = 'moa-filter-panel-pinned';
+const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
+const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
