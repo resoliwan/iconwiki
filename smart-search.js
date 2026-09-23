@@ -1,6 +1,10 @@
 import { normalize, searchCatalogMatches } from './catalog.js?v=progressive-results-1';
 
 const CACHE_KEY = 'iconwiki.smart-search.v1';
+const LANGUAGE_MODEL_OPTIONS = {
+  expectedInputs: [{ type: 'text', languages: ['en'] }],
+  expectedOutputs: [{ type: 'text', languages: ['en'] }],
+};
 const SUPPORTED_TRANSLATION_LANGUAGES = new Set([
   'ar', 'bg', 'bn', 'cs', 'da', 'de', 'el', 'en', 'es', 'fi', 'fr', 'he', 'hi',
   'hr', 'hu', 'id', 'it', 'ja', 'kn', 'ko', 'lt', 'mr', 'nl', 'no', 'pl', 'pt',
@@ -29,19 +33,6 @@ const LOCAL_TRANSLATIONS = {
   es: { cara: 'face', arbol: 'tree', flor: 'flower', gato: 'cat', perro: 'dog', casa: 'house', libro: 'book', coche: 'car' },
   fr: { visage: 'face', arbre: 'tree', fleur: 'flower', chat: 'cat', chien: 'dog', maison: 'house', livre: 'book', voiture: 'car' },
   de: { gesicht: 'face', baum: 'tree', blume: 'flower', katze: 'cat', hund: 'dog', haus: 'house', buch: 'book', auto: 'car' },
-};
-
-const LOCAL_EXPANSIONS = {
-  face: ['head', 'person', 'smile', 'expression', 'eyes', 'mouth', 'human'],
-  tree: ['forest', 'wood', 'plant', 'nature', 'leaf', 'branch'],
-  flower: ['plant', 'garden', 'nature', 'blossom'],
-  cat: ['kitten', 'pet', 'animal', 'feline'],
-  dog: ['puppy', 'pet', 'animal', 'canine'],
-  house: ['home', 'building', 'door', 'family'],
-  car: ['vehicle', 'transport', 'drive', 'road'],
-  jump: ['leap', 'hop', 'person', 'movement'],
-  smile: ['happy', 'face', 'laugh', 'joy'],
-  rabbit: ['bunny', 'hare', 'pet', 'animal', 'carrot', 'easter', 'burrow'],
 };
 
 export function localTranslation(value, language) {
@@ -169,11 +160,17 @@ export class ChromeSmartSearch {
     if (!this.supported) throw new Error('Chrome Prompt API is unavailable in this browser.');
     if (this.languageModel) return this.languageModel;
     if (!this.languageModelPromise) {
-      progress?.('Preparing Chrome AI…', { phase: 'starting', percent: null });
-      this.languageModelPromise = this.createWithProgress(this.scope.LanguageModel, {
-        expectedInputs: [{ type: 'text', languages: ['en'] }],
-        expectedOutputs: [{ type: 'text', languages: ['en'] }],
-      }, progress).then(model => {
+      this.languageModelPromise = (async () => {
+        const availability = await this.scope.LanguageModel.availability?.(LANGUAGE_MODEL_OPTIONS);
+        if (availability === 'unavailable') throw new Error('Chrome Prompt API is unavailable on this device.');
+        if ((availability === 'downloadable' || availability === 'downloading')
+          && this.scope.navigator?.userActivation?.isActive === false) {
+          const error = new Error('Chrome AI needs a user interaction before it can be downloaded.');
+          error.name = 'NotAllowedError';
+          throw error;
+        }
+        return this.createWithProgress(this.scope.LanguageModel, LANGUAGE_MODEL_OPTIONS, progress);
+      })().then(model => {
         this.languageModel = model;
         return model;
       }).catch(error => {
@@ -249,8 +246,7 @@ export class ChromeSmartSearch {
     let model;
     try { model = await this.ensureLanguageModel(progress); }
     catch {
-      const terms = sanitizeExpansion({ terms: LOCAL_EXPANSIONS[englishQuery.toLowerCase()] || [] }, englishQuery);
-      return { ...baseResult, terms, local: true };
+      return { ...baseResult, unavailable: true };
     }
     progress?.('Finding related English terms…');
     const schema = {

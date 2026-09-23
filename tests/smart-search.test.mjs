@@ -31,24 +31,34 @@ test('AI support is limited to desktop Google Chrome', () => {
   }), false);
 });
 
-test('Chrome AI preparation shares one model download and reports its percentage', async () => {
+test('Chrome AI preparation checks availability with the same model options and shares one session', async () => {
   let createCalls = 0;
-  const progress = [];
+  let availabilityOptions;
+  let createOptions;
   const smart = new ChromeSmartSearch({
     LanguageModel: {
-      create: async ({ monitor }) => {
+      availability: async options => {
+        availabilityOptions = options;
+        return 'available';
+      },
+      create: async options => {
         createCalls++;
-        monitor({ addEventListener: (_, listener) => listener({ loaded: 0.42 }) });
+        createOptions = options;
         await Promise.resolve();
         return { prompt: async () => JSON.stringify({ terms: [] }) };
       },
     },
   }, null);
-  const first = smart.prepare((message, details) => progress.push([message, details]));
+  const first = smart.prepare();
   const second = smart.prepare();
   assert.equal(await first, await second);
   assert.equal(createCalls, 1);
-  assert.deepEqual(progress.at(-1), ['Downloading Chrome AI · 42%', { phase: 'download', percent: 42 }]);
+  assert.deepEqual(availabilityOptions, {
+    expectedInputs: [{ type: 'text', languages: ['en'] }],
+    expectedOutputs: [{ type: 'text', languages: ['en'] }],
+  });
+  assert.deepEqual(createOptions.expectedInputs, availabilityOptions.expectedInputs);
+  assert.deepEqual(createOptions.expectedOutputs, availabilityOptions.expectedOutputs);
 });
 
 test('common foreign visual words have an instant English fallback', () => {
@@ -134,7 +144,7 @@ test('Chrome smart search translates foreign input before expanding English term
   assert.equal([...storageValues.values()].some(value => /[^\x00-\x7F]/.test(value)), false);
 });
 
-test('smart search falls back locally when built-in AI needs a user gesture', async () => {
+test('smart search stays quiet when built-in AI cannot start', async () => {
   const scope = {
     LanguageDetector: { create: async () => { throw new Error('user gesture required'); } },
     LanguageModel: { create: async () => { throw new Error('user gesture required'); } },
@@ -142,8 +152,26 @@ test('smart search falls back locally when built-in AI needs a user gesture', as
   const smart = new ChromeSmartSearch(scope, null);
   const result = await smart.expand('face');
   assert.equal(result.sourceLanguage, 'en');
-  assert.deepEqual(result.terms, ['head', 'person', 'smile', 'expression', 'eyes', 'mouth', 'human']);
-  assert.equal(result.local, true);
+  assert.deepEqual(result.terms, []);
+  assert.equal(result.unavailable, true);
+});
+
+test('downloadable Chrome AI waits for an active user interaction', async () => {
+  let createCalls = 0;
+  const smart = new ChromeSmartSearch({
+    navigator: { userActivation: { isActive: false } },
+    LanguageModel: {
+      availability: async () => 'downloadable',
+      create: async () => {
+        createCalls++;
+        return { prompt: async () => JSON.stringify({ terms: ['happy'] }) };
+      },
+    },
+  }, null);
+  const result = await smart.expand('smile');
+  assert.equal(createCalls, 0);
+  assert.deepEqual(result.terms, []);
+  assert.equal(result.unavailable, true);
 });
 
 

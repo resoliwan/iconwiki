@@ -67,11 +67,6 @@ select { width:168px; min-height:40px; background:var(--raised); color:var(--tex
 input[type=checkbox] { accent-color:var(--blue); width:16px; height:16px; flex:none; }
 .expansion-panel { grid-column:2; min-width:0; display:flex; align-items:center; gap:12px; padding:8px 16px; border-radius:16px; background:var(--panel); overflow:hidden; }
 .expansion-panel>strong { flex:none; color:var(--muted); font-size:12px; font-weight:500; }
-.ai-progress { min-width:210px; display:flex; align-items:center; gap:10px; color:var(--text); font-size:12px; white-space:nowrap; }
-.ai-progress progress { width:120px; height:6px; border:0; border-radius:999px; overflow:hidden; background:var(--raised); accent-color:var(--blue); }
-.ai-progress progress::-webkit-progress-bar { background:var(--raised); border-radius:999px; }
-.ai-progress progress::-webkit-progress-value { background:var(--blue); border-radius:999px; }
-.ai-progress progress::-moz-progress-bar { background:var(--blue); border-radius:999px; }
 .expansion-terms { min-width:0; display:flex; gap:8px; overflow-x:auto; scrollbar-width:thin; }
 .expansion-term { padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--text); font-size:12px; white-space:nowrap; }
 main { grid-area:results; min-width:0; padding:32px 32px 48px; }
@@ -133,7 +128,7 @@ main { grid-area:results; min-width:0; padding:32px 32px 48px; }
   .rail { width:72px; padding:20px 4px; } .rail-button { width:64px; font-size:11px; } .shell { margin-left:72px; }
   .topbar { grid-template-columns:minmax(0,1fr); gap:16px; padding:20px 16px 16px; } .brand { font-size:24px; } .brand span { font-size:20px; }
   .search-box { padding:0 14px; gap:8px; } .search-box input { font-size:14px; height:50px; } .search-box #search { flex-basis:48%; } .search-box #within-filter { flex-basis:28%; font-size:12px; } .search-divider { margin:10px 0; } .inline-toggle { font-size:11px; } kbd { display:none; }
-  .expansion-panel { grid-column:1; } .expansion-panel>strong { display:none; } .ai-progress { min-width:0; flex:1; } .ai-progress progress { flex:1; }
+  .expansion-panel { grid-column:1; } .expansion-panel>strong { display:none; }
   .workspace,.workspace.with-detail { grid-template-columns:minmax(0,1fr); grid-template-areas:"results"; }
   .filters { gap:10px; padding:12px 0 16px; } .filters.pinned { margin-right:0; margin-left:0; padding:12px; }
   .view-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }

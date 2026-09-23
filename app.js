@@ -1,5 +1,5 @@
 import { filterCatalogItems, loadCatalog } from './catalog.js?v=progressive-results-1';
-import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=progressive-results-1';
+import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=silent-ai-1';
 
 const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
@@ -15,26 +15,17 @@ const state = {
   items: [], collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
   filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false,
   selected: null, smartEnabled: false, smartExpansion: null, filtersPinned: false,
-  smartStatus: { message: '', busy: false, phase: '', percent: null },
-  smartModelStatus: { message: '', busy: false, phase: '', percent: null },
 };
 const chromeSmartSearch = new ChromeSmartSearch();
 const smartSupported = isDesktopChrome() && chromeSmartSearch.supported;
 const SMART_UNSUPPORTED_MESSAGE = 'AI expansion is supported only in desktop Google Chrome. This browser is not supported.';
 let smartTimer;
 let smartRequest = 0;
-let smartPrepareAttempt = null;
 let smartRetryArmed = false;
 let toastTimer;
 let currentResults = [];
 let currentSearch = null;
 let renderedResultCount = 0;
-function smartErrorMessage(error, fallback) {
-  const message = error?.message || fallback;
-  return /not eligible|not supported|unavailable in this browser/i.test(message)
-    ? SMART_UNSUPPORTED_MESSAGE
-    : message;
-}
 function toast(message) {
   $('#toast').textContent = message;
   $('#toast').hidden = false;
@@ -196,16 +187,8 @@ function renderExpansionTerms() {
   const panel = $('#expansion-panel');
   const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
   const terms = expansion?.terms || [];
-  const status = state.smartModelStatus.message ? state.smartModelStatus : state.smartStatus;
   const showTerms = state.smartEnabled && terms.length > 0;
-  panel.hidden = !status.message && !showTerms;
-  const progress = $('#ai-progress');
-  progress.hidden = !status.message;
-  $('#ai-progress-label').textContent = status.message;
-  const progressBar = $('#ai-progress-bar');
-  const showPercent = status.phase === 'download' && Number.isFinite(status.percent);
-  progressBar.hidden = !showPercent;
-  progressBar.value = showPercent ? status.percent : 0;
+  panel.hidden = !showTerms;
   const fragment = document.createDocumentFragment();
   for (const term of terms) {
     fragment.append(el('span', 'expansion-term', term));
@@ -368,22 +351,10 @@ function renderPanel() {
   panel.scrollTop = 0;
 }
 
-function setSmartStatus(message = '', busy = false, details = {}) {
-  state.smartStatus = { message, busy, phase: details.phase || '', percent: details.percent ?? null };
+function setSmartIdle() {
   const toggle = $('#smart-search');
-  const anyBusy = busy || state.smartModelStatus.busy;
-  toggle.closest('.inline-toggle').classList.toggle('busy', anyBusy);
-  toggle.setAttribute('aria-busy', String(anyBusy));
-  if (smartSupported) toggle.closest('.inline-toggle').title = message || 'Expand related terms automatically, or press Enter to run again.';
-  renderExpansionTerms();
-}
-
-function setSmartModelStatus(message = '', busy = false, details = {}) {
-  state.smartModelStatus = { message, busy, phase: details.phase || '', percent: details.percent ?? null };
-  const toggle = $('#smart-search');
-  const anyBusy = busy || state.smartStatus.busy;
-  toggle.closest('.inline-toggle').classList.toggle('busy', anyBusy);
-  toggle.setAttribute('aria-busy', String(anyBusy));
+  toggle.closest('.inline-toggle').classList.remove('busy');
+  toggle.setAttribute('aria-busy', 'false');
   renderExpansionTerms();
 }
 
@@ -394,34 +365,10 @@ function armChromeAIRetry() {
     document.removeEventListener('pointerdown', resume, true);
     document.removeEventListener('keydown', resume, true);
     smartRetryArmed = false;
-    void prepareChromeAI({ allowRetry: false });
+    if (state.smartEnabled && state.query.trim()) void runSmartSearch();
   };
   document.addEventListener('pointerdown', resume, { once: true, capture: true });
   document.addEventListener('keydown', resume, { once: true, capture: true });
-}
-
-async function prepareChromeAI({ allowRetry = true } = {}) {
-  if (!smartSupported || chromeSmartSearch.languageModel) return chromeSmartSearch.languageModel;
-  if (smartPrepareAttempt) return smartPrepareAttempt;
-  setSmartModelStatus('Preparing Chrome AI…', true);
-  smartPrepareAttempt = chromeSmartSearch.prepare((message, details) => {
-    setSmartModelStatus(message, true, details);
-  });
-  try {
-    const model = await smartPrepareAttempt;
-    setSmartModelStatus();
-    return model;
-  } catch (error) {
-    smartPrepareAttempt = null;
-    if (allowRetry && !navigator.userActivation?.hasBeenActive) {
-      setSmartModelStatus('Click or type to start the Chrome AI download.');
-      armChromeAIRetry();
-      return null;
-    }
-    const message = smartErrorMessage(error, 'Chrome AI could not be downloaded.');
-    setSmartModelStatus(message);
-    return null;
-  }
 }
 
 function setSmartExpansion(expansion) {
@@ -434,33 +381,28 @@ async function runSmartSearch({ refresh = false } = {}) {
   const request = ++smartRequest;
   if (!state.smartEnabled || !query) {
     setSmartExpansion(null);
-    setSmartStatus();
+    setSmartIdle();
     renderGrid();
     return;
   }
-  setSmartStatus('Starting smart search…', true);
+  const toggle = $('#smart-search');
+  toggle.closest('.inline-toggle').classList.add('busy');
+  toggle.setAttribute('aria-busy', 'true');
   try {
-    const expansion = await chromeSmartSearch.expand(query, 'auto', (message, details) => {
-      if (request === smartRequest) setSmartStatus(message, true, details);
-    }, partial => {
+    const expansion = await chromeSmartSearch.expand(query, 'auto', null, partial => {
       if (request !== smartRequest || query !== state.query.trim()) return;
       setSmartExpansion(partial);
-      setSmartStatus('Finding related icons…', true);
       renderGrid();
     }, { refresh });
     if (request !== smartRequest || query !== state.query.trim()) return;
     setSmartExpansion(expansion);
-    setSmartStatus();
+    setSmartIdle();
     renderGrid();
-    if (refresh && !expansion?.terms.length) toast(expansion?.local
-      ? 'Chrome AI is unavailable and no local expansion was found. Showing direct matches.'
-      : 'No additional related terms found.');
-  } catch (error) {
+    if (expansion?.unavailable && !navigator.userActivation?.isActive) armChromeAIRetry();
+  } catch {
     if (request !== smartRequest) return;
     setSmartExpansion(null);
-    const message = smartErrorMessage(error, 'Chrome AI could not expand this search.');
-    setSmartStatus(message);
-    toast(message);
+    setSmartIdle();
     renderGrid();
   }
 }
@@ -475,7 +417,7 @@ $('#search').addEventListener('input', event => {
   ++smartRequest;
   state.query = event.target.value;
   setSmartExpansion(null);
-  setSmartStatus(state.smartEnabled && state.query.trim() ? 'Waiting to expand…' : '');
+  setSmartIdle();
   renderGrid();
   scheduleSmartSearch();
 });
@@ -522,10 +464,9 @@ $('#smart-search').addEventListener('change', event => {
   if (!state.smartEnabled) {
     ++smartRequest;
     setSmartExpansion(null);
-    setSmartStatus();
+    setSmartIdle();
     renderGrid();
   } else {
-    void prepareChromeAI({ allowRetry: false });
     runSmartSearch();
   }
 });
@@ -533,7 +474,7 @@ function reset() {
   ++smartRequest;
   state.query = ''; state.withinFilter = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
   $('#search').value = ''; $('#within-filter').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
-  setSmartStatus(); renderGrid();
+  setSmartIdle(); renderGrid();
 }
 const multiFilters = [...document.querySelectorAll('.multi-filter')];
 for (const filter of multiFilters) {
@@ -595,8 +536,6 @@ if ('ResizeObserver' in window) {
     if (height) document.documentElement.style.setProperty('--topbar-height', `${Math.ceil(height)}px`);
   }).observe($('.topbar'));
 }
-
-if (smartSupported) void prepareChromeAI();
 
 try {
   const { collections, items } = await loadCatalog();
