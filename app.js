@@ -3,6 +3,7 @@ import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-s
 
 const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
+const mobileLayout = matchMedia('(max-width:760px)');
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons']);
@@ -80,7 +81,7 @@ function renderFilterPinToggle() {
   const toggle = $('#filter-pin');
   toggle.checked = state.filtersPinned;
   $('#filters-panel').classList.toggle('pinned', state.filtersPinned);
-  $('#close-filters').disabled = state.filtersPinned;
+  $('#close-filters').disabled = state.filtersPinned && !mobileLayout.matches;
 }
 function renderMultiFilter({ root, summary, container, options, selected, allLabel, singularLabel, pluralLabel, update }) {
   const selectedNames = options.filter(option => selected.has(option.id)).map(option => option.name);
@@ -179,6 +180,7 @@ function readURL() {
   $('#skin-tones').checked = state.skinTones;
   $('#result-filter').value = state.resultType;
   $('#display-mode').value = state.displayMode;
+  syncViewButtons();
   renderSmartToggle();
   renderFilterPinToggle();
   renderFilterControls();
@@ -345,6 +347,7 @@ function renderPanel() {
   const visible = Boolean(state.selected);
   panel.hidden = !visible;
   $('#workspace').classList.toggle('with-detail', visible);
+  syncMobileOverlay();
   panel.replaceChildren();
   if (!visible) return;
   renderDetail(state.byId.get(state.selected));
@@ -422,7 +425,7 @@ $('#search').addEventListener('input', event => {
   scheduleSmartSearch();
 });
 $('#search').addEventListener('keydown', event => {
-  if (event.key === 'Tab') {
+  if (event.key === 'Tab' && !mobileLayout.matches) {
     event.preventDefault();
     $('#within-filter').focus();
     $('#within-filter').select();
@@ -439,14 +442,28 @@ $('#within-filter').addEventListener('input', event => {
   renderGrid();
 });
 $('#within-filter').addEventListener('keydown', event => {
-  if (event.key !== 'Tab') return;
+  if (event.key !== 'Tab' || mobileLayout.matches) return;
   event.preventDefault();
   $('#search').focus();
   $('#search').select();
 });
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
-$('#display-mode').addEventListener('change', event => { state.displayMode = event.target.value; renderGrid(); });
+function setDisplayMode(value) {
+  state.displayMode = value;
+  $('#display-mode').value = value;
+  syncViewButtons();
+  renderGrid();
+}
+function syncViewButtons() {
+  for (const button of document.querySelectorAll('[data-view]')) {
+    button.setAttribute('aria-pressed', String(button.dataset.view === state.displayMode));
+  }
+}
+$('#display-mode').addEventListener('change', event => setDisplayMode(event.target.value));
+for (const button of document.querySelectorAll('[data-view]')) {
+  button.addEventListener('click', () => setDisplayMode(button.dataset.view));
+}
 $('#smart-search').addEventListener('change', event => {
   if (!smartSupported) {
     event.target.checked = false;
@@ -474,6 +491,8 @@ function reset() {
   ++smartRequest;
   state.query = ''; state.withinFilter = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
   $('#search').value = ''; $('#within-filter').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
+  state.skinTones = false;
+  $('#skin-tones').checked = false;
   setSmartIdle(); renderGrid();
 }
 const multiFilters = [...document.querySelectorAll('.multi-filter')];
@@ -497,15 +516,21 @@ if ('IntersectionObserver' in window) {
   }, { rootMargin: '400px 0px' }).observe($('#load-more'));
 }
 function setFiltersOpen(open, { focus = true } = {}) {
-  if (!open && state.filtersPinned) return;
+  if (!open && state.filtersPinned && !mobileLayout.matches) return;
   $('#filters-panel').hidden = !open;
   $('#workspace').classList.toggle('filters-closed', !open);
-  $('#browse-button').classList.toggle('active', open);
-  $('#browse-button').setAttribute('aria-expanded', String(open));
+  $('#browse-button').classList.toggle('active', mobileLayout.matches || open);
+  $('#mobile-filters').setAttribute('aria-expanded', String(open));
+  if (mobileLayout.matches) $('#browse-button').removeAttribute('aria-expanded');
+  else $('#browse-button').setAttribute('aria-expanded', String(open));
   if (!open) {
     for (const filter of multiFilters) filter.open = false;
-    if (focus) $('#browse-button').focus({ preventScroll: true });
-  } else if (focus) $('#filter-pin').focus({ preventScroll: true });
+    syncMobileOverlay();
+    if (focus) $(mobileLayout.matches ? '#mobile-filters' : '#browse-button').focus({ preventScroll: true });
+  } else {
+    syncMobileOverlay();
+    if (focus) $(mobileLayout.matches ? '#close-filters' : '#filter-pin').focus({ preventScroll: true });
+  }
 }
 $('#close-filters').addEventListener('click', () => setFiltersOpen(false));
 $('#filter-pin').addEventListener('change', event => {
@@ -515,6 +540,12 @@ $('#filter-pin').addEventListener('change', event => {
   if (state.filtersPinned) setFiltersOpen(true, { focus: false });
 });
 $('#browse-button').addEventListener('click', () => {
+  if (mobileLayout.matches) {
+    if (!$('#detail').hidden) closePanel();
+    setFiltersOpen(false, { focus: false });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
   const panelOpen = !$('#filters-panel').hidden;
   if (panelOpen && state.filtersPinned) {
     state.filtersPinned = false;
@@ -524,11 +555,65 @@ $('#browse-button').addEventListener('click', () => {
   setFiltersOpen(!panelOpen);
 });
 document.addEventListener('keydown', event => {
-  if (event.key === 'Escape' && !$('#detail').hidden) closePanel();
-  if (event.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.metaKey && !event.ctrlKey) {
+  if (event.key === 'Escape') {
+    if (mobileLayout.matches && !$('#filters-panel').hidden) setFiltersOpen(false);
+    else if (!$('#detail').hidden) closePanel();
+    $('.mobile-more').open = false;
+  }
+  const modal = mobileLayout.matches ? (!$('#filters-panel').hidden ? $('#filters-panel') : !$('#detail').hidden ? $('#detail') : null) : null;
+  if (modal && event.key === 'Tab') {
+    const nodes = [...modal.querySelectorAll('button,input,select,summary,a[href]')].filter(node => !node.disabled && node.getClientRects().length);
+    const first = nodes[0], last = nodes.at(-1);
+    if (event.shiftKey && (document.activeElement === first || !modal.contains(document.activeElement))) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && (document.activeElement === last || !modal.contains(document.activeElement))) { event.preventDefault(); first?.focus(); }
+  }
+  if (event.key === '/' && !modal && !/INPUT|TEXTAREA|SELECT/.test(event.target.tagName) && !event.metaKey && !event.ctrlKey) {
     event.preventDefault(); $('#search').focus();
   }
 });
+// Move the existing controls so their values, listeners and accessible names stay shared.
+const withinHome = document.createComment('within-filter');
+const smartHome = document.createComment('smart-search');
+const countHome = document.createComment('result-count');
+$('#within-filter').before(withinHome);
+$('.ai-toggle').before(smartHome);
+$('#result-count').before(countHome);
+function syncMobileOverlay() {
+  const drawerOpen = mobileLayout.matches && !$('#filters-panel').hidden;
+  const detailOpen = mobileLayout.matches && !$('#detail').hidden;
+  $('#filter-backdrop').hidden = !drawerOpen;
+  document.body.classList.toggle('mobile-overlay', drawerOpen || detailOpen);
+  for (const node of document.querySelectorAll('.topbar,.rail,.mobile-toolbar,#mobile-result-summary,.hero,#grid,#load-more,#empty')) node.inert = drawerOpen || detailOpen;
+  $('#detail').inert = drawerOpen;
+  for (const [node, open] of [[$('#filters-panel'), drawerOpen], [$('#detail'), detailOpen]]) {
+    if (open) { node.setAttribute('role', 'dialog'); node.setAttribute('aria-modal', 'true'); }
+    else { node.removeAttribute('role'); node.removeAttribute('aria-modal'); }
+  }
+}
+function applyResponsiveLayout() {
+  if (mobileLayout.matches) {
+    $('#mobile-search-options').append($('#within-filter'), $('.ai-toggle'));
+    $('#mobile-result-summary').append($('#result-count'));
+    $('#browse-button').setAttribute('aria-label', 'Browse library');
+    $('#browse-button').removeAttribute('aria-controls');
+    $('.reset-label').textContent = 'Reset all';
+  } else {
+    withinHome.after($('#within-filter'));
+    smartHome.after($('.ai-toggle'));
+    countHome.after($('#result-count'));
+    $('#browse-button').setAttribute('aria-label', 'Toggle library filters');
+    $('#browse-button').setAttribute('aria-controls', 'filters-panel');
+    $('.reset-label').textContent = 'Reset';
+  }
+  renderFilterPinToggle();
+  setFiltersOpen(!mobileLayout.matches, { focus: false });
+  if (mobileLayout.matches) $('#browse-button').removeAttribute('aria-expanded');
+  syncMobileOverlay();
+}
+$('#mobile-filters').addEventListener('click', () => setFiltersOpen(true));
+$('#filter-backdrop').addEventListener('click', () => setFiltersOpen(false));
+mobileLayout.addEventListener('change', applyResponsiveLayout);
+applyResponsiveLayout();
 window.addEventListener('popstate', () => { readURL(); renderPanel(); renderGrid(); });
 if ('ResizeObserver' in window) {
   new ResizeObserver(entries => {

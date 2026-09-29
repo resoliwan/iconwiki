@@ -11,19 +11,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=hero-copy-1">
+  <link rel="stylesheet" href="./styles.css?v=mobile-fonts-1">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
     <a class="brand-mark" href="./" aria-label="Icon Wiki home"><img src="./assets/app-icon.svg?v=dark-2" alt=""></a>
     <button class="rail-button active" id="browse-button" aria-label="Toggle library filters" title="Library filters" aria-expanded="true" aria-controls="filters-panel"><span class="rail-symbol" aria-hidden="true">category</span><span>Library</span></button>
-    <a class="rail-github" href="https://github.com/resoliwan/iconwiki" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="Open Icon Wiki on GitHub"><img src="./assets/lucide/github.svg" alt=""></a>
-    <a class="rail-bottom" href="./README.md" target="_blank" title="Help" aria-label="Help">?</a>
+    <a class="rail-github" href="https://github.com/resoliwan/iconwiki" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="Open Icon Wiki on GitHub"><img src="./assets/lucide/github.svg" alt=""><span class="mobile-only">GitHub</span></a>
+    <a class="rail-bottom" href="./README.md" target="_blank" title="Help" aria-label="Help"><span class="help-symbol">?</span><span class="mobile-only">Help</span></a>
   </aside>
 
   <div class="shell">
     <header class="topbar">
-      <a class="brand" href="./">Icon Wiki</a>
+      <a class="brand" href="./" aria-label="Icon Wiki home"><img class="mobile-only" src="./assets/app-icon.svg?v=dark-2" alt=""><span class="brand-name">Icon Wiki</span></a>
       <div class="search-box">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
         <input id="search" type="search" placeholder="Search icons" aria-label="Search images" autocomplete="off" spellcheck="false">
@@ -31,6 +31,10 @@
         <input id="within-filter" type="search" placeholder="Filter results" aria-label="Filter current results" autocomplete="off" spellcheck="false">
         <label class="inline-toggle ai-toggle" title="Expand related terms automatically, or press Enter to run again."><input id="smart-search" type="checkbox"> AI expansion</label>
       </div>
+      <details class="mobile-more mobile-only">
+        <summary aria-label="More options"><span class="ui-symbol" aria-hidden="true">more_vert</span></summary>
+        <div class="more-menu"><a href="https://github.com/resoliwan/iconwiki" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="./README.md" target="_blank">Help ↗</a></div>
+      </details>
       <div class="expansion-panel" id="expansion-panel" hidden>
         <strong>AI expansion</strong>
         <div class="expansion-terms" id="expansion-terms"></div>
@@ -39,11 +43,20 @@
 
     <div class="workspace" id="workspace">
       <main>
+        <div class="mobile-toolbar mobile-only">
+          <button id="mobile-filters" aria-expanded="false" aria-controls="filters-panel"><span class="ui-symbol" aria-hidden="true">tune</span>Filters</button>
+          <div class="view-switch" role="group" aria-label="Card view">
+            <button data-view="images" aria-label="Images only" aria-pressed="true"><span class="ui-symbol" aria-hidden="true">grid_view</span></button>
+            <button data-view="labels" aria-label="Images with labels" aria-pressed="false"><span class="ui-symbol" aria-hidden="true">view_list</span></button>
+          </div>
+        </div>
+        <div id="mobile-result-summary" class="mobile-only"></div>
         <section class="hero" aria-labelledby="hero-title">
           <h1 id="hero-title">Icon Wiki: Browse Icons</h1>
           <p>Making the web more beautiful, fast, and open through great icons.</p>
         </section>
         <section class="filters" id="filters-panel" aria-label="Search filters">
+          <div id="mobile-search-options" class="mobile-only"><h2>Search</h2></div>
           <div class="result-summary">
             <span class="result-count" id="result-count" role="status">Loading…</span>
           </div>
@@ -75,7 +88,7 @@
             <label class="tone-toggle"><input type="checkbox" id="filter-pin"> Pin filters</label>
           </div>
           <div class="filter-actions">
-            <button class="text-button" id="reset-filters" type="button">Reset</button>
+            <button class="text-button" id="reset-filters" type="button"><span class="ui-symbol mobile-only" aria-hidden="true">restart_alt</span><span class="reset-label">Reset</span></button>
             <button class="close-button" id="close-filters" type="button" aria-label="Hide filters" title="Hide filters">×</button>
           </div>
         </section>
@@ -87,8 +100,9 @@
       <aside class="detail" id="detail" aria-label="Image details" hidden></aside>
     </div>
   </div>
+  <div class="filter-backdrop" id="filter-backdrop" hidden></div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js?v=silent-ai-1"></script>
+  <script type="module" src="./app.js?v=mobile-fonts-1"></script>
 </body>
 </html>
