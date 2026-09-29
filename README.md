@@ -1,6 +1,6 @@
-# Icon Wiki — Free icon libraries, all in one place.
+# Icon Wiki: Brows Incos
 
-Free Icon & Emoji Browser
+Making the web more beautiful, fast, and open through great icons.
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
