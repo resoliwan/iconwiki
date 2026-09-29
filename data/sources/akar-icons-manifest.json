@@ -1,0 +1,23 @@
+{
+  "name": "Akar Icons",
+  "version": "1.2.7",
+  "packages": [
+    {
+      "name": "@iconify-json/akar-icons",
+      "version": "1.2.7",
+      "url": "https://registry.npmjs.org/@iconify-json/akar-icons/-/akar-icons-1.2.7.tgz",
+      "sha256": "21d871932fc182074cd206b88d6b40cbeffa45d17fdf800fc3bc81358e8ff8c0",
+      "assetCount": 454,
+      "license": "MIT"
+    }
+  ],
+  "upstreamUrl": "https://github.com/artcoholic/akar-icons",
+  "assetCount": 454,
+  "catalog": "../akar-icons.json",
+  "catalogSha256": "9b000525c8cefd1d9481360636dc3f86da5a89d5c0fa2ff2d7f542db33e91770",
+  "assets": "../../assets/akar-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "AKAR-ICONS-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/artcoholic/akar-icons/a88023a51bfc3cb86c3bbb3db8fce39b1a58729b/LICENSE",
+  "licenseSha256": "87500dbc60dd758dc91c72927a647ed4fdb162effc6dbc2073a2c9f51ba695c0"
+}

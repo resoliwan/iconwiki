@@ -1,0 +1,23 @@
+{
+  "name": "TDesign Icons",
+  "version": "1.2.19",
+  "packages": [
+    {
+      "name": "@iconify-json/tdesign",
+      "version": "1.2.19",
+      "url": "https://registry.npmjs.org/@iconify-json/tdesign/-/tdesign-1.2.19.tgz",
+      "sha256": "af53c40f637023517d6a65f609c844d74ad33362b221de971e9579e252a3b8cb",
+      "assetCount": 2356,
+      "license": "MIT"
+    }
+  ],
+  "upstreamUrl": "https://github.com/Tencent/tdesign-icons",
+  "assetCount": 2356,
+  "catalog": "../tdesign-icons.json",
+  "catalogSha256": "cd3e235f5f130ef09ffc6c1b446def7ae9350c967f9483da0c1de84c2c2a9619",
+  "assets": "../../assets/tdesign-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "TDESIGN-ICONS-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/Tencent/tdesign-icons/cdd47ea37dc6a7a06fb59d21d5482852e7beb50b/LICENSE",
+  "licenseSha256": "b3dbcb89dcf4a11abf1b70d043795a3da0c458af16fefd2ff315d9ff5875312f"
+}

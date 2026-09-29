@@ -455,5 +455,71 @@
     "licenseClass": "attribution",
     "licenseUrl": "./data/sources/FXEMOJI-LICENSE.md",
     "note": "Firefox OS emoji SVG artwork is self-hosted from Mozilla's final upstream snapshot. Attribution: Mozilla Foundation (CC BY 4.0)."
+  },
+  {
+    "id": "keyline-icons",
+    "name": "Keyline Icons",
+    "version": "1.2.10",
+    "catalog": "./data/keyline-icons.json",
+    "sourceUrl": "https://github.com/keyline-icons/keyline-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/KEYLINE-ICONS-LICENSE.txt",
+    "note": "Rounded and sharp SVGs in stroke, two-tone, duotone, and fill styles are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "tdesign-icons",
+    "name": "TDesign Icons",
+    "version": "1.2.19",
+    "catalog": "./data/tdesign-icons.json",
+    "sourceUrl": "https://github.com/Tencent/tdesign-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/TDESIGN-ICONS-LICENSE.txt",
+    "note": "TDesign outline and filled SVGs are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "flowbite-icons",
+    "name": "Flowbite Icons",
+    "version": "1.2.7",
+    "catalog": "./data/flowbite-icons.json",
+    "sourceUrl": "https://github.com/themesberg/flowbite-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/FLOWBITE-ICONS-LICENSE.txt",
+    "note": "Flowbite outline and solid SVGs are self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "coreui-icons-free",
+    "name": "CoreUI Icons Free",
+    "version": "1.2.3 / 1.2.7",
+    "catalog": "./data/coreui-icons-free.json",
+    "sourceUrl": "https://github.com/coreui/coreui-icons",
+    "license": "CC-BY-4.0 / CC0-1.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/COREUI-ICONS-FREE-LICENSE.txt",
+    "note": "Linear icons require CoreUI attribution under CC BY 4.0. Brand and flag icons are CC0 1.0 but may involve trademarks."
+  },
+  {
+    "id": "akar-icons",
+    "name": "Akar Icons",
+    "version": "1.2.7",
+    "catalog": "./data/akar-icons.json",
+    "sourceUrl": "https://github.com/artcoholic/akar-icons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/AKAR-ICONS-LICENSE.txt",
+    "note": "Rounded Akar SVG artwork is self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "proicons",
+    "name": "ProIcons",
+    "version": "1.2.20",
+    "catalog": "./data/proicons.json",
+    "sourceUrl": "https://github.com/ProCode-Software/proicons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/PROICONS-LICENSE.txt",
+    "note": "ProIcons SVG artwork is self-hosted from a pinned Iconify distribution."
   }
 ]

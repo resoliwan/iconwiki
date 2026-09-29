@@ -4,7 +4,7 @@ Free Icon & Emoji Browser
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Over 120,000 icons and emoji from 42 libraries.
+Over 136,000 icons and emoji from 48 libraries.
 
 ## Key features
 
@@ -80,9 +80,15 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | Pixelarticons | 2.4.1 | [MIT](./data/sources/PIXELARTICONS-LICENSE.txt) | 1,036 |
 | Weather Icons | 2.0.12 | [OFL-1.1](./data/sources/WEATHER-ICONS-LICENSE.txt) | 219 |
 | Mozilla FxEmojis | 0.0.2 | [CC-BY-4.0](./data/sources/FXEMOJI-LICENSE.md) | 1,035 |
-| **Total** |  |  | **120,972** |
+| Keyline Icons | 1.2.10 | [MIT](./data/sources/KEYLINE-ICONS-LICENSE.txt) | 9,736 |
+| TDesign Icons | 1.2.19 | [MIT](./data/sources/TDESIGN-ICONS-LICENSE.txt) | 2,356 |
+| Flowbite Icons | 1.2.7 | [MIT](./data/sources/FLOWBITE-ICONS-LICENSE.txt) | 751 |
+| CoreUI Icons Free | 1.2.3 / 1.2.7 | [CC-BY-4.0 / CC0-1.0](./data/sources/COREUI-ICONS-FREE-LICENSE.txt) | 1,583 |
+| Akar Icons | 1.2.7 | [MIT](./data/sources/AKAR-ICONS-LICENSE.txt) | 454 |
+| ProIcons | 1.2.20 | [MIT](./data/sources/PROICONS-LICENSE.txt) | 544 |
+| **Total** |  |  | **136,396** |
 
-For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, and Solar, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
+For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the six latest additions, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
 
 ## Run locally
 

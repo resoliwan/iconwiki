@@ -48,8 +48,14 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 | Pixelarticons | 2.4.1 | MIT | [License](./data/sources/PIXELARTICONS-LICENSE.txt) | [Pixelarticons](https://pixelarticons.com/) |
 | Weather Icons | 2.0.12 | OFL 1.1 | [License](./data/sources/WEATHER-ICONS-LICENSE.txt) | [Weather Icons](https://erikflowers.github.io/weather-icons/) |
 | Mozilla FxEmojis | 0.0.2 | CC BY 4.0 for visual designs | [License](./data/sources/FXEMOJI-LICENSE.md) | [FxEmojis](https://github.com/mozilla/fxemoji) |
+| Keyline Icons | 1.2.10 | MIT | [License](./data/sources/KEYLINE-ICONS-LICENSE.txt) | [Keyline Icons](https://github.com/keyline-icons/keyline-icons) |
+| TDesign Icons | 1.2.19 | MIT | [License](./data/sources/TDESIGN-ICONS-LICENSE.txt) | [TDesign Icons](https://github.com/Tencent/tdesign-icons) |
+| Flowbite Icons | 1.2.7 | MIT | [License](./data/sources/FLOWBITE-ICONS-LICENSE.txt) | [Flowbite Icons](https://github.com/themesberg/flowbite-icons) |
+| CoreUI Icons Free | 1.2.3 / 1.2.7 | CC BY 4.0 for linear SVGs; CC0 1.0 for brands and flags | [License](./data/sources/COREUI-ICONS-FREE-LICENSE.txt) | [CoreUI Icons](https://github.com/coreui/coreui-icons) |
+| Akar Icons | 1.2.7 | MIT | [License](./data/sources/AKAR-ICONS-LICENSE.txt) | [Akar Icons](https://github.com/artcoholic/akar-icons) |
+| ProIcons | 1.2.20 | MIT | [License](./data/sources/PROICONS-LICENSE.txt) | [ProIcons](https://github.com/ProCode-Software/proicons) |
 
-For the ten Iconify-normalized additions, the version shown is the pinned `@iconify-json` package version. Their manifests in `data/sources` record exact package URLs and SHA-256 checksums.
+For the Iconify-normalized additions, the version shown is the pinned `@iconify-json` package version. Their manifests in `data/sources` record exact package URLs and SHA-256 checksums.
 
 ## Attribution notes
 
@@ -61,6 +67,7 @@ For the ten Iconify-normalized additions, the version shown is the pinned `@icon
 - Mozilla FxEmojis visual designs are provided by the Mozilla Foundation under CC BY 4.0.
 - Codicons artwork is provided by Microsoft under CC BY 4.0.
 - Solar Icons artwork is provided by 480 Design under CC BY 4.0. Credit 480 Design and link to the license when using the artwork.
+- CoreUI Icons Free linear SVGs require attribution under CC BY 4.0. Its brand and flag SVGs use CC0 1.0, with trademark rights retained by their owners.
 - Devicon technology logos and Octicons GitHub marks may be subject to separate trademark and logo-usage rules.
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 

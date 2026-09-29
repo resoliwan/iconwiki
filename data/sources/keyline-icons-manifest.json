@@ -1,0 +1,23 @@
+{
+  "name": "Keyline Icons",
+  "version": "1.2.10",
+  "packages": [
+    {
+      "name": "@iconify-json/keyline-icons",
+      "version": "1.2.10",
+      "url": "https://registry.npmjs.org/@iconify-json/keyline-icons/-/keyline-icons-1.2.10.tgz",
+      "sha256": "0090b2a27b696e98b507c14f253cce6735ee65bbfbae8850630900fc17847a5e",
+      "assetCount": 9736,
+      "license": "MIT"
+    }
+  ],
+  "upstreamUrl": "https://github.com/keyline-icons/keyline-icons",
+  "assetCount": 9736,
+  "catalog": "../keyline-icons.json",
+  "catalogSha256": "f2e784ec0b46e31f838561f7278198b55664dc0709206cddeed49cb200c34cdc",
+  "assets": "../../assets/keyline-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "KEYLINE-ICONS-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/keyline-icons/keyline-icons/73d757b13d2ef78f85cdd8fdcb5c58555cb3940d/LICENSE",
+  "licenseSha256": "c9eaf07fee7f7eed72daec177408132b0a48eca8db0c831e1f7bf28e3b1ccefc"
+}

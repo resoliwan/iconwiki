@@ -1,0 +1,39 @@
+{
+  "name": "CoreUI Icons Free",
+  "version": "1.2.3",
+  "packages": [
+    {
+      "name": "@iconify-json/cil",
+      "version": "1.2.3",
+      "url": "https://registry.npmjs.org/@iconify-json/cil/-/cil-1.2.3.tgz",
+      "sha256": "4b15665dd0b5fc53981b99f54d3cdbb27afe50f54c41e734458b3c49788a34a9",
+      "assetCount": 554,
+      "license": "CC-BY-4.0"
+    },
+    {
+      "name": "@iconify-json/cib",
+      "version": "1.2.3",
+      "url": "https://registry.npmjs.org/@iconify-json/cib/-/cib-1.2.3.tgz",
+      "sha256": "0d6efc2ec141f4b23422134a59a092a2e7e9f1fc7ecb08b81986159a5b868ac4",
+      "assetCount": 830,
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "@iconify-json/cif",
+      "version": "1.2.7",
+      "url": "https://registry.npmjs.org/@iconify-json/cif/-/cif-1.2.7.tgz",
+      "sha256": "804801450b77e3b2c9a2b716fb45b44ee2a97e702e21ac6bca6358d0f7eb13c8",
+      "assetCount": 199,
+      "license": "CC0-1.0"
+    }
+  ],
+  "upstreamUrl": "https://github.com/coreui/coreui-icons",
+  "assetCount": 1583,
+  "catalog": "../coreui-icons-free.json",
+  "catalogSha256": "c4efab5b2b94902a3f2c41c07227e63c0e7fd17a4155ab4a86ed7ffc8317e3cd",
+  "assets": "../../assets/coreui-icons-free/**/*.svg",
+  "license": "CC-BY-4.0 / CC0-1.0",
+  "licenseFile": "COREUI-ICONS-FREE-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/coreui/coreui-icons/88d1cfc47fc3cc84114de2a01b04db11a941bdf9/LICENSE",
+  "licenseSha256": "171b668bd4fa31e5b75141d30290e5ab9eefcc881027ef24d0bd9e91aea8689b"
+}

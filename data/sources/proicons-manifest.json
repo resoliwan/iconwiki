@@ -1,0 +1,23 @@
+{
+  "name": "ProIcons",
+  "version": "1.2.20",
+  "packages": [
+    {
+      "name": "@iconify-json/proicons",
+      "version": "1.2.20",
+      "url": "https://registry.npmjs.org/@iconify-json/proicons/-/proicons-1.2.20.tgz",
+      "sha256": "951dc0fd780704fd098deadc4c880d31392619d4f0c2ec49b3758a856f2dab2e",
+      "assetCount": 544,
+      "license": "MIT"
+    }
+  ],
+  "upstreamUrl": "https://github.com/ProCode-Software/proicons",
+  "assetCount": 544,
+  "catalog": "../proicons.json",
+  "catalogSha256": "bbe3167a2066d337db34c68ba40262592632e4296ddc73a73bc429e0d2261e14",
+  "assets": "../../assets/proicons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "PROICONS-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/ProCode-Software/proicons/b8718fbc0a8654f6065cff8b3166ee3b99cd89ca/LICENSE",
+  "licenseSha256": "1668412af87d0d966a578e84560f392a1a3a60a01d47bc08c022b8f074e0efb6"
+}

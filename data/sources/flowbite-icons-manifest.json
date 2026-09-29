@@ -1,0 +1,23 @@
+{
+  "name": "Flowbite Icons",
+  "version": "1.2.7",
+  "packages": [
+    {
+      "name": "@iconify-json/flowbite",
+      "version": "1.2.7",
+      "url": "https://registry.npmjs.org/@iconify-json/flowbite/-/flowbite-1.2.7.tgz",
+      "sha256": "dff96194210b9f62a1270a991de8f1c4030887ea9d6df90b25dc0365f0f87c88",
+      "assetCount": 751,
+      "license": "MIT"
+    }
+  ],
+  "upstreamUrl": "https://github.com/themesberg/flowbite-icons",
+  "assetCount": 751,
+  "catalog": "../flowbite-icons.json",
+  "catalogSha256": "aaf73e64e16c44897c6b54845685343794a176fc8a44e78c4ed4b1dcab0060c7",
+  "assets": "../../assets/flowbite-icons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "FLOWBITE-ICONS-LICENSE.txt",
+  "licenseUrl": "https://raw.githubusercontent.com/themesberg/flowbite-icons/4f85985690fdd553e029f7415d90d32142bb5452/LICENSE",
+  "licenseSha256": "b3282d91fbf0ac51c848c7f18fc82b67a1ffbcfaada35af81cfa0fd8966101d3"
+}
