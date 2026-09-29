@@ -233,17 +233,8 @@ main { grid-area:results; min-width:0; padding:32px 32px 48px; }
   .view-switch button { width:52px; min-width:0; padding:0; }
 }
 
-/* Keep the page introduction above navigation and search on every viewport. */
-.shell > .hero { display:block; padding:28px 32px 12px; }
-.shell > .hero h1 { margin:0; font-size:clamp(28px,3vw,40px); }
-.shell > .hero p { margin:10px 0 0; font-size:16px; }
-@media(max-width:760px) {
-  .shell > .hero { padding:20px 16px 4px; }
-  .shell > .hero h1 { font-size:26px; }
-  .shell > .hero p { font-size:13px; line-height:1.4; }
-}
 @media(min-width:761px) {
-  .topbar { grid-template-columns:minmax(0,1fr); }
-  .topbar .brand { display:none; }
-  .expansion-panel { grid-column:1; }
+  .topbar { grid-template-columns:180px minmax(0,1fr); }
+  .topbar .brand { display:block; }
+  .expansion-panel { grid-column:2; }
 }

@@ -556,7 +556,7 @@ function syncMobileOverlay() {
   }
 }
 function applyResponsiveLayout() {
-  setFiltersOpen(!mobileLayout.matches, { focus: false });
+  setFiltersOpen(false, { focus: false });
 }
 $('#toggle-filters').addEventListener('click', () => setFiltersOpen($('#filters-panel').hidden));
 $('#filter-backdrop').addEventListener('click', () => setFiltersOpen(false));
