@@ -1,4 +1,4 @@
-# Icon Wiki: Brows Incos
+# Icon Wiki: Browse Icons
 
 Making the web more beautiful, fast, and open through great icons.
 
