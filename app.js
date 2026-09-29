@@ -5,7 +5,6 @@ const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
 const mobileLayout = matchMedia('(max-width:760px)');
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
-const FILTER_PIN_PREFERENCE_KEY = 'iconwiki-filter-panel-pinned';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
@@ -15,7 +14,7 @@ const LICENSE_FILTERS = [
 const state = {
   items: [], collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
   filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false,
-  selected: null, smartEnabled: false, smartExpansion: null, filtersPinned: false,
+  selected: null, smartEnabled: false, smartExpansion: null,
 };
 const chromeSmartSearch = new ChromeSmartSearch();
 const smartSupported = isDesktopChrome() && chromeSmartSearch.supported;
@@ -69,66 +68,85 @@ function renderSmartToggle() {
   toggle.closest('.inline-toggle').classList.toggle('unsupported', !smartSupported);
   if (!smartSupported) toggle.closest('.inline-toggle').title = SMART_UNSUPPORTED_MESSAGE;
 }
-function readFilterPinPreference() {
-  try { return localStorage.getItem(FILTER_PIN_PREFERENCE_KEY) === 'true'; }
-  catch { return false; }
-}
-function saveFilterPinPreference() {
-  try { localStorage.setItem(FILTER_PIN_PREFERENCE_KEY, String(state.filtersPinned)); }
-  catch { /* The toggle still works for the current page if storage is unavailable. */ }
-}
-function renderFilterPinToggle() {
-  const toggle = $('#filter-pin');
-  toggle.checked = state.filtersPinned;
-  $('#filters-panel').classList.toggle('pinned', state.filtersPinned);
-  $('#close-filters').disabled = state.filtersPinned && !mobileLayout.matches;
-}
-function renderMultiFilter({ root, summary, container, options, selected, allLabel, singularLabel, pluralLabel, update }) {
-  const selectedNames = options.filter(option => selected.has(option.id)).map(option => option.name);
-  summary.textContent = selected.size === options.length ? allLabel
-    : selected.size === 0 ? `No ${pluralLabel}`
-      : selected.size === 1 ? selectedNames[0]
-        : `${selected.size} ${pluralLabel}`;
-  summary.title = selected.size > 1 && selected.size < options.length ? selectedNames.join(', ') : '';
+function renderChoiceGroup(container, options, selected, update) {
+  const focused = container.contains(document.activeElement) ? document.activeElement.dataset.choice : null;
+  const allSelected = selected.size === options.length;
   const fragment = document.createDocumentFragment();
-  const actions = el('div', 'multi-filter-actions');
-  const selectAll = button('Select all', '', () => update(new Set(options.map(option => option.id))));
-  const clearAll = button('Clear all', '', () => update(new Set()));
-  selectAll.setAttribute('aria-label', `Select all ${pluralLabel}`);
-  clearAll.setAttribute('aria-label', `Clear all ${pluralLabel}`);
-  actions.append(selectAll, clearAll);
-  fragment.append(actions);
+  const addChoice = (id, name, active, action) => {
+    const choice = button(name, 'filter-choice', action);
+    choice.dataset.choice = id;
+    choice.setAttribute('aria-label', name);
+    choice.setAttribute('aria-pressed', String(active));
+    fragment.append(choice);
+  };
+  addChoice('all', 'All', allSelected, () => update(new Set(options.map(option => option.id))));
   for (const option of options) {
-    const label = el('label', 'multi-filter-option');
-    const check = el('input');
-    check.type = 'checkbox';
-    check.checked = selected.has(option.id);
-    check.setAttribute('aria-label', option.name);
-    check.addEventListener('change', () => {
-      const next = new Set(selected);
-      if (check.checked) next.add(option.id);
-      else next.delete(option.id);
-      update(next);
+    addChoice(option.id, option.name, !allSelected && selected.has(option.id), () => {
+      const next = allSelected ? new Set() : new Set(selected);
+      if (next.has(option.id)) next.delete(option.id);
+      else next.add(option.id);
+      update(next.size ? next : new Set(options.map(option => option.id)));
     });
-    label.append(check, document.createTextNode(option.name));
-    fragment.append(label);
   }
   container.replaceChildren(fragment);
-  root.setAttribute('aria-label', `${singularLabel} filter: ${summary.textContent}`);
+  if (focused) [...container.children].find(node => node.dataset.choice === focused)?.focus({ preventScroll: true });
 }
 function renderFilterControls() {
-  renderMultiFilter({
-    root: $('#collection-filter'), summary: $('#collection-filter-summary'), container: $('#collection-options'),
-    options: state.collections.map(collection => ({ id: collection.id, name: collection.name })),
-    selected: state.filterCollections, allLabel: 'All libraries', singularLabel: 'Library', pluralLabel: 'libraries',
-    update: next => { state.filterCollections = next; renderFilterControls(); renderGrid(); },
+  renderChoiceGroup($('#collection-options'), state.collections, state.filterCollections, next => {
+    state.filterCollections = next; renderFilterControls(); renderGrid();
   });
-  renderMultiFilter({
-    root: $('#license-filter'), summary: $('#license-filter-summary'), container: $('#license-options'),
-    options: LICENSE_FILTERS, selected: state.filterLicenseClasses,
-    allLabel: 'All licenses', singularLabel: 'License', pluralLabel: 'licenses',
-    update: next => { state.filterLicenseClasses = next; renderFilterControls(); renderGrid(); },
+  renderChoiceGroup($('#license-options'), LICENSE_FILTERS, state.filterLicenseClasses, next => {
+    state.filterLicenseClasses = next; renderFilterControls(); renderGrid();
   });
+  const matchOptions = [...$('#result-filter').options];
+  const focusedMatch = $('#match-options').contains(document.activeElement) ? document.activeElement.dataset.choice : null;
+  $('#match-options').replaceChildren(...matchOptions.map(option => {
+    const choice = button(option.value === 'all' ? 'All' : option.text, 'filter-choice', () => {
+      state.resultType = option.value;
+      $('#result-filter').value = option.value;
+      renderFilterControls(); renderGrid();
+    });
+    choice.dataset.choice = option.value;
+    choice.setAttribute('aria-label', option.value === 'all' ? 'All' : option.text);
+    choice.setAttribute('aria-pressed', String(state.resultType === option.value));
+    return choice;
+  }));
+  if (focusedMatch) [...$('#match-options').children].find(node => node.dataset.choice === focusedMatch)?.focus({ preventScroll: true });
+  filterLibraryChoices();
+}
+function filterLibraryChoices() {
+  const query = $('#library-search').value.trim().toLowerCase();
+  for (const choice of $('#collection-options').children) choice.hidden = choice.dataset.choice !== 'all' && !choice.textContent.toLowerCase().includes(query);
+}
+function renderActiveFilters() {
+  const container = $('#active-filters');
+  const oldButtons = [...container.children];
+  const focusedIndex = oldButtons.indexOf(document.activeElement);
+  const fragment = document.createDocumentFragment();
+  const add = (label, clear) => {
+    const chip = button('', 'active-filter', () => { clear(); renderFilterControls(); renderGrid(); });
+    chip.setAttribute('aria-label', `Remove ${label}`);
+    chip.append(el('span', '', label));
+    const cross = el('span', 'ui-symbol', 'close'); cross.setAttribute('aria-hidden', 'true'); chip.append(cross);
+    fragment.append(chip);
+  };
+  for (const [key, options, label] of [['filterCollections', state.collections, 'Library'], ['filterLicenseClasses', LICENSE_FILTERS, 'License']]) {
+    if (state[key].size === options.length) continue;
+    if (!state[key].size) add(`${label} — None`, () => { state[key] = new Set(options.map(option => option.id)); });
+    for (const option of options.filter(option => state[key].has(option.id))) {
+      add(`${label} — ${option.name}`, () => {
+        state[key].delete(option.id);
+        if (!state[key].size) state[key] = new Set(options.map(option => option.id));
+      });
+    }
+  }
+  if (state.resultType !== 'all') add(`Match — ${$('#result-filter').selectedOptions[0].text}`, () => { state.resultType = 'all'; $('#result-filter').value = 'all'; });
+  if (state.withinFilter) add(`Filter — ${state.withinFilter}`, () => { state.withinFilter = ''; $('#within-filter').value = ''; });
+  if (state.skinTones) add('Skin tone variants', () => { state.skinTones = false; $('#skin-tones').checked = false; });
+  if (state.smartEnabled) add('AI expansion', () => { state.smartEnabled = false; ++smartRequest; setSmartExpansion(null); saveSmartPreference(); renderSmartToggle(); });
+  container.replaceChildren(fragment);
+  $('#clear-filters').hidden = !container.children.length;
+  if (focusedIndex !== -1) (container.children[Math.min(focusedIndex, container.children.length - 1)] || $('#toggle-filters')).focus({ preventScroll: true });
 }
 function art(item) {
   const node = el('span', 'emoji');
@@ -172,7 +190,6 @@ function readURL() {
   const requestedSmartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
   state.smartEnabled = smartSupported && requestedSmartEnabled;
   if (!smartSupported || params.has('smart')) saveSmartPreference();
-  state.filtersPinned = readFilterPinPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = state.byId.has(params.get('id')) ? params.get('id') : null;
   $('#search').value = state.query;
@@ -182,7 +199,6 @@ function readURL() {
   $('#display-mode').value = state.displayMode;
   syncViewButtons();
   renderSmartToggle();
-  renderFilterPinToggle();
   renderFilterControls();
 }
 function renderExpansionTerms() {
@@ -259,6 +275,7 @@ function renderGrid() {
   $('#load-more').hidden = true;
   renderNextResultBatch();
   renderExpansionTerms();
+  renderActiveFilters();
   updateURL();
 }
 function panelHeading(label) {
@@ -425,12 +442,6 @@ $('#search').addEventListener('input', event => {
   scheduleSmartSearch();
 });
 $('#search').addEventListener('keydown', event => {
-  if (event.key === 'Tab' && !mobileLayout.matches) {
-    event.preventDefault();
-    $('#within-filter').focus();
-    $('#within-filter').select();
-    return;
-  }
   if (event.key !== 'Enter' || event.isComposing || event.repeat) return;
   event.preventDefault();
   state.query = event.currentTarget.value;
@@ -441,14 +452,8 @@ $('#within-filter').addEventListener('input', event => {
   state.withinFilter = event.target.value;
   renderGrid();
 });
-$('#within-filter').addEventListener('keydown', event => {
-  if (event.key !== 'Tab' || mobileLayout.matches) return;
-  event.preventDefault();
-  $('#search').focus();
-  $('#search').select();
-});
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
-$('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderGrid(); });
+$('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderFilterControls(); renderGrid(); });
 function setDisplayMode(value) {
   state.displayMode = value;
   $('#display-mode').value = value;
@@ -487,28 +492,21 @@ $('#smart-search').addEventListener('change', event => {
     runSmartSearch();
   }
 });
-function reset() {
+function clearFilters() {
   ++smartRequest;
-  state.query = ''; state.withinFilter = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id)); state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all'; setSmartExpansion(null);
-  $('#search').value = ''; $('#within-filter').value = ''; $('#result-filter').value = 'all'; renderFilterControls();
-  state.skinTones = false;
-  $('#skin-tones').checked = false;
-  setSmartIdle(); renderGrid();
+  state.withinFilter = ''; state.filterCollections = new Set(state.collections.map(collection => collection.id));
+  state.filterLicenseClasses = new Set(LICENSE_FILTERS.map(option => option.id)); state.resultType = 'all';
+  state.skinTones = false; state.smartEnabled = false; setSmartExpansion(null);
+  $('#within-filter').value = ''; $('#result-filter').value = 'all'; $('#skin-tones').checked = false; $('#library-search').value = '';
+  saveSmartPreference(); renderSmartToggle(); renderFilterControls(); setSmartIdle(); renderGrid();
 }
-const multiFilters = [...document.querySelectorAll('.multi-filter')];
-for (const filter of multiFilters) {
-  filter.addEventListener('toggle', () => {
-    if (!filter.open) return;
-    for (const other of multiFilters) if (other !== filter) other.open = false;
-  });
+function reset() {
+  state.query = ''; $('#search').value = ''; clearFilters();
 }
-document.addEventListener('pointerdown', event => {
-  for (const filter of multiFilters) {
-    if (filter.open && !filter.contains(event.target)) filter.open = false;
-  }
-});
+$('#library-search').addEventListener('input', filterLibraryChoices);
 $('#reset').addEventListener('click', reset);
-$('#reset-filters').addEventListener('click', reset);
+$('#reset-filters').addEventListener('click', clearFilters);
+$('#clear-filters').addEventListener('click', () => { clearFilters(); $('#toggle-filters').focus({ preventScroll: true }); });
 $('#load-more').addEventListener('click', renderNextResultBatch);
 if ('IntersectionObserver' in window) {
   new IntersectionObserver(entries => {
@@ -516,48 +514,22 @@ if ('IntersectionObserver' in window) {
   }, { rootMargin: '400px 0px' }).observe($('#load-more'));
 }
 function setFiltersOpen(open, { focus = true } = {}) {
-  if (!open && state.filtersPinned && !mobileLayout.matches) return;
   $('#filters-panel').hidden = !open;
-  $('#workspace').classList.toggle('filters-closed', !open);
-  $('#browse-button').classList.toggle('active', mobileLayout.matches || open);
-  $('#mobile-filters').setAttribute('aria-expanded', String(open));
-  if (mobileLayout.matches) $('#browse-button').removeAttribute('aria-expanded');
-  else $('#browse-button').setAttribute('aria-expanded', String(open));
-  if (!open) {
-    for (const filter of multiFilters) filter.open = false;
-    syncMobileOverlay();
-    if (focus) $(mobileLayout.matches ? '#mobile-filters' : '#browse-button').focus({ preventScroll: true });
-  } else {
-    syncMobileOverlay();
-    if (focus) $(mobileLayout.matches ? '#close-filters' : '#filter-pin').focus({ preventScroll: true });
-  }
+  $('#toggle-filters').setAttribute('aria-expanded', String(open));
+  $('#toggle-filters .ui-symbol').textContent = open ? 'close' : 'tune';
+  document.body.classList.toggle('desktop-filters-open', open && !mobileLayout.matches);
+  syncMobileOverlay();
+  if (focus) $(open ? '#close-filters' : '#toggle-filters').focus({ preventScroll: true });
 }
 $('#close-filters').addEventListener('click', () => setFiltersOpen(false));
-$('#filter-pin').addEventListener('change', event => {
-  state.filtersPinned = event.target.checked;
-  saveFilterPinPreference();
-  renderFilterPinToggle();
-  if (state.filtersPinned) setFiltersOpen(true, { focus: false });
-});
 $('#browse-button').addEventListener('click', () => {
-  if (mobileLayout.matches) {
-    if (!$('#detail').hidden) closePanel();
-    setFiltersOpen(false, { focus: false });
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-  }
-  const panelOpen = !$('#filters-panel').hidden;
-  if (panelOpen && state.filtersPinned) {
-    state.filtersPinned = false;
-    saveFilterPinPreference();
-    renderFilterPinToggle();
-  }
-  setFiltersOpen(!panelOpen);
+  if (!$('#detail').hidden) closePanel();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 document.addEventListener('keydown', event => {
   if (event.key === 'Escape') {
-    if (mobileLayout.matches && !$('#filters-panel').hidden) setFiltersOpen(false);
-    else if (!$('#detail').hidden) closePanel();
+    if (!$('#detail').hidden) closePanel();
+    else if (!$('#filters-panel').hidden) setFiltersOpen(false);
     $('.mobile-more').open = false;
   }
   const modal = mobileLayout.matches ? (!$('#filters-panel').hidden ? $('#filters-panel') : !$('#detail').hidden ? $('#detail') : null) : null;
@@ -571,19 +543,12 @@ document.addEventListener('keydown', event => {
     event.preventDefault(); $('#search').focus();
   }
 });
-// Move the existing controls so their values, listeners and accessible names stay shared.
-const withinHome = document.createComment('within-filter');
-const smartHome = document.createComment('smart-search');
-const countHome = document.createComment('result-count');
-$('#within-filter').before(withinHome);
-$('.ai-toggle').before(smartHome);
-$('#result-count').before(countHome);
 function syncMobileOverlay() {
   const drawerOpen = mobileLayout.matches && !$('#filters-panel').hidden;
   const detailOpen = mobileLayout.matches && !$('#detail').hidden;
   $('#filter-backdrop').hidden = !drawerOpen;
   document.body.classList.toggle('mobile-overlay', drawerOpen || detailOpen);
-  for (const node of document.querySelectorAll('.topbar,.rail,.mobile-toolbar,#mobile-result-summary,.hero,#grid,#load-more,#empty')) node.inert = drawerOpen || detailOpen;
+  for (const node of document.querySelectorAll('.topbar,.rail,.browse-toolbar,.result-summary,.hero,#grid,#load-more,#empty')) node.inert = drawerOpen || detailOpen;
   $('#detail').inert = drawerOpen;
   for (const [node, open] of [[$('#filters-panel'), drawerOpen], [$('#detail'), detailOpen]]) {
     if (open) { node.setAttribute('role', 'dialog'); node.setAttribute('aria-modal', 'true'); }
@@ -591,26 +556,9 @@ function syncMobileOverlay() {
   }
 }
 function applyResponsiveLayout() {
-  if (mobileLayout.matches) {
-    $('#mobile-search-options').append($('#within-filter'), $('.ai-toggle'));
-    $('#mobile-result-summary').append($('#result-count'));
-    $('#browse-button').setAttribute('aria-label', 'Browse library');
-    $('#browse-button').removeAttribute('aria-controls');
-    $('.reset-label').textContent = 'Reset all';
-  } else {
-    withinHome.after($('#within-filter'));
-    smartHome.after($('.ai-toggle'));
-    countHome.after($('#result-count'));
-    $('#browse-button').setAttribute('aria-label', 'Toggle library filters');
-    $('#browse-button').setAttribute('aria-controls', 'filters-panel');
-    $('.reset-label').textContent = 'Reset';
-  }
-  renderFilterPinToggle();
   setFiltersOpen(!mobileLayout.matches, { focus: false });
-  if (mobileLayout.matches) $('#browse-button').removeAttribute('aria-expanded');
-  syncMobileOverlay();
 }
-$('#mobile-filters').addEventListener('click', () => setFiltersOpen(true));
+$('#toggle-filters').addEventListener('click', () => setFiltersOpen($('#filters-panel').hidden));
 $('#filter-backdrop').addEventListener('click', () => setFiltersOpen(false));
 mobileLayout.addEventListener('change', applyResponsiveLayout);
 applyResponsiveLayout();

@@ -16,7 +16,7 @@ Over 136,000 icons and emoji from 48 libraries.
 
 ### Narrow your search
 
-Search for `face`, then enter `smile` in **Filter results** to narrow that result set. Press `Tab` to move between the two fields.
+Search for `face`, open **Filters**, then enter `smile` in **Filter results** to narrow that result set. Select library, license, and match options in the side panel. Active filters appear as removable chips above the results; **Clear filters** resets the filters while keeping your search text.
 
 <img src="./docs/search-demo.gif?raw=1" alt="Filtering search results by adding smile to face" width="1280" loading="eager">
 

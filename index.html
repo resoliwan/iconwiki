@@ -11,12 +11,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=mobile-fonts-1">
+  <link rel="stylesheet" href="./styles.css?v=desktop-filters-1">
 </head>
 <body>
   <aside class="rail" aria-label="Library menu">
     <a class="brand-mark" href="./" aria-label="Icon Wiki home"><img src="./assets/app-icon.svg?v=dark-2" alt=""></a>
-    <button class="rail-button active" id="browse-button" aria-label="Toggle library filters" title="Library filters" aria-expanded="true" aria-controls="filters-panel"><span class="rail-symbol" aria-hidden="true">category</span><span>Library</span></button>
+    <button class="rail-button active" id="browse-button" aria-label="Browse library" title="Library"><span class="rail-symbol" aria-hidden="true">category</span><span>Library</span></button>
     <a class="rail-github" href="https://github.com/resoliwan/iconwiki" target="_blank" rel="noopener noreferrer" title="GitHub" aria-label="Open Icon Wiki on GitHub"><img src="./assets/lucide/github.svg" alt=""><span class="mobile-only">GitHub</span></a>
     <a class="rail-bottom" href="./README.md" target="_blank" title="Help" aria-label="Help"><span class="help-symbol">?</span><span class="mobile-only">Help</span></a>
   </aside>
@@ -27,9 +27,7 @@
       <div class="search-box">
         <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg>
         <input id="search" type="search" placeholder="Search icons" aria-label="Search images" autocomplete="off" spellcheck="false">
-        <span class="search-divider" aria-hidden="true"></span>
-        <input id="within-filter" type="search" placeholder="Filter results" aria-label="Filter current results" autocomplete="off" spellcheck="false">
-        <label class="inline-toggle ai-toggle" title="Expand related terms automatically, or press Enter to run again."><input id="smart-search" type="checkbox"> AI expansion</label>
+
       </div>
       <details class="mobile-more mobile-only">
         <summary aria-label="More options"><span class="ui-symbol" aria-hidden="true">more_vert</span></summary>
@@ -43,54 +41,53 @@
 
     <div class="workspace" id="workspace">
       <main>
-        <div class="mobile-toolbar mobile-only">
-          <button id="mobile-filters" aria-expanded="false" aria-controls="filters-panel"><span class="ui-symbol" aria-hidden="true">tune</span>Filters</button>
+        <div class="browse-toolbar">
+          <button id="toggle-filters" aria-expanded="false" aria-controls="filters-panel"><span class="ui-symbol" aria-hidden="true">tune</span>Filters</button>
+          <div class="active-filters" id="active-filters" aria-label="Active filters"></div>
+          <button class="text-button" id="clear-filters" hidden>Clear filters</button>
           <div class="view-switch" role="group" aria-label="Card view">
-            <button data-view="images" aria-label="Images only" aria-pressed="true"><span class="ui-symbol" aria-hidden="true">grid_view</span></button>
-            <button data-view="labels" aria-label="Images with labels" aria-pressed="false"><span class="ui-symbol" aria-hidden="true">view_list</span></button>
+            <button data-view="images" aria-label="Images only" aria-pressed="true"><span class="ui-symbol" aria-hidden="true">grid_view</span><span class="view-label">Grid</span></button>
+            <button data-view="labels" aria-label="Images with labels" aria-pressed="false"><span class="ui-symbol" aria-hidden="true">view_list</span><span class="view-label">Labels</span></button>
           </div>
         </div>
-        <div id="mobile-result-summary" class="mobile-only"></div>
+
         <section class="hero" aria-labelledby="hero-title">
           <h1 id="hero-title">Browse Icons</h1>
           <p>Making the web more beautiful, fast, and open through great icons.</p>
         </section>
+        <div class="result-summary"><span class="result-count" id="result-count" role="status">Loading…</span></div>
         <section class="filters" id="filters-panel" aria-label="Search filters">
-          <div id="mobile-search-options" class="mobile-only"><h2>Search</h2></div>
-          <div class="result-summary">
-            <span class="result-count" id="result-count" role="status">Loading…</span>
-          </div>
-          <div class="view-options">
-            <span class="filter-label" id="library-label">Library</span>
-            <details class="multi-filter" id="collection-filter">
-              <summary id="collection-filter-summary">All libraries</summary>
-              <div class="multi-filter-menu" id="collection-options"></div>
-            </details>
-            <span class="filter-label">License</span>
-            <details class="multi-filter" id="license-filter">
-              <summary id="license-filter-summary">All licenses</summary>
-              <div class="multi-filter-menu" id="license-options"></div>
-            </details>
-            <label class="filter-label" for="result-filter">Match range</label>
-            <select id="result-filter" aria-label="Select match type">
-              <option value="all">All match ranges</option>
-              <option value="exact">Exact</option>
-              <option value="keyword">Keyword</option>
-              <option value="prefix">Prefix</option>
-              <option value="similar">Similar</option>
-            </select>
-            <label class="filter-label" for="display-mode">Display</label>
-            <select id="display-mode" aria-label="Select card view">
-              <option value="images">Images only</option>
-              <option value="labels">Images + labels</option>
-            </select>
-            <label class="tone-toggle"><input type="checkbox" id="skin-tones"> Include skin tone variants</label>
-            <label class="tone-toggle"><input type="checkbox" id="filter-pin"> Pin filters</label>
-          </div>
           <div class="filter-actions">
-            <button class="text-button" id="reset-filters" type="button"><span class="ui-symbol mobile-only" aria-hidden="true">restart_alt</span><span class="reset-label">Reset</span></button>
-            <button class="close-button" id="close-filters" type="button" aria-label="Hide filters" title="Hide filters">×</button>
+            <button class="text-button" id="reset-filters" type="button"><span class="ui-symbol" aria-hidden="true">restart_alt</span>Reset all</button>
+            <button class="close-button" id="close-filters" type="button" aria-label="Hide filters">×</button>
           </div>
+          <div class="filter-search-options">
+            <h2>Search</h2>
+            <input id="within-filter" type="search" placeholder="Filter results" aria-label="Filter current results" autocomplete="off" spellcheck="false">
+            <label class="inline-toggle ai-toggle" title="Expand related terms automatically, or press Enter to run again."><input id="smart-search" type="checkbox"> AI expansion</label>
+          </div>
+          <h2 class="filter-section-title">Filter</h2>
+          <details class="filter-group" id="collection-filter" open>
+            <summary id="collection-filter-summary"><span class="ui-symbol" aria-hidden="true">category</span>Library</summary>
+            <input id="library-search" type="search" placeholder="Find a library" aria-label="Find a library" autocomplete="off">
+            <div class="filter-choices" id="collection-options"></div>
+          </details>
+          <details class="filter-group" id="license-filter" open>
+            <summary id="license-filter-summary"><span class="ui-symbol" aria-hidden="true">verified_user</span>License</summary>
+            <div class="filter-choices" id="license-options"></div>
+          </details>
+          <details class="filter-group" open>
+            <summary><span class="ui-symbol" aria-hidden="true">manage_search</span>Match range</summary>
+            <div class="filter-choices" id="match-options"></div>
+          </details>
+          <details class="filter-group" open>
+            <summary><span class="ui-symbol" aria-hidden="true">tune</span>Options</summary>
+            <label class="tone-toggle"><input type="checkbox" id="skin-tones"> Include skin tone variants</label>
+          </details>
+          <select id="result-filter" aria-label="Select match type" hidden>
+            <option value="all">All match ranges</option><option value="exact">Exact</option><option value="keyword">Keyword</option><option value="prefix">Prefix</option><option value="similar">Similar</option>
+          </select>
+          <select id="display-mode" aria-label="Select card view" hidden><option value="images">Images only</option><option value="labels">Images + labels</option></select>
         </section>
 
         <div class="emoji-grid" id="grid" aria-label="Image search results" aria-busy="true"></div>
@@ -103,6 +100,6 @@
   <div class="filter-backdrop" id="filter-backdrop" hidden></div>
   <div class="toast" id="toast" role="status" hidden></div>
   <noscript>Enable JavaScript to search and view details.</noscript>
-  <script type="module" src="./app.js?v=mobile-fonts-1"></script>
+  <script type="module" src="./app.js?v=desktop-filters-1"></script>
 </body>
 </html>
