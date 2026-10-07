@@ -171,7 +171,7 @@ function art(item) {
 function updateURL() {
   const url = new URL(location.href);
   const collectionOptions = state.collections.map(collection => ({ id: collection.id }));
-  for (const [key, value] of Object.entries({ q: state.query, filter: state.withinFilter, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
+  for (const [key, value] of Object.entries({ q: state.query, filter: state.withinFilter, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled && state.query.trim() ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
     if (value) url.searchParams.set(key, value);
     else url.searchParams.delete(key);
   }
