@@ -107,3 +107,28 @@ npm run data
 ## License
 
 Icon Wiki's code is licensed under the [MIT License](./LICENSE). Icons and emoji retain their original licenses, listed above and in [Third-Party Notices](./THIRD_PARTY_NOTICES.md).
+
+
+### Progressive loading and browser search
+
+Google Material Symbols is fetched and prepared first. After its icon font and first
+results paint, a maximum of three other catalogs load concurrently. Search results
+expand as catalogs arrive; the library counter shows actual coverage. Failed catalogs
+can be retried without discarding working libraries.
+
+A module Web Worker owns catalog fetching, preparation, and existing search logic.
+The UI sends only search options and receives the visible result batch. At most one
+search is in flight; queued input is replaced by the latest query, and obsolete
+responses are ignored. No search API, backend, or generated search index is required.
+Normal HTTP caching applies; this change does not add persistent offline storage.
+
+For a reproducible local performance comparison, run
+`python3 scripts/benchmark_server.py` and open
+`http://127.0.0.1:4175/benchmark`. It compares the baseline commit with the current
+working tree, alternating three runs each, with gzip, cache disabled, a shared
+10 Mbps response budget, and 40 ms delay per request. This local measurement server
+is only a development tool; the deployed application remains fully static.
+
+Typing waits for an 80 ms pause before automatic search. Enter searches immediately;
+IME composition (including the Enter used to commit Korean text) does not trigger
+a premature search. Existing results remain visible while the next search runs.

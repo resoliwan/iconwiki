@@ -1,5 +1,5 @@
-import { filterCatalogItems, loadCatalog } from './catalog.js?v=progressive-results-1';
-import { buildSmartResults, ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=silent-ai-1';
+import { bindSearchInput } from './search-input.js';
+import { ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=silent-ai-1';
 
 const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
@@ -12,7 +12,7 @@ const LICENSE_FILTERS = [
   { id: 'restricted', name: 'Restricted / Brand' },
 ];
 const state = {
-  items: [], collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
+  collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
   filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false,
   selected: null, smartEnabled: false, smartExpansion: null,
 };
@@ -26,6 +26,40 @@ let toastTimer;
 let currentResults = [];
 let currentSearch = null;
 let renderedResultCount = 0;
+let resultTotal = 0;
+let resultLimit = RESULT_BATCH_SIZE;
+let searchRequest = 0;
+let inFlight = null;
+let pendingSearch = null;
+let manifestReady = false;
+let worker;
+let refreshTimer;
+let primaryReleased = false;
+let loadingState = { loaded: [], failed: [], total: 0, loading: true };
+const loadStatus = el('span', 'hint');
+loadStatus.id = 'library-load-status';
+const retryLoad = button('Retry failed libraries', 'text-button', () => worker.postMessage({ type: 'retry' }));
+retryLoad.hidden = true;
+$('.result-summary').append(loadStatus, retryLoad);
+function updateLoadStatus() {
+  const { loaded, total, failed, loading } = loadingState;
+  loadStatus.textContent = total ? `${loaded.length}/${total} libraries ready${loading ? ' · Loading more…' : ''}${failed.length ? ` · ${failed.length} failed` : ''}` : 'Loading Material icons…';
+  retryLoad.hidden = loading || !failed.length;
+  $('#empty h2').textContent = loading ? 'No matches in the libraries ready so far' : 'No matching images';
+  $('#empty p').textContent = loading ? 'Results will update as more libraries arrive.' : 'Try another word or a shorter search term.';
+}
+function dispatchSearch() {
+  if (inFlight || !pendingSearch || !manifestReady) return;
+  inFlight = pendingSearch;
+  pendingSearch = null;
+  worker.postMessage(inFlight);
+}
+async function releaseBackground() {
+  if (primaryReleased || !loadingState.loaded.includes('material-symbols-outlined')) return;
+  primaryReleased = true;
+  try { await document.fonts.load('40px "Material Symbols Outlined Local"'); } catch { /* Allow other libraries if the font fails. */ }
+  requestAnimationFrame(() => requestAnimationFrame(() => worker.postMessage({ type: 'continue' })));
+}
 function toast(message) {
   $('#toast').textContent = message;
   $('#toast').hidden = false;
@@ -191,7 +225,7 @@ function readURL() {
   state.smartEnabled = smartSupported && requestedSmartEnabled;
   if (!smartSupported || params.has('smart')) saveSmartPreference();
   state.skinTones = params.get('tones') === '1';
-  state.selected = state.byId.has(params.get('id')) ? params.get('id') : null;
+  state.selected = params.get('id') || null;
   $('#search').value = state.query;
   $('#within-filter').value = state.withinFilter;
   $('#skin-tones').checked = state.skinTones;
@@ -236,47 +270,54 @@ function resultCard(item, search) {
   return card;
 }
 function renderNextResultBatch() {
-  if (!currentSearch || renderedResultCount >= currentResults.length) {
-    $('#load-more').hidden = true;
-    return;
-  }
-  const end = Math.min(renderedResultCount + RESULT_BATCH_SIZE, currentResults.length);
-  const fragment = document.createDocumentFragment();
-  for (const item of currentResults.slice(renderedResultCount, end)) {
-    fragment.append(resultCard(item, currentSearch));
-  }
-  $('#grid').append(fragment);
-  renderedResultCount = end;
-  const remaining = currentResults.length - renderedResultCount;
-  const loadMore = $('#load-more');
-  loadMore.hidden = remaining === 0;
-  loadMore.textContent = remaining
-    ? `Load ${Math.min(RESULT_BATCH_SIZE, remaining).toLocaleString()} more`
-    : '';
-  $('#result-count').textContent = remaining
-    ? `${currentResults.length.toLocaleString()} results · showing ${renderedResultCount.toLocaleString()}`
-    : `${currentResults.length.toLocaleString()} results`;
+  if (renderedResultCount >= resultTotal) return;
+  resultLimit += RESULT_BATCH_SIZE;
+  renderGrid({ preserveLimit: true });
 }
-function renderGrid() {
+function renderGrid({ preserveLimit = false } = {}) {
+  searchInput.cancel();
+  withinInput.cancel();
+  clearTimeout(refreshTimer);
+  refreshTimer = null;
+  if (!preserveLimit) resultLimit = RESULT_BATCH_SIZE;
   const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
-  const activeExpansion = state.smartEnabled ? expansion : null;
-  currentSearch = buildSmartResults(state.items, {
-    ...state,
-    collections: [...state.filterCollections],
-    licenseClasses: [...state.filterLicenseClasses],
-  }, activeExpansion, state.resultType);
-  currentResults = filterCatalogItems(currentSearch.results, state.withinFilter);
-  renderedResultCount = 0;
-  $('#grid').replaceChildren();
-  $('#grid').classList.toggle('image-only', state.displayMode === 'images');
-  $('#grid').setAttribute('aria-busy', 'false');
-  $('#empty').hidden = currentResults.length > 0;
-  $('#result-count').textContent = `${currentResults.length.toLocaleString()} results`;
-  $('#load-more').hidden = true;
-  renderNextResultBatch();
+  pendingSearch = {
+    type: 'search', request: ++searchRequest, limit: resultLimit,
+    options: { query: state.query, collections: [...state.filterCollections],
+      licenseClasses: [...state.filterLicenseClasses], skinTones: state.skinTones },
+    expansion: state.smartEnabled ? expansion : null, resultType: state.resultType,
+    withinFilter: state.withinFilter, selected: state.selected,
+  };
+  $('#grid').setAttribute('aria-busy', 'true');
   renderExpansionTerms();
   renderActiveFilters();
-  updateURL();
+  if (manifestReady) updateURL();
+  dispatchSearch();
+}
+function showResults(message) {
+  currentResults = message.items;
+  resultTotal = message.total;
+  currentSearch = { matchTypeById: new Map(message.matches), relatedTermById: new Map(message.related) };
+  const selectedItem = state.byId.get(state.selected);
+  state.byId = new Map(currentResults.map(item => [item.id, item]));
+  if (selectedItem) state.byId.set(selectedItem.id, selectedItem);
+  if (message.selected) state.byId.set(message.selected.id, message.selected);
+  const focusedId = $('#grid').contains(document.activeElement) ? document.activeElement.dataset.id : null;
+  const fragment = document.createDocumentFragment();
+  for (const item of currentResults) fragment.append(resultCard(item, currentSearch));
+  $('#grid').replaceChildren(fragment);
+  if (focusedId) [...$('#grid').children].find(card => card.dataset.id === focusedId)?.focus({ preventScroll: true });
+  $('#grid').classList.toggle('image-only', state.displayMode === 'images');
+  $('#grid').setAttribute('aria-busy', 'false');
+  renderedResultCount = currentResults.length;
+  $('#empty').hidden = resultTotal > 0;
+  const remaining = resultTotal - renderedResultCount;
+  $('#result-count').textContent = `${resultTotal.toLocaleString()} results${remaining ? ` · showing ${renderedResultCount.toLocaleString()}` : ''}`;
+  $('#load-more').hidden = remaining <= 0;
+  $('#load-more').textContent = `Load ${Math.min(RESULT_BATCH_SIZE, remaining).toLocaleString()} more`;
+  if (message.selected && $('#detail').hidden) renderPanel();
+  updateLoadStatus();
+  void releaseBackground();
 }
 function panelHeading(label) {
   const top = el('div', 'detail-top');
@@ -361,7 +402,7 @@ function renderDetail(item) {
 }
 function renderPanel() {
   const panel = $('#detail');
-  const visible = Boolean(state.selected);
+  const visible = state.byId.has(state.selected);
   panel.hidden = !visible;
   $('#workspace').classList.toggle('with-detail', visible);
   syncMobileOverlay();
@@ -433,24 +474,31 @@ function scheduleSmartSearch() {
   smartTimer = setTimeout(runSmartSearch, 450);
 }
 
-$('#search').addEventListener('input', event => {
-  ++smartRequest;
-  state.query = event.target.value;
-  setSmartExpansion(null);
-  setSmartIdle();
-  renderGrid();
-  scheduleSmartSearch();
+function invalidateTypedSearch() {
+  ++searchRequest;
+  pendingSearch = null;
+  clearTimeout(refreshTimer);
+  refreshTimer = null;
+}
+const searchInput = bindSearchInput($('#search'), {
+  change(value) {
+    ++smartRequest;
+    clearTimeout(smartTimer);
+    state.query = value;
+    setSmartExpansion(null);
+    setSmartIdle();
+  },
+  invalidate: invalidateTypedSearch,
+  search(immediate) {
+    renderGrid();
+    if (immediate && state.smartEnabled) runSmartSearch({ refresh: true });
+    else scheduleSmartSearch();
+  },
 });
-$('#search').addEventListener('keydown', event => {
-  if (event.key !== 'Enter' || event.isComposing || event.repeat) return;
-  event.preventDefault();
-  state.query = event.currentTarget.value;
-  if (state.smartEnabled) runSmartSearch({ refresh: true });
-  else renderGrid();
-});
-$('#within-filter').addEventListener('input', event => {
-  state.withinFilter = event.target.value;
-  renderGrid();
+const withinInput = bindSearchInput($('#within-filter'), {
+  change(value) { state.withinFilter = value; },
+  invalidate: invalidateTypedSearch,
+  search() { renderGrid(); },
 });
 $('#skin-tones').addEventListener('change', event => { state.skinTones = event.target.checked; renderGrid(); });
 $('#result-filter').addEventListener('change', event => { state.resultType = event.target.value; renderFilterControls(); renderGrid(); });
@@ -570,15 +618,39 @@ if ('ResizeObserver' in window) {
   }).observe($('.topbar'));
 }
 
-try {
-  const { collections, items } = await loadCatalog();
-  state.collections = collections; state.items = items;
-  state.byId = new Map(items.map(item => [item.id, item]));
-  readURL(); renderPanel(); renderGrid();
-  if (state.smartEnabled && state.query.trim()) runSmartSearch();
-} catch (error) {
+function loadingError(message) {
   $('#grid').setAttribute('aria-busy', 'false');
-  $('#result-count').textContent = 'Data failed to load';
-  const notice = el('p', 'hint', `${error.message} · Make sure the app is opened through its static server.`);
-  $('#grid').replaceChildren(notice);
+  loadStatus.textContent = `Could not load icons: ${message}. Reload to retry.`;
 }
+try {
+  worker = new Worker(new URL('./search-worker.js', import.meta.url), { type: 'module' });
+  worker.onerror = event => loadingError(event.message || 'Search worker unavailable');
+  worker.onmessage = ({ data }) => {
+    if (data.type === 'manifest') {
+      state.collections = data.collections;
+      manifestReady = true;
+      readURL(); renderPanel(); renderGrid();
+      if (state.smartEnabled && state.query.trim()) runSmartSearch();
+    } else if (data.type === 'progress') {
+      const changed = data.loaded.length !== loadingState.loaded.length;
+      loadingState = data;
+      updateLoadStatus();
+      if (changed && !searchInput.pending && !withinInput.pending) {
+        if (!primaryReleased) renderGrid({ preserveLimit: true });
+        else if (!refreshTimer) refreshTimer = setTimeout(() => {
+          refreshTimer = null;
+          renderGrid({ preserveLimit: true });
+        }, 150);
+      }
+    } else if (data.type === 'results') {
+      inFlight = null;
+      if (data.request === searchRequest) showResults(data);
+      dispatchSearch();
+    } else if (data.type === 'error') {
+      inFlight = null;
+      loadingError(data.message);
+      dispatchSearch();
+    }
+  };
+  worker.postMessage({ type: 'init' });
+} catch (error) { loadingError(error.message); }
