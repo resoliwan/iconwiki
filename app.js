@@ -252,8 +252,9 @@ function readURL() {
 }
 function renderExpansionTerms(termCounts = []) {
   const container = $('#expansion-terms');
-  $('#expansion-panel').hidden = !termCounts.length;
-  for (const [index, [term, count]] of termCounts.entries()) {
+  const visibleTerms = termCounts.filter(([, count]) => count > 0);
+  $('#expansion-panel').hidden = !visibleTerms.length;
+  for (const [index, [term, count]] of visibleTerms.entries()) {
     let chip = container.children[index];
     if (!chip) {
       chip = button('', 'expansion-term', () => {
@@ -263,10 +264,10 @@ function renderExpansionTerms(termCounts = []) {
       container.append(chip);
     }
     chip.dataset.term = term;
-    chip.textContent = `${term} (${count.toLocaleString()})`;
+    chip.textContent = `${term} ${count.toLocaleString()}`;
     chip.setAttribute('aria-pressed', String(state.expansionTerm === term));
   }
-  while (container.children.length > termCounts.length) container.lastElementChild.remove();
+  while (container.children.length > visibleTerms.length) container.lastElementChild.remove();
 }
 function resultCard(item, search) {
   const card = button('', 'emoji-card', () => select(item.id));
@@ -317,6 +318,11 @@ function renderGrid({ preserveLimit = false } = {}) {
   dispatchSearch();
 }
 function showResults(message) {
+  if (state.expansionTerm && loadingState.loaded.length && message.termCounts.some(([term, count]) => term === state.expansionTerm && count === 0)) {
+    state.expansionTerm = '';
+    renderGrid();
+    return;
+  }
   renderExpansionTerms(message.termCounts);
   currentResults = message.items;
   resultTotal = message.total;

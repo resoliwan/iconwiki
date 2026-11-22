@@ -50,8 +50,8 @@ select { width:168px; min-height:40px; background:var(--raised); color:var(--tex
 input[type=checkbox] { accent-color:var(--blue); width:16px; height:16px; flex:none; }
 .expansion-panel { grid-column:2; min-width:0; display:flex; align-items:center; gap:12px; padding:8px 16px; border-radius:16px; background:var(--panel); overflow:hidden; }
 .expansion-panel>strong { flex:none; color:var(--muted); font-size:12px; font-weight:500; }
-.expansion-terms { min-width:0; display:flex; gap:8px; overflow-x:auto; scrollbar-width:thin; }
-.expansion-term { padding:6px 10px; border:1px solid var(--line); border-radius:999px; background:transparent; color:var(--text); font-size:12px; white-space:nowrap; }
+.expansion-terms { min-width:0; display:flex; flex-wrap:wrap; gap:8px; }
+.expansion-term { padding:6px 10px; border:1px solid var(--line); border-radius:999px; background:transparent; max-width:100%; color:var(--text); font-size:12px; overflow-wrap:anywhere; }
 .expansion-term:hover { background:var(--raised); }
 .expansion-term[aria-pressed=true] { background:#004a77; border-color:var(--blue); color:#c2e7ff; }
 .expansion-term:focus-visible { outline-offset:-3px; }
