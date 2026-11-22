@@ -197,9 +197,10 @@ function art(item) {
   node.setAttribute('aria-hidden', 'true');
   if (item.kind === 'image') {
     if (!item.colored && (item.monochrome || MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color' || item.collection === 'icon-park' && item.variant !== 'multi-color')) node.classList.add('monochrome');
-    const img = el('img');
+    const img = el('img', 'artwork-pending');
     img.alt = '';
     img.loading = 'lazy';
+    img.addEventListener('load', () => img.classList.remove('artwork-pending'), { once: true });
     showArtwork(img, item);
     node.append(img);
   } else if (item.kind === 'font') {

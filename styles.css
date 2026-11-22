@@ -65,6 +65,7 @@ main { grid-area:results; min-width:0; padding:32px 32px 48px; }
 .emoji.noto-emoji-monochrome { font-family:"Noto Emoji Local"; font-variant-emoji:text; color:var(--text); }
 .emoji.material-symbol { font-family:"Material Symbols Outlined Local"; font-weight:400; font-style:normal; font-size:40px; letter-spacing:normal; text-transform:none; white-space:nowrap; word-wrap:normal; direction:ltr; font-feature-settings:"liga"; -webkit-font-smoothing:antialiased; color:var(--text); }
 .emoji img { width:100%; height:100%; object-fit:contain; }
+.emoji img.artwork-pending { opacity:0; }
 .emoji.monochrome img { filter:brightness(0) invert(.89); }
 .card-caption { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; width:100%; min-width:0; }
 .card-name { min-width:0; max-width:100%; color:var(--text); font-size:14px; text-align:center; line-height:1.4; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
