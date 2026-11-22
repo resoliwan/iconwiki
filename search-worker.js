@@ -1,7 +1,7 @@
 import { prepareCatalog, filterCatalogItems } from './catalog.js';
 import { buildSmartResults } from './smart-search.js';
 import { createPackedSearch } from './packed-search.js';
-import { loadPackedIndex, packedItem, hydratePackedItem } from './packed-index.js';
+import { loadPackedIndex, packedItem, hydratePackedItem } from './packed-index.js?v=git-art-1';
 
 let manifest, searchIndex, preview = [], loading = false, failed = false, refreshManifest = false;
 const read = (url, options = {}) => fetch(url, { ...options, signal: AbortSignal.timeout(60000) });

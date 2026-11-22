@@ -118,7 +118,7 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 
 For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the collections from Keyline Icons through Teenyicons, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
 
-The count includes 75 locally hosted libraries and all 264 public Iconify collections in this snapshot. A library available through both sources has separate entries. Visible Iconify images load from the Iconify API. Each detail panel links to the original source and license.
+The count includes 75 locally hosted libraries and all 264 public Iconify collections in this snapshot. A library available through both sources has separate entries. Visible Iconify images use SVG artwork from the [pinned GitHub snapshot](https://github.com/iconify/icon-sets/tree/d1fdcf54272b299075b4fbf21851147e8c3846f9/json). Each detail panel links to the original source and license.
 
 ## Run locally
 

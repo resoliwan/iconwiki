@@ -1,4 +1,5 @@
 // Build the static search bundle from the local catalogs and the pinned Iconify snapshot.
+import { iconifyVersion as snapshot } from '../iconify-source.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
@@ -13,7 +14,7 @@ import { PRIMARY_COLLECTION } from '../progressive-catalog.js';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const { values } = parseArgs({ options: { out: { type: 'string' }, iconify: { type: 'string' } } });
 const out = path.resolve(values.out || path.join(root, 'data/search'));
-const snapshot = '2.2.560';
+
 const integrity = 'YclhHQsi7GT88AOE0lVZFO5n1PKxEa8DImC3e8CHhWLbzQuVHR/i06IXP6Dw5nZWT38PFOKe4NeaHXYdFjbZdQ==';
 const read = p => JSON.parse(fs.readFileSync(p, 'utf8'));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');

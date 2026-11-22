@@ -104,10 +104,10 @@ for (const brotli of [true, false]) {
     const remote = await worker.search({ query: publicId }, { selected: publicId });
     assert.deepEqual(remote.matches[0], [publicId, 'exact']);
     assert.deepEqual(remote.selected, remote.items[0]);
-    assert.equal(remote.selected.src, 'https://api.iconify.design/mdi/home.svg');
+    assert.match(remote.selected.artworkSet, /\/json\/mdi\.json$/);
     const remoteDetail = (await worker.detail(publicId)).item;
     assert.ok(remoteDetail.keywords.includes('mdi'));
-    assert.equal(remoteDetail.src, remote.selected.src);
+    assert.equal(remoteDetail.artworkSet, remote.selected.artworkSet);
     assert.deepEqual(worker.requests, loadRequests);
 
     const unicode = manifest.collections.find(c => c.id === 'unicode');

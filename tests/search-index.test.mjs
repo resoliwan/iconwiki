@@ -66,8 +66,16 @@ test('Iconify details resolve artwork, author, and searchable aliases from the b
   ])]));
   block.metadata = meta;
   const item = await hydratePackedItem(block, 0, () => assert.fail('Unexpected network request'));
-  assert.equal(item.src, 'https://api.iconify.design/test/home.svg');
+  assert.match(item.artworkSet, /^https:\/\/raw\.githubusercontent\.com\/iconify\/icon-sets\/[a-f0-9]{40}\/json\/test\.json$/);
   assert.equal(item.monochrome, true);
   assert.deepEqual(item.keywords, ['go home', 'home', 'house']);
   assert.equal(item.author, 'Designer');
+});
+
+test('GitHub artwork honors inherited dimensions and mirrored aliases', async () => {
+  const { svgForIcon } = await import('../iconify-art.js');
+  const set = { width: 32, icons: { left: { body: '<path/>', height: 12 } },
+    aliases: { right: { parent: 'left', hFlip: true }, original: { parent: 'right', hFlip: true } } };
+  assert.match(svgForIcon(set, 'right'), /viewBox="0 0 32 12".*scale\(-1 1\)/);
+  assert.equal(svgForIcon(set, 'original'), svgForIcon(set, 'left'));
 });

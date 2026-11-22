@@ -1,3 +1,4 @@
+import { showArtwork, forgetArtwork } from './iconify-art.js';
 import { bindSearchInput } from './search-input.js';
 import { ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=silent-ai-1';
 
@@ -199,7 +200,7 @@ function art(item) {
     const img = el('img');
     img.alt = '';
     img.loading = 'lazy';
-    img.src = item.src;
+    showArtwork(img, item);
     node.append(img);
   } else if (item.kind === 'font') {
     node.classList.add('material-symbol');
@@ -314,6 +315,7 @@ function showResults(message) {
   const focusedId = $('#grid').contains(document.activeElement) ? document.activeElement.dataset.id : null;
   const fragment = document.createDocumentFragment();
   for (const item of currentResults) fragment.append(resultCard(item, currentSearch));
+  forgetArtwork($('#grid'));
   $('#grid').replaceChildren(fragment);
   if (focusedId) [...$('#grid').children].find(card => card.dataset.id === focusedId)?.focus({ preventScroll: true });
   $('#grid').classList.toggle('image-only', state.displayMode === 'images');
@@ -427,6 +429,7 @@ function renderPanel() {
   panel.hidden = !visible;
   $('#workspace').classList.toggle('with-detail', visible);
   syncMobileOverlay();
+  forgetArtwork(panel);
   panel.replaceChildren();
   if (!visible) return;
   renderDetail(state.byId.get(state.selected));
@@ -644,7 +647,7 @@ function loadingError(message) {
   loadStatus.textContent = `Could not load icons: ${message}. Reload to retry.`;
 }
 try {
-  worker = new Worker(new URL('./search-worker.js?v=packed-1', import.meta.url), { type: 'module' });
+  worker = new Worker(new URL('./search-worker.js?v=git-art-1', import.meta.url), { type: 'module' });
   worker.onerror = event => loadingError(event.message || 'Search worker unavailable');
   worker.onmessage = ({ data }) => {
     if (data.type === 'manifest') {

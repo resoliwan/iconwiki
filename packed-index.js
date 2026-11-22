@@ -1,3 +1,4 @@
+import { artworkURL } from './iconify-source.js';
 import { decodeBundle, KEYWORD_PHRASE } from './scripts/search_index_codec.mjs';
 
 function supportedCompression() {
@@ -56,7 +57,7 @@ export function packedItem(block, rowIndex) {
   if (variant) item.variant = block.variants[variant];
   if (credit) item.attribution = block.credits[credit];
   if (meta.namespace === 'iconify') {
-    item.src = `https://api.iconify.design/${meta.prefix}/${slug}.svg`;
+    item.artworkSet = artworkURL(meta.prefix);
     item.monochrome = !meta.palette;
     item.author = meta.author;
   } else if (item.kind === 'image') item.src = src || `./assets/${block.id}/${slug}.svg`;

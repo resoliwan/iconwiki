@@ -108,4 +108,4 @@ Review the applicable upstream license before copying, modifying, or redistribut
 
 ## Iconify
 
-Search metadata comes from the public collections in @iconify/json 2.2.560. Visible artwork loads from the Iconify API. The [collection registry](./data/search/manifest.json) records each collection’s author, original source and license.
+Search metadata comes from the public collections in @iconify/json 2.2.560. Visible artwork is read from the corresponding [GitHub snapshot](https://github.com/iconify/icon-sets/tree/d1fdcf54272b299075b4fbf21851147e8c3846f9/json). The [collection registry](./data/search/manifest.json) records each collection’s author, original source and license.
