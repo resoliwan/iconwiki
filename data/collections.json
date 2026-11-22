@@ -633,5 +633,192 @@
     "licenseClass": "permissive",
     "licenseUrl": "./data/sources/TEENYICONS-LICENSE.txt",
     "note": "15-pixel outline and solid interface icons by Anja van Staden."
+  },
+  {
+    "id": "captain-icon",
+    "name": "Captain Icon",
+    "version": "81f037054",
+    "catalog": "./data/captain-icon.json",
+    "sourceUrl": "https://mariodelvalle.github.io/CaptainIconWeb/",
+    "license": "CC-BY-SA",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/CAPTAIN-ICON-LICENSE.txt",
+    "note": "Original numbered SVGs by Mario del Valle Guijarro, distributed under CC BY-SA. The author does not specify a license version."
+  },
+  {
+    "id": "themify-icons",
+    "name": "Themify Icons",
+    "version": "1.0.1",
+    "catalog": "./data/themify-icons.json",
+    "sourceUrl": "https://themify.me/themify-icons",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/THEMIFY-ICONS-LICENSE.txt",
+    "note": "Themify icon font outlines are rendered as standalone SVGs under SIL OFL 1.1. Brand names and logos are trademarks of their respective owners."
+  },
+  {
+    "id": "devicons-vorillaz",
+    "name": "Devicons (Theodore Vorillas)",
+    "version": "1.8.0",
+    "catalog": "./data/devicons-vorillaz.json",
+    "sourceUrl": "https://github.com/vorillaz/devicons",
+    "license": "MIT",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/DEVICONS-VORILLAZ-LICENSE.txt",
+    "note": "Original Devicons SVGs by Theodore Vorillas, licensed under MIT. Brand logos are subject to their owners’ trademarks."
+  },
+  {
+    "id": "amazing-neo",
+    "name": "Amazing Neo",
+    "version": "2.0.0",
+    "catalog": "./data/amazing-neo.json",
+    "sourceUrl": "https://amazingneo.com/icons",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/AMAZING-NEO-LICENSE.txt",
+    "note": "Amazing Neo regular and brand font outlines are rendered as standalone SVGs under SIL OFL 1.1. Brand marks are listed under Restricted / Brand."
+  },
+  {
+    "id": "microns",
+    "name": "Microns",
+    "version": "1.2.2",
+    "catalog": "./data/microns.json",
+    "sourceUrl": "https://github.com/stephenhutchings/microns",
+    "license": "CC-BY-SA-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/MICRONS-LICENSE.txt",
+    "note": "SVG artwork by Stephen Hutchings under CC BY-SA 4.0. Identical files share a catalog item with searchable aliases."
+  },
+  {
+    "id": "ikonate",
+    "name": "Ikonate",
+    "version": "1.1.1",
+    "catalog": "./data/ikonate.json",
+    "sourceUrl": "https://github.com/eucalyptuss/ikonate",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/IKONATE-LICENSE.txt",
+    "note": "Ikonate by Mikołaj Dobrucki and Michał Zaręmski. SVGs include a two-pixel outline for standalone rendering."
+  },
+  {
+    "id": "emblemicons",
+    "name": "Emblemicons",
+    "version": "1d5703389",
+    "catalog": "./data/emblemicons.json",
+    "sourceUrl": "https://github.com/emblemicons/emblemicons.github.io",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/EMBLEMICONS-LICENSE.txt",
+    "note": "Transparent SVGs in the original outline and filled styles."
+  },
+  {
+    "id": "govicons",
+    "name": "Govicons",
+    "version": "1d9f4673d",
+    "catalog": "./data/govicons.json",
+    "sourceUrl": "https://github.com/540co/govicons",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/GOVICONS-LICENSE.txt",
+    "note": "Government-themed icons. Organization names and emblems may have separate protections."
+  },
+  {
+    "id": "file-icon-vectors",
+    "name": "File Icon Vectors",
+    "version": "9b4b95928",
+    "catalog": "./data/file-icon-vectors.json",
+    "sourceUrl": "https://github.com/dmhendricks/file-icon-vectors",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/FILE-ICON-VECTORS-LICENSE.txt",
+    "note": "Generic file extensions from the Classic style. The source credits additional licensors for branded designs."
+  },
+  {
+    "id": "linecons",
+    "name": "Linecons",
+    "version": "Original release",
+    "catalog": "./data/linecons.json",
+    "sourceUrl": "https://designmodo.com/linecons-free/",
+    "license": "CC-BY-ND-3.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/LINECONS-LICENSE.txt",
+    "note": "Unmodified SVGs from the original release. Credit Designmodo and link to https://designmodo.com/."
+  },
+  {
+    "id": "oci-icons",
+    "name": "OCI Icons",
+    "version": "d8ccfe944",
+    "catalog": "./data/oci-icons.json",
+    "sourceUrl": "https://github.com/opencontainers/artwork",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/OCI-ICONS-LICENSE.txt",
+    "note": "Infrastructure icons published by the Open Container Initiative."
+  },
+  {
+    "id": "paymentfont",
+    "name": "PaymentFont",
+    "version": "c9dcb62cc",
+    "catalog": "./data/paymentfont.json",
+    "sourceUrl": "https://github.com/AlexanderPoellmann/PaymentFont",
+    "license": "OFL-1.1",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/PAYMENTFONT-LICENSE.txt",
+    "note": "Individual outlines from the PaymentFont font. Payment brand marks belong to their respective owners."
+  },
+  {
+    "id": "runestro-525",
+    "name": "525icons",
+    "version": "92ffd18a7",
+    "catalog": "./data/runestro-525.json",
+    "sourceUrl": "https://github.com/runestro/525icons",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/RUNESTRO-525-LICENSE.txt",
+    "note": "Selected general-purpose glyph outlines. The author excludes copyrighted brand logos from the font license."
+  },
+  {
+    "id": "linea",
+    "name": "Linea",
+    "version": "8ecf784f5",
+    "catalog": "./data/linea.json",
+    "sourceUrl": "https://github.com/linea-io/Linea-Iconset",
+    "license": "CC0-1.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/LINEA-LICENSE.txt",
+    "note": "Source SVGs across the seven Linea categories."
+  },
+  {
+    "id": "picol",
+    "name": "PICOL",
+    "version": "fe860a96e",
+    "catalog": "./data/picol.json",
+    "sourceUrl": "https://github.com/PicolSigns/Icons",
+    "license": "CC-BY-3.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/PICOL-LICENSE.txt",
+    "note": "Pictorial Communication Language icons. Original SVG artwork, credited to Melih Bilgil."
+  },
+  {
+    "id": "keyrune",
+    "name": "Keyrune",
+    "version": "256add455",
+    "catalog": "./data/keyrune.json",
+    "sourceUrl": "https://github.com/andrewgioia/keyrune",
+    "license": "GPL-3.0",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/KEYRUNE-LICENSE.txt",
+    "note": "Original source SVGs identifying Magic: The Gathering sets. The underlying symbols are Wizards of the Coast trademarks."
+  },
+  {
+    "id": "iconic-free",
+    "name": "Iconic Free",
+    "version": "f46e05a4e",
+    "catalog": "./data/iconic-free.json",
+    "sourceUrl": "https://iconic.app/c/availability/free/",
+    "license": "Iconic Free License",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/ICONIC-FREE-LICENSE.txt",
+    "note": "Iconic by Make Lemonade. The SVG mirror matches the creator’s 200-item Free directory. Free license permits redistribution with optional attribution."
   }
 ]

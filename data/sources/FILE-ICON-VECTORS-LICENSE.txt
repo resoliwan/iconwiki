@@ -1,0 +1,41 @@
+Daniel Hendricks and Redbooth
+https://github.com/dmhendricks/file-icon-vectors
+MIT
+Generic file extensions from the Classic style. The source credits additional licensors for branded designs.
+
+The MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the
+Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+All icons used in the creation of this library were licensed MIT, Creative Commons ([attribution](#attribution)) or purchased royalty-free. Any exceptions noted below. All logos are copyright their respective owners.
+
+If you feel that you have a copyright issue, please feel free to [report it](https://github.com/dmhendricks/file-icon-vectors/issues).
+
+### Attribution
+
+* [Android](https://www.flaticon.com/free-icon/android-logo_61120?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icon provided by [Google](https://www.flaticon.com/authors/google?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) via [flaticon.com](https://www.flaticon.com/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [Apple](https://github.com/simple-icons/simple-icons/blob/develop/icons/apple.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [Debian](https://github.com/simple-icons/simple-icons/blob/develop/icons/debian.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [Internet Explorer](https://github.com/simple-icons/simple-icons/blob/develop/icons/internetexplorer.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icons provided by [Simple Icons](https://simpleicons.org/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [Adobe Flash](https://github.com/vscode-icons/vscode-icons/blob/master/icons/file_type_flash.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icon provided by [vscode-icons](https://github.com/vscode-icons/vscode-icons/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [QuickTime](https://www.flaticon.com/free-icon/quicktime_732104?utm_source=github.com&utm_medium=campaign&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [Chrome](https://www.flaticon.com/free-icon/chrome_732205?utm_source=github.com&utm_medium=campaign&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) and [Firefox](https://www.flaticon.com/free-icon/firefox_732023?utm_source=github.com&utm_medium=campaign&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icons provided by [Pixel Perfect](https://www.flaticon.com/authors/pixel-perfect?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) via [flaticon.com](https://www.flaticon.com/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [.NET](https://github.com/konpa/devicon/blob/master/icons/dot-net/dot-net-original.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [CoffeeScript](https://github.com/konpa/devicon/blob/master/icons/coffeescript/coffeescript-original.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [Git](https://github.com/konpa/devicon/blob/master/icons/git/git-plain.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors), [RedHat](https://github.com/konpa/devicon/blob/master/icons/redhat/redhat-plain.svg?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icons provided by [Devicon](http://konpa.github.io/devicon/)
+* [Nintendo Switch](https://www.flaticon.com/free-icon/nintendo-switch_871377?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icon provided by  [flaticon.com](https://www.flaticon.com/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [BitTorrent](http://www.icons101.com/icon/id_73504/setid_2388/Minimalist_Black_Icons__WIP_by_noshery/bittorrent?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icon provided by [noshery](http://www.icons101.com/artist/id_2388/noshery) from [icons101.com](http://www.icons101.com/?utm_source=github.com&utm_medium=campaign&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [GIMP](https://icons8.com/icon/39867/gimp), [PowerShell](https://icons8.com/icon/59499/powershell) icons provided by [Icons8 LLC](https://icons8.com/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [Sass](https://www.onlinewebfonts.com/icon/411905), [Globe](https://www.onlinewebfonts.com/icon/336552) icons provided by [oNline Web Fonts](http://www.onlinewebfonts.com?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* Classic set [Folder Icon](https://www.iconfinder.com/icons/173016/close_folder_icon) made by [Snip Master](https://www.iconfinder.com/snipicons) from [Iconfinder](https://www.iconfinder.com?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [GNU](https://commons.wikimedia.org/wiki/File:Gnu-head-30-years-anniversary.svg) icon from [Be..anyone](https://commons.wikimedia.org/wiki/User:Be..anyone) at [Wikimedia Commons](https://commons.wikimedia.org/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [Classic Windows](https://commons.wikimedia.org/wiki/File:Microsoft_Logo_Wingdings_Font.svg) icon from [Wdwdbot](https://commons.wikimedia.org/wiki/User:Wdwdbot) at [Wikimedia Commons](https://commons.wikimedia.org/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)
+* [Maven](https://www.onlinewebfonts.com/icon/161017?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors) icon provided by [OnlineWebFonts](https://www.onlinewebfonts.com/?utm_source=github.com&utm_medium=referral&utm_content=link&utm_campaign=dmhendricks%2Ffile-icon-vectors)

@@ -6,7 +6,8 @@ const RESULT_BATCH_SIZE = 100;
 const mobileLayout = matchMedia('(max-width:760px)');
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons',
-  'fontaudio', 'font-gis', 'academicons', 'svg-spinners', 'temaki', 'arcticons', 'garden-svg-icons', 'teenyicons']);
+  'amazing-neo', 'captain-icon', 'devicons-vorillaz', 'ikonate', 'microns', 'themify-icons', 'iconic-free',
+  'emblemicons', 'govicons', 'linecons', 'paymentfont', 'runestro-525', 'linea', 'picol', 'fontaudio', 'font-gis', 'academicons', 'svg-spinners', 'temaki', 'arcticons', 'garden-svg-icons', 'teenyicons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
@@ -33,21 +34,25 @@ let searchRequest = 0;
 let inFlight = null;
 let pendingSearch = null;
 let manifestReady = false;
+let catalogCount = 0;
 let worker;
 let refreshTimer;
 let primaryReleased = false;
 let loadingState = { loaded: [], failed: [], total: 0, loading: true, primaryReady: false };
 const loadStatus = el('span', 'hint');
 loadStatus.id = 'library-load-status';
-const retryLoad = button('Retry failed libraries', 'text-button', () => worker.postMessage({ type: 'retry' }));
+const retryLoad = button('Retry search download', 'text-button', () => worker.postMessage({ type: 'retry' }));
 retryLoad.hidden = true;
 $('.result-summary').append(loadStatus, retryLoad);
 function updateLoadStatus() {
   const { loaded, total, failed, loading } = loadingState;
-  loadStatus.textContent = total ? `${loaded.length}/${total} libraries ready${loading ? ' · Loading more…' : ''}${failed.length ? ` · ${failed.length} failed` : ''}` : 'Loading Material icons…';
+  const waitingForIndex = total && !loaded.length && !failed.length;
+  if (failed.length) loadStatus.textContent = 'Search download failed';
+  else if (total && loaded.length === total) loadStatus.textContent = `${catalogCount.toLocaleString()} icons · ${total} libraries ready`;
+  else loadStatus.textContent = total ? `Loading search index · ${total} libraries` : 'Loading Material icons…';
   retryLoad.hidden = loading || !failed.length;
-  $('#empty h2').textContent = loading ? 'No matches in the libraries ready so far' : 'No matching images';
-  $('#empty p').textContent = loading ? 'Results will update as more libraries arrive.' : 'Try another word or a shorter search term.';
+  $('#empty h2').textContent = waitingForIndex ? 'No matches in the libraries ready so far' : 'No matching images';
+  $('#empty p').textContent = waitingForIndex ? 'Results will update when the search index is ready.' : 'Try another word or a shorter search term.';
 }
 function dispatchSearch() {
   if (inFlight || !pendingSearch || !manifestReady) return;
@@ -58,7 +63,10 @@ function dispatchSearch() {
 async function releaseBackground() {
   if (primaryReleased || !loadingState.primaryReady) return;
   primaryReleased = true;
-  try { await document.fonts.load('40px "Material Symbols Outlined Local"'); } catch { /* Allow other libraries if the font fails. */ }
+  try {
+    await Promise.race([document.fonts.load('40px "Material Symbols Outlined Local"'),
+      new Promise(resolve => setTimeout(resolve, 350))]);
+  } catch { /* Continue if the preview font is unavailable. */ }
   requestAnimationFrame(() => requestAnimationFrame(() => worker.postMessage({ type: 'continue' })));
 }
 function toast(message) {
@@ -187,11 +195,11 @@ function art(item) {
   const node = el('span', 'emoji');
   node.setAttribute('aria-hidden', 'true');
   if (item.kind === 'image') {
-    if (!item.colored && (MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color' || item.collection === 'icon-park' && item.variant !== 'multi-color')) node.classList.add('monochrome');
+    if (!item.colored && (item.monochrome || MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color' || item.collection === 'icon-park' && item.variant !== 'multi-color')) node.classList.add('monochrome');
     const img = el('img');
-    img.src = item.src;
     img.alt = '';
     img.loading = 'lazy';
+    img.src = item.src;
     node.append(img);
   } else if (item.kind === 'font') {
     node.classList.add('material-symbol');
@@ -302,7 +310,7 @@ function showResults(message) {
   const selectedItem = state.byId.get(state.selected);
   state.byId = new Map(currentResults.map(item => [item.id, item]));
   if (selectedItem) state.byId.set(selectedItem.id, selectedItem);
-  if (message.selected) state.byId.set(message.selected.id, message.selected);
+  if (message.selected && !selectedItem?.detailsReady) state.byId.set(message.selected.id, message.selected);
   const focusedId = $('#grid').contains(document.activeElement) ? document.activeElement.dataset.id : null;
   const fragment = document.createDocumentFragment();
   for (const item of currentResults) fragment.append(resultCard(item, currentSearch));
@@ -317,6 +325,7 @@ function showResults(message) {
   $('#load-more').hidden = remaining <= 0;
   $('#load-more').textContent = `Load ${Math.min(RESULT_BATCH_SIZE, remaining).toLocaleString()} more`;
   if (message.selected && $('#detail').hidden) renderPanel();
+  if (message.selected) requestDetails();
   updateLoadStatus();
   void releaseBackground();
 }
@@ -330,15 +339,24 @@ function panelHeading(label) {
 function closePanel() {
   const oldId = state.selected;
   state.selected = null;
+  detailRequested = null;
   renderPanel();
   const old = [...$('#grid').children].find(node => node.dataset.id === oldId);
   for (const card of $('#grid').children) card.setAttribute('aria-pressed', 'false');
   updateURL();
   (old || $('#search')).focus({ preventScroll: true });
 }
+let detailRequested;
+function requestDetails() {
+  if (loadingState.loaded.length && state.selected && detailRequested !== state.selected && !state.byId.get(state.selected)?.detailsReady) {
+    detailRequested = state.selected;
+    worker.postMessage({ type: 'detail', id: state.selected });
+  }
+}
 function select(id) {
   state.selected = id;
   renderPanel();
+  requestDetails();
   for (const card of $('#grid').children) card.setAttribute('aria-pressed', String(card.dataset.id === id));
   updateURL();
   $('#detail .close-button')?.focus({ preventScroll: true });
@@ -369,6 +387,8 @@ function renderDetail(item) {
   }
   row('Library', collection?.name || item.collection);
   row('Category', item.group || '—');
+  if (item.author) row('Author', item.author);
+  if (item.attribution) row('Attribution', item.attribution);
   row('ID', el('code', '', item.id));
   if (item.codepoints) row('Code', el('code', '', item.codepoints.map(c => `U+${c}`).join(' ')));
   if (item.version) row('Introduced', `Emoji ${item.version}`);
@@ -624,14 +644,27 @@ function loadingError(message) {
   loadStatus.textContent = `Could not load icons: ${message}. Reload to retry.`;
 }
 try {
-  worker = new Worker(new URL('./search-worker.js?v=material-preview-1', import.meta.url), { type: 'module' });
+  worker = new Worker(new URL('./search-worker.js?v=packed-1', import.meta.url), { type: 'module' });
   worker.onerror = event => loadingError(event.message || 'Search worker unavailable');
   worker.onmessage = ({ data }) => {
     if (data.type === 'manifest') {
-      state.collections = data.collections;
+      state.collections = data.collections.map(c => c.namespace === 'iconify' ? { ...c, name: `${c.name} (Iconify)` } : c);
+      catalogCount = data.rowCount;
       manifestReady = true;
       readURL(); renderPanel(); renderGrid();
       if (state.smartEnabled && state.query.trim()) runSmartSearch();
+    } else if (data.type === 'detail' && data.item.id === state.selected) {
+      const panel = $('#detail');
+      const focused = panel.contains(document.activeElement) ? document.activeElement : null;
+      const scrollTop = panel.scrollTop;
+      state.byId.set(data.item.id, { ...data.item, detailsReady: true });
+      renderPanel();
+      panel.scrollTop = scrollTop;
+      if (focused) {
+        const next = [...panel.querySelectorAll('button, a')].find(node =>
+          node.tagName === focused.tagName && node.textContent === focused.textContent);
+        (next || panel.querySelector('.close-button'))?.focus({ preventScroll: true });
+      }
     } else if (data.type === 'progress') {
       const changed = data.loaded.length !== loadingState.loaded.length || data.primaryReady !== loadingState.primaryReady;
       loadingState = data;
@@ -647,6 +680,9 @@ try {
       inFlight = null;
       if (data.request === searchRequest) showResults(data);
       dispatchSearch();
+    } else if (data.type === 'error' && data.action === 'detail') {
+      detailRequested = null;
+      toast('Additional icon details could not be loaded. Reopen the icon to retry.');
     } else if (data.type === 'error') {
       inFlight = null;
       loadingError(data.message);

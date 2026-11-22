@@ -85,3 +85,27 @@ For the Iconify-normalized additions, the version shown is the pinned `@iconify-
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
 Review the applicable upstream license before copying, modifying, or redistributing an asset.
+
+## Ecosystem icon collections
+
+- [Captain Icon](https://mariodelvalle.github.io/CaptainIconWeb/) — Original numbered SVGs by Mario del Valle Guijarro, distributed under CC BY-SA. The author does not specify a license version. [CC-BY-SA](./data/sources/CAPTAIN-ICON-LICENSE.txt)
+- [Themify Icons](https://themify.me/themify-icons) — Themify icon font outlines are rendered as standalone SVGs under SIL OFL 1.1. Brand names and logos are trademarks of their respective owners. [OFL-1.1](./data/sources/THEMIFY-ICONS-LICENSE.txt)
+- [Devicons (Theodore Vorillas)](https://github.com/vorillaz/devicons) — Original Devicons SVGs by Theodore Vorillas, licensed under MIT. Brand logos are subject to their owners’ trademarks. [MIT](./data/sources/DEVICONS-VORILLAZ-LICENSE.txt)
+- [Amazing Neo](https://amazingneo.com/icons) — Amazing Neo regular and brand font outlines are rendered as standalone SVGs under SIL OFL 1.1. Brand marks are listed under Restricted / Brand. [OFL-1.1](./data/sources/AMAZING-NEO-LICENSE.txt)
+- [Microns](https://github.com/stephenhutchings/microns) — SVG artwork by Stephen Hutchings under CC BY-SA 4.0. Identical files share a catalog item with searchable aliases. [CC-BY-SA-4.0](./data/sources/MICRONS-LICENSE.txt)
+- [Ikonate](https://github.com/eucalyptuss/ikonate) — Ikonate by Mikołaj Dobrucki and Michał Zaręmski. SVGs include a two-pixel outline for standalone rendering. [MIT](./data/sources/IKONATE-LICENSE.txt)
+- [Emblemicons](https://github.com/emblemicons/emblemicons.github.io) — Transparent SVGs in the original outline and filled styles. [MIT](./data/sources/EMBLEMICONS-LICENSE.txt)
+- [Govicons](https://github.com/540co/govicons) — Government-themed icons. Organization names and emblems may have separate protections. [OFL-1.1](./data/sources/GOVICONS-LICENSE.txt)
+- [File Icon Vectors](https://github.com/dmhendricks/file-icon-vectors) — Generic file extensions from the Classic style. The source credits additional licensors for branded designs. [MIT](./data/sources/FILE-ICON-VECTORS-LICENSE.txt)
+- [Linecons](https://designmodo.com/linecons-free/) — Unmodified SVGs from the original release. Credit Designmodo and link to https://designmodo.com/. [CC-BY-ND-3.0](./data/sources/LINECONS-LICENSE.txt)
+- [OCI Icons](https://github.com/opencontainers/artwork) — Infrastructure icons published by the Open Container Initiative. [Apache-2.0](./data/sources/OCI-ICONS-LICENSE.txt)
+- [PaymentFont](https://github.com/AlexanderPoellmann/PaymentFont) — Individual outlines from the PaymentFont font. Payment brand marks belong to their respective owners. [OFL-1.1](./data/sources/PAYMENTFONT-LICENSE.txt)
+- [525icons](https://github.com/runestro/525icons) — Selected general-purpose glyph outlines. The author excludes copyrighted brand logos from the font license. [OFL-1.1](./data/sources/RUNESTRO-525-LICENSE.txt)
+- [Linea](https://github.com/linea-io/Linea-Iconset) — Source SVGs across the seven Linea categories. [CC0-1.0](./data/sources/LINEA-LICENSE.txt)
+- [PICOL](https://github.com/PicolSigns/Icons) — Pictorial Communication Language icons. Original SVG artwork, credited to Melih Bilgil. [CC-BY-3.0](./data/sources/PICOL-LICENSE.txt)
+- [Keyrune](https://github.com/andrewgioia/keyrune) — Original source SVGs identifying Magic: The Gathering sets. The underlying symbols are Wizards of the Coast trademarks. [GPL-3.0](./data/sources/KEYRUNE-LICENSE.txt)
+- [Iconic Free](https://iconic.app/c/availability/free/) — Iconic by Make Lemonade. The SVG mirror matches the creator’s 200-item Free directory. Free license permits redistribution with optional attribution. [Iconic Free License](./data/sources/ICONIC-FREE-LICENSE.txt)
+
+## Iconify
+
+Search metadata comes from the public collections in @iconify/json 2.2.560. Visible artwork loads from the Iconify API. The [collection registry](./data/search/manifest.json) records each collection’s author, original source and license.

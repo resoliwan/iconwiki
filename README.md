@@ -4,7 +4,7 @@ Making the web more beautiful, fast, and open through great icons.
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Over 157,000 icons and emoji from 58 libraries.
+Search 710,907 icon and emoji entries across 339 libraries.
 
 ## Key features
 
@@ -96,9 +96,29 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | Garden SVG Icons | 1.2.8 | [Apache-2.0](./data/sources/GARDEN-SVG-ICONS-LICENSE.txt) | 1,491 |
 | Cryptocurrency Color Icons | 1.2.4 | [CC0-1.0](./data/sources/CRYPTOCURRENCY-COLOR-LICENSE.txt) | 483 |
 | Teenyicons | 1.2.2 | [MIT](./data/sources/TEENYICONS-LICENSE.txt) | 1,200 |
-| **Total** |  |  | **157,220** |
+| Captain Icon | 81f037054 | [CC-BY-SA](./data/sources/CAPTAIN-ICON-LICENSE.txt) | 375 |
+| Themify Icons | 1.0.1 | [OFL-1.1](./data/sources/THEMIFY-ICONS-LICENSE.txt) | 352 |
+| Devicons (Theodore Vorillas) | 1.8.0 | [MIT](./data/sources/DEVICONS-VORILLAZ-LICENSE.txt) | 192 |
+| Amazing Neo | 2.0.0 | [OFL-1.1](./data/sources/AMAZING-NEO-LICENSE.txt) | 1,659 |
+| Microns | 1.2.2 | [CC-BY-SA-4.0](./data/sources/MICRONS-LICENSE.txt) | 170 |
+| Ikonate | 1.1.1 | [MIT](./data/sources/IKONATE-LICENSE.txt) | 283 |
+| Emblemicons | 1d5703389 | [MIT](./data/sources/EMBLEMICONS-LICENSE.txt) | 1,064 |
+| Govicons | 1d9f4673d | [OFL-1.1](./data/sources/GOVICONS-LICENSE.txt) | 136 |
+| File Icon Vectors | 9b4b95928 | [MIT](./data/sources/FILE-ICON-VECTORS-LICENSE.txt) | 23 |
+| Linecons | Original release | [CC-BY-ND-3.0](./data/sources/LINECONS-LICENSE.txt) | 48 |
+| OCI Icons | d8ccfe944 | [Apache-2.0](./data/sources/OCI-ICONS-LICENSE.txt) | 65 |
+| PaymentFont | c9dcb62cc | [OFL-1.1](./data/sources/PAYMENTFONT-LICENSE.txt) | 116 |
+| 525icons | 92ffd18a7 | [OFL-1.1](./data/sources/RUNESTRO-525-LICENSE.txt) | 310 |
+| Linea | 8ecf784f5 | [CC0-1.0](./data/sources/LINEA-LICENSE.txt) | 715 |
+| PICOL | fe860a96e | [CC-BY-3.0](./data/sources/PICOL-LICENSE.txt) | 549 |
+| Keyrune | 256add455 | [GPL-3.0](./data/sources/KEYRUNE-LICENSE.txt) | 434 |
+| Iconic Free | f46e05a4e | [Iconic Free License](./data/sources/ICONIC-FREE-LICENSE.txt) | 200 |
+| Iconify public collections (264) | 2.2.560 | [Per-library licenses](./data/search/manifest.json) | 546,996 |
+| **Total** |  |  | **710,907** |
 
 For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the collections from Keyline Icons through Teenyicons, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
+
+The count includes 75 locally hosted libraries and all 264 public Iconify collections in this snapshot. A library available through both sources has separate entries. Visible Iconify images load from the Iconify API. Each detail panel links to the original source and license.
 
 ## Run locally
 
@@ -117,28 +137,3 @@ npm run data
 ## License
 
 Icon Wiki's code is licensed under the [MIT License](./LICENSE). Icons and emoji retain their original licenses, listed above and in [Third-Party Notices](./THIRD_PARTY_NOTICES.md).
-
-
-### Progressive loading and browser search
-
-The first page loads 100 Google Material Symbols. After the icon font and first
-results paint, the worker fetches the remaining Material icons and the other libraries,
-with up to three catalog requests at a time. Search results expand as data arrives.
-Material counts as ready once both parts load. A retry fetches only the missing data.
-
-A module Web Worker owns catalog fetching, preparation, and existing search logic.
-The UI sends only search options and receives the visible result batch. At most one
-search is in flight; queued input is replaced by the latest query, and obsolete
-responses are ignored. No search API, backend, or generated search index is required.
-Normal HTTP caching applies; this change does not add persistent offline storage.
-
-For a reproducible local performance comparison, run
-`python3 scripts/benchmark_server.py` and open
-`http://127.0.0.1:4175/benchmark`. It compares the baseline commit with the current
-working tree, alternating three runs each, with gzip, cache disabled, a shared
-10 Mbps response budget, and 40 ms delay per request. This local measurement server
-is only a development tool; the deployed application remains fully static.
-
-Typing waits for an 80 ms pause before automatic search. Enter searches immediately;
-IME composition (including the Enter used to commit Korean text) does not trigger
-a premature search. Existing results remain visible while the next search runs.

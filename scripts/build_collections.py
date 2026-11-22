@@ -300,7 +300,11 @@ collections = [
     },
 ]
 
-for library_id, config in SPECIALTY_LIBRARIES.items():
+extra_libraries = dict(SPECIALTY_LIBRARIES)
+for source in ["ecosystem-packs.json", "additional-ecosystem-packs.json", "iconic-free-pack.json"]:
+    extra_libraries.update(json.loads((DATA / "sources" / source).read_text()))
+
+for library_id, config in extra_libraries.items():
     collections.append({
         "id": library_id, "name": config["name"], "version": config["version"],
         "catalog": f"./data/{library_id}.json", "sourceUrl": config["upstream"],

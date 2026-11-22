@@ -1,79 +1,87 @@
-import { filterCatalogItems } from './catalog.js?v=progressive-results-1';
-import { buildSmartResults } from './smart-search.js?v=silent-ai-1';
-import { loadProgressively, PRIMARY_COLLECTION } from './progressive-catalog.js?v=material-preview-1';
+import { prepareCatalog, filterCatalogItems } from './catalog.js';
+import { buildSmartResults } from './smart-search.js';
+import { createPackedSearch } from './packed-search.js';
+import { loadPackedIndex, packedItem, hydratePackedItem } from './packed-index.js';
 
-let collections = [], items = [], byId = new Map(), revision = 0;
-const loaded = new Set(), failures = new Map();
-let releasePrimary;
-let usePreview = false, previewCount = null;
-const primaryPainted = new Promise(resolve => { releasePrimary = resolve; });
-let loading = false, cached;
-async function read(url) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
-  if (!response.ok) throw new Error(`Could not load ${url} (${response.status})`);
-  return response.json();
-}
+let manifest, searchIndex, preview = [], loading = false, failed = false, refreshManifest = false;
+const read = (url, options = {}) => fetch(url, { ...options, signal: AbortSignal.timeout(60000) });
+
 function progress() {
-  postMessage({ type: 'progress', loaded: [...loaded], failed: [...failures.keys()], total: collections.length, loading,
-    primaryReady: previewCount !== null || loaded.has(PRIMARY_COLLECTION) });
+  postMessage({ type: 'progress', loaded: searchIndex ? manifest.collections.map(c => c.id) : [],
+    failed: failed ? ['search index'] : [], total: manifest?.collectionCount || 0, loading,
+    primaryReady: preview.length > 0 || !!searchIndex });
 }
-async function load(list) {
+
+async function load() {
+  if (loading || searchIndex) return;
   loading = true;
+  failed = false;
   progress();
-  await loadProgressively(list, {
-    read,
-    usePreview, previewLoaded: previewCount !== null,
-    accept(collection, chunk, isPreview) {
-      // Stable order is independent of the network completion order.
-      const offset = collection.id === PRIMARY_COLLECTION ? (previewCount ?? 0) : (collections.indexOf(collection) + 1) * 1_000_000;
-      for (const item of chunk) {
-        item._order += offset;
-        byId.set(item.id, item);
+  try {
+    if (!manifest || refreshManifest) {
+      const response = await read('./data/search/manifest.json', refreshManifest ? { cache: 'reload' } : {});
+      if (!response.ok) throw Error('Could not load the collection list');
+      manifest = await response.json();
+      refreshManifest = false;
+      postMessage({ type: 'manifest', collections: manifest.collections, rowCount: manifest.rowCount });
+      const material = manifest.collections.find(c => c.previewCatalog);
+      if (material && !preview.length) {
+        try {
+          const response = await read(material.previewCatalog);
+          if (response.ok) preview = prepareCatalog((await response.json()).map(item => ({ ...item, licenseClass: material.licenseClass })));
+        } catch { /* The complete index also contains these icons. */ }
+        if (preview.length) return;
       }
-      items.push(...chunk);
-      if (isPreview) previewCount = chunk.length;
-      else loaded.add(collection.id);
-      failures.delete(collection.id);
-      revision++;
-      progress();
-    },
-    failed(collection) { failures.set(collection.id, collection); progress(); },
-    primaryReady: () => primaryPainted,
-  });
-  loading = false;
-  progress();
+    }
+    const { blocks } = await loadPackedIndex(manifest);
+    searchIndex = createPackedSearch(blocks);
+    preview = [];
+  } catch (error) {
+    if (error.status === 404 || error.status === 410) refreshManifest = true;
+    failed = true;
+  } finally {
+    loading = false;
+    progress();
+  }
 }
+
 function publicItem(item) {
   return Object.fromEntries(Object.entries(item).filter(([key]) => !key.startsWith('_')));
 }
+
+function search(data) {
+  const started = performance.now();
+  if (searchIndex) {
+    const {total, visible, selected} = searchIndex.search(data);
+    const items = visible.map(({ block, index }) => packedItem(block, index));
+    postMessage({ type: 'results', request: data.request, total, items,
+      matches: items.map((item, i) => [item.id, visible[i].matchType]),
+      related: items.map((item, i) => [item.id, visible[i].relatedTerm]),
+      selected: selected && packedItem(selected.block, selected.index), duration: performance.now() - started });
+    return;
+  }
+  const result = buildSmartResults(preview, data.options, data.expansion, data.resultType);
+  const filtered = filterCatalogItems(result.results, data.withinFilter);
+  const items = filtered.slice(0, data.limit).map(publicItem);
+  const selected = preview.find(item => item.id === data.selected);
+  postMessage({ type: 'results', request: data.request, total: filtered.length, items,
+    matches: items.map(item => [item.id, result.matchTypeById.get(item.id)]),
+    related: items.map(item => [item.id, result.relatedTermById.get(item.id)]),
+    selected: selected && publicItem(selected), duration: performance.now() - started });
+}
+
 self.onmessage = async ({ data }) => {
   try {
-    if (data.type === 'init') {
-      usePreview = data.usePreview === true;
-      collections = await read('./data/collections.json');
-      postMessage({ type: 'manifest', collections });
-      await load(collections);
-    } else if (data.type === 'continue') {
-      releasePrimary();
-    } else if (data.type === 'retry' && !loading) {
-      await load([...failures.values()]);
-    } else if (data.type === 'search') {
-      const started = performance.now();
-      const key = JSON.stringify([revision, data.options, data.expansion, data.resultType, data.withinFilter]);
-      if (cached?.key !== key) {
-        const search = buildSmartResults(items, data.options, data.expansion, data.resultType);
-        cached = { key, search, results: filterCatalogItems(search.results, data.withinFilter) };
+    if (['init', 'retry', 'continue'].includes(data.type)) await load();
+    if (data.type === 'search') search(data);
+    if (data.type === 'detail') {
+      const ref = searchIndex?.resolveId(data.id);
+      if (ref) {
+        const item = await hydratePackedItem(ref.block, ref.index, read);
+        postMessage({ type: 'detail', item });
       }
-      const visible = cached.results.slice(0, data.limit);
-      postMessage({ type: 'results', request: data.request, total: cached.results.length,
-        items: visible.map(publicItem),
-        matches: visible.map(item => [item.id, cached.search.matchTypeById.get(item.id)]),
-        related: visible.map(item => [item.id, cached.search.relatedTermById.get(item.id)]),
-        selected: byId.has(data.selected) ? publicItem(byId.get(data.selected)) : null,
-        duration: performance.now() - started,
-      });
     }
   } catch (error) {
-    postMessage({ type: 'error', request: data.request, message: error.message });
+    postMessage({ type: 'error', action: data.type, request: data.request, message: error.message });
   }
 };
