@@ -1,6 +1,6 @@
 import { showArtwork, forgetArtwork } from './iconify-art.js';
 import { bindSearchInput } from './search-input.js';
-import { ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=silent-ai-1';
+import { ChromeSmartSearch, isDesktopChrome } from './smart-search.js?v=expand-more-1';
 
 const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
@@ -250,24 +250,27 @@ function readURL() {
   renderSmartToggle();
   renderFilterControls();
 }
-function renderExpansionTerms(termCounts = []) {
+function renderExpansionTerms(termCounts) {
   const container = $('#expansion-terms');
-  const visibleTerms = termCounts.filter(([, count]) => count > 0);
-  $('#expansion-panel').hidden = !visibleTerms.length;
+  const more = $('#expand-more');
+  const visibleTerms = (termCounts || []).filter(([, count]) => count > 0);
+  const expansion = state.smartExpansion;
+  $('#expansion-panel').hidden = !(termCounts && state.smartEnabled && expansion?.sourceQuery === state.query.trim()
+    && !expansion.unavailable && (expansion.terms.length || !more.disabled));
   for (const [index, [term, count]] of visibleTerms.entries()) {
     let chip = container.children[index];
-    if (!chip) {
+    if (chip === more) {
       chip = button('', 'expansion-term', () => {
         state.expansionTerm = state.expansionTerm === chip.dataset.term ? '' : chip.dataset.term;
         renderGrid();
       });
-      container.append(chip);
+      more.before(chip);
     }
     chip.dataset.term = term;
     chip.textContent = `${term} ${count.toLocaleString()}`;
     chip.setAttribute('aria-pressed', String(state.expansionTerm === term));
   }
-  while (container.children.length > visibleTerms.length) container.lastElementChild.remove();
+  while (container.children.length > visibleTerms.length + 1) more.previousElementSibling.remove();
 }
 function resultCard(item, search) {
   const card = button('', 'emoji-card', () => select(item.id));
@@ -456,6 +459,8 @@ function renderPanel() {
 }
 
 function setSmartIdle() {
+  $('#expand-more').disabled = false;
+  $('#expand-more').textContent = '+';
   const toggle = $('#smart-search');
   toggle.closest('.inline-toggle').classList.remove('busy');
   toggle.setAttribute('aria-busy', 'false');
@@ -480,9 +485,13 @@ function setSmartExpansion(expansion) {
   if (!expansion?.terms.length) renderExpansionTerms();
 }
 
-async function runSmartSearch({ refresh = false } = {}) {
+$('#expand-more').addEventListener('click', () => runSmartSearch({ more: true }));
+
+async function runSmartSearch({ refresh = false, more = false } = {}) {
   clearTimeout(smartTimer);
   const query = state.query.trim();
+  const previousTerms = more ? state.smartExpansion?.terms : null;
+  if (more && (!previousTerms || $('#expand-more').disabled)) return;
   const request = ++smartRequest;
   if (!state.smartEnabled || !query) {
     setSmartExpansion(null);
@@ -491,6 +500,8 @@ async function runSmartSearch({ refresh = false } = {}) {
     return;
   }
   const toggle = $('#smart-search');
+  $('#expand-more').disabled = true;
+  if (more) $('#expand-more').textContent = '…';
   toggle.closest('.inline-toggle').classList.add('busy');
   toggle.setAttribute('aria-busy', 'true');
   try {
@@ -498,15 +509,19 @@ async function runSmartSearch({ refresh = false } = {}) {
       if (request !== smartRequest || query !== state.query.trim()) return;
       state.smartExpansion = partial;
       renderGrid();
-    }, { refresh });
+    }, { refresh, previousTerms });
     if (request !== smartRequest || query !== state.query.trim()) return;
+    if (more && expansion?.unavailable) throw new Error('AI unavailable');
+    if (more && expansion.terms.length === previousTerms.length) toast('No new related terms found.');
+    else if (more) state.expansionTerm = '';
     setSmartExpansion(expansion);
     setSmartIdle();
     renderGrid();
     if (expansion?.unavailable && !navigator.userActivation?.isActive) armChromeAIRetry();
   } catch {
     if (request !== smartRequest) return;
-    setSmartExpansion(null);
+    if (more) toast('Could not find more related terms. Try again.');
+    else setSmartExpansion(null);
     setSmartIdle();
     renderGrid();
   }

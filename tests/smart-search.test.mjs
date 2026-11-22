@@ -212,3 +212,25 @@ test('explicit refresh regenerates expansions instead of returning cached terms'
   assert.deepEqual(refreshed.terms, ['smiling face']);
   assert.equal(calls, 2);
 });
+
+test('each additional expansion asks for fresh terms and preserves earlier rounds in the cache', async () => {
+  const values = new Map();
+  const prompts = [];
+  const replies = [['kitten'], ['Kitten', 'whiskers'], ['whiskers', 'cat', 'paws']];
+  const smart = new ChromeSmartSearch({
+    LanguageModel: { create: async () => ({ prompt: async prompt => {
+      prompts.push(prompt);
+      return JSON.stringify({ terms: replies.shift() });
+    } }) },
+  }, { getItem: key => values.get(key), setItem: (key, value) => values.set(key, value) });
+  const initial = await smart.expand('cat');
+  const more = previous => smart.expand('cat', 'auto', null, () => assert.fail('Previous terms must stay visible'), { previousTerms: previous.terms });
+  const second = await more(initial);
+  const third = await more(second);
+  assert.deepEqual(second.terms, ['kitten', 'whiskers']);
+  assert.deepEqual(third.terms, ['kitten', 'whiskers', 'paws']);
+  assert.match(prompts[1], /kitten/);
+  assert.match(prompts[2], /whiskers/);
+  assert.deepEqual((await smart.expand('cat')).terms, third.terms);
+  assert.equal(prompts.length, 3);
+});

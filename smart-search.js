@@ -71,9 +71,9 @@ export function isDesktopChrome(navigatorLike = globalThis.navigator) {
   return isGoogleChrome && !isMobile;
 }
 
-export function sanitizeExpansion(value, englishQuery) {
+export function sanitizeExpansion(value, englishQuery, previousTerms = []) {
   const query = String(englishQuery).trim().toLowerCase();
-  const seen = new Set([query]);
+  const seen = new Set([query, ...previousTerms]);
   const terms = [];
   for (const raw of value?.terms || []) {
     const term = String(raw).normalize('NFKC').trim().toLowerCase();
@@ -242,12 +242,12 @@ export class ChromeSmartSearch {
     return (await translator.translate(text)).trim();
   }
 
-  async expand(query, selectedLanguage = 'auto', progress, partial, { refresh = false } = {}) {
+  async expand(query, selectedLanguage = 'auto', progress, partial, { refresh = false, previousTerms = null } = {}) {
     const source = String(query).normalize('NFKC').trim();
     if (!source) return null;
     const cache = readCache(this.storage);
     const directCacheKey = `en:${source.toLowerCase()}`;
-    if (!refresh && cache[directCacheKey] && selectedLanguage === 'en') {
+    if (!previousTerms && !refresh && cache[directCacheKey] && selectedLanguage === 'en') {
       return { sourceQuery: source, sourceLanguage: 'en', ...cache[directCacheKey], cached: true };
     }
 
@@ -255,9 +255,9 @@ export class ChromeSmartSearch {
     const offlineTranslation = localTranslation(source, sourceLanguage);
     const englishQuery = offlineTranslation || await this.translateToEnglish(source, sourceLanguage, progress);
     const baseResult = { sourceQuery: source, sourceLanguage, englishQuery, terms: [] };
-    partial?.(baseResult);
+    if (!previousTerms) partial?.(baseResult);
     const cacheKey = `en:${englishQuery.toLowerCase()}`;
-    if (!refresh && cache[cacheKey]) {
+    if (!previousTerms && !refresh && cache[cacheKey]) {
       return { sourceQuery: source, sourceLanguage, ...cache[cacheKey], cached: true };
     }
     let model;
@@ -279,15 +279,17 @@ export class ChromeSmartSearch {
       required: ['terms'],
       additionalProperties: false,
     };
+    const broaden = previousTerms
+      ? ' Broaden the search with additional concrete objects, activities, or visual associations. Suggest only new terms. Already explored: ' + JSON.stringify(previousTerms) + '.'
+      : '';
     const response = await model.prompt(
       `The English icon search query is "${englishQuery.replaceAll('"', '')}". ` +
-      'Return related English terms for finding visually meaningful icons. Include concrete synonyms, objects, actions, expressions, or categories. Use lowercase terms of one to three words. For multi-word queries, preserve the combined meaning of all words in each suggestion. Do not expand unrelated meanings of individual words. Do not repeat the query.',
+      'Return related English terms for finding visually meaningful icons. Include concrete synonyms, objects, actions, expressions, or categories. Use lowercase terms of one to three words. For multi-word queries, preserve the combined meaning of all words in each suggestion. Do not expand unrelated meanings of individual words. Do not repeat the query.' + broaden,
       { responseConstraint: schema },
     );
-    const terms = sanitizeExpansion(JSON.parse(response), englishQuery);
+    const terms = [...(previousTerms || []), ...sanitizeExpansion(JSON.parse(response), englishQuery, previousTerms || [])];
     const result = { sourceQuery: source, sourceLanguage, englishQuery, terms };
-    cache[cacheKey] = { englishQuery, terms };
-    const entries = Object.entries(cache).slice(-200);
+    const entries = Object.entries({ ...readCache(this.storage), [cacheKey]: { englishQuery, terms } }).slice(-200);
     writeCache(this.storage, Object.fromEntries(entries));
     return result;
   }
