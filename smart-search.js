@@ -1,4 +1,4 @@
-import { normalize, searchCatalogMatches } from './catalog.js?v=progressive-results-1';
+import { filterCatalogItems, normalize, searchCatalogMatches } from './catalog.js?v=progressive-results-1';
 
 const CACHE_KEY = 'iconwiki.smart-search.v1';
 const LANGUAGE_MODEL_OPTIONS = {
@@ -89,7 +89,7 @@ export function isAndQuery(query) {
   return normalize(query || '').split(/\s+/).filter(Boolean).length > 1;
 }
 
-export function buildSmartResults(items, options, expansion = null, resultType = 'all') {
+export function buildSmartResults(items, options, expansion = null, resultType = 'all', withinFilter = '', expansionTerm = '') {
   // Keep the original AND query for direct English matches; add AI suggestions separately.
   const effectiveQuery = isAndQuery(options.query) && (!expansion?.sourceLanguage || expansion.sourceLanguage === 'en')
     ? options.query : expansion?.englishQuery || options.query;
@@ -100,8 +100,11 @@ export function buildSmartResults(items, options, expansion = null, resultType =
   const relatedIds = new Set();
   const relatedTermById = new Map();
   const matchTypeById = new Map(directMatches.map(row => [row.item.id, row.matchType]));
+  const hitsByTerm = new Map();
   for (const term of expansion?.terms || []) {
-    for (const { item } of searchCatalogMatches(items, { ...options, query: term }).slice(0, 120)) {
+    const hits = searchCatalogMatches(items, { ...options, query: term }).slice(0, 120);
+    hitsByTerm.set(term, hits);
+    for (const { item } of hits) {
       if (directIds.has(item.id) || relatedIds.has(item.id)) continue;
       relatedIds.add(item.id);
       relatedTermById.set(item.id, term);
@@ -112,12 +115,26 @@ export function buildSmartResults(items, options, expansion = null, resultType =
   const exact = directMatches.filter(row => row.matchType === 'exact').map(row => row.item);
   const keyword = directMatches.filter(row => row.matchType === 'keyword').map(row => row.item);
   const prefix = directMatches.filter(row => row.matchType === 'prefix').map(row => row.item);
-  const results = resultType === 'exact' ? exact
+  const matches = resultType === 'exact' ? exact
     : resultType === 'keyword' ? keyword
       : resultType === 'prefix' ? prefix
       : resultType === 'similar' ? related
         : [...direct, ...related];
-  return { results, directIds, relatedIds, relatedTermById, matchTypeById, effectiveQuery };
+  let results = filterCatalogItems(matches, withinFilter);
+  const termCounts = [];
+  if (hitsByTerm.size) {
+    const matchingIds = new Set(results.map(item => item.id));
+    for (const [term, hits] of hitsByTerm) {
+      const members = hits.map(hit => hit.item).filter(item => matchingIds.has(item.id));
+      termCounts.push([term, members.length]);
+      if (term === expansionTerm) {
+        results = members;
+        for (const item of members) if (relatedIds.has(item.id)) relatedTermById.set(item.id, term);
+      }
+    }
+  }
+  if (expansionTerm && !hitsByTerm.has(expansionTerm)) results = [];
+  return { results, termCounts, directIds, relatedIds, relatedTermById, matchTypeById, effectiveQuery };
 }
 
 function readCache(storage) {

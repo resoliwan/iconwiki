@@ -210,7 +210,7 @@ export function createPackedSearch(blocks) {
   }
 
   let cached;
-  function search({ options = {}, expansion, resultType = 'all', withinFilter, limit = Infinity, selected }) {
+  function search({ options = {}, expansion, resultType = 'all', withinFilter, expansionTerm, limit = Infinity, selected }) {
     const key = JSON.stringify([options, expansion, resultType, withinFilter]);
     if (cached?.key !== key) {
       const allowed = eligibility(options);
@@ -218,9 +218,12 @@ export function createPackedSearch(blocks) {
         ? options.query : expansion?.englishQuery || options.query;
       const ranks = ranksFor(query, allowed);
       const related = new Map();
-      if (resultType === 'all' || resultType === 'similar') {
-        for (const term of expansion?.terms || []) {
-          for (const id of ordered(ranksFor(term, allowed), 120)) {
+      const hitsByTerm = new Map();
+      for (const term of expansion?.terms || []) {
+        const hits = ordered(ranksFor(term, allowed), 120);
+        hitsByTerm.set(term, hits);
+        if (resultType === 'all' || resultType === 'similar') {
+          for (const id of hits) {
             if (!ranks[id] && !related.has(id)) related.set(id, term);
           }
         }
@@ -232,9 +235,22 @@ export function createPackedSearch(blocks) {
         }
         if (within) for (const id of related.keys()) if (!within[id]) related.delete(id);
       }
-      cached = { key, ranks, ids: ordered(ranks), related };
+      const termCounts = [];
+      for (const [term, hits] of hitsByTerm) {
+        const members = hits.filter(id => ranks[id] || related.has(id));
+        hitsByTerm.set(term, members);
+        termCounts.push([term, members.length]);
+      }
+      cached = { key, ranks, ids: ordered(ranks), related, hitsByTerm, termCounts };
     }
-    const { ids, ranks, related } = cached;
+    const { ids, ranks, related, hitsByTerm, termCounts } = cached;
+    if (expansionTerm) {
+      const members = hitsByTerm.get(expansionTerm) || [];
+      const visible = Array.from(members.slice(0, limit), id => ranks[id]
+        ? { ...ref(id), matchType: types[ranks[id]] }
+        : { ...ref(id), matchType: 'similar', relatedTerm: expansionTerm });
+      return { total: members.length, visible, termCounts, selected: resolveId(selected) };
+    }
     const total = ids.length + related.size;
     const visible = [];
     for (let i = 0; i < Math.min(ids.length, limit); i++) {
@@ -245,7 +261,7 @@ export function createPackedSearch(blocks) {
       visible.push({ ...ref(id), matchType: 'similar', relatedTerm });
       if (visible.length >= limit) break;
     }
-    return { total, visible, selected: resolveId(selected) };
+    return { total, visible, termCounts, selected: resolveId(selected) };
   }
   return { search, resolveId };
 }

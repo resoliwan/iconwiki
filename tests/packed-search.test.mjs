@@ -87,3 +87,40 @@ test('selected IDs and exact ID matches use the public collection namespace', ()
   assert.equal(idOf(selected), 'two:turn');
   assert.equal(search.resolveId('unknown:arrow'), null);
 });
+
+test('expansion chips include shared matches and count filtered results before pagination', () => {
+  const { items, frame } = library('pets', [
+    ['cat', { keywords: ['adorable', 'feline'] }],
+    ['kitten', { keywords: ['adorable', 'feline'] }],
+    ['whiskers', { keywords: ['feline'] }],
+    ['puppy', { keywords: ['adorable'] }],
+  ]);
+  const preview = prepareCatalog(items);
+  const index = createPackedSearch([...decodeBundle(encodeBundle([frame]))]);
+  const options = { query: 'cat' };
+  const expansion = { terms: ['adorable', 'feline', 'bird'] };
+  for (const [resultType, withinFilter, counts, felineIds] of [
+    ['all', '', [3, 3, 0], ['cat', 'kitten', 'whiskers']],
+    ['all', 'adorable', [3, 2, 0], ['cat', 'kitten']],
+    ['similar', '', [2, 2, 0], ['kitten', 'whiskers']],
+    ['exact', '', [1, 1, 0], ['cat']],
+  ]) {
+    const termCounts = expansion.terms.map((term, i) => [term, counts[i]]);
+    for (const expansionTerm of ['', ...expansion.terms]) {
+      const result = buildSmartResults(preview, options, expansion, resultType, withinFilter, expansionTerm);
+      const data = { options, expansion, resultType, withinFilter, expansionTerm };
+      const { visible, total } = index.search(data);
+      assert.deepEqual(result.termCounts, termCounts);
+      const page = index.search({ ...data, limit: 1 });
+      assert.deepEqual(page.termCounts, termCounts);
+      assert.equal(page.total, total);
+      assert.equal(page.visible.length, Math.min(1, total));
+      assert.deepEqual(visible.map(idOf), result.results.map(item => item.id));
+      if (expansionTerm) assert.equal(total, new Map(termCounts).get(expansionTerm));
+      if (expansionTerm === 'feline') {
+        assert.deepEqual(visible.map(idOf), felineIds.map(id => 'pets:' + id));
+        for (const hit of visible.filter(hit => hit.matchType === 'similar')) assert.equal(hit.relatedTerm, expansionTerm);
+      }
+    }
+  }
+});

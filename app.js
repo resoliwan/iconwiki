@@ -18,7 +18,7 @@ const LICENSE_FILTERS = [
 const state = {
   collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
   filterLicenseClasses: new Set(), resultType: 'all', displayMode: 'images', skinTones: false,
-  selected: null, smartEnabled: false, smartExpansion: null,
+  selected: null, smartEnabled: false, smartExpansion: null, expansionTerm: '',
 };
 const chromeSmartSearch = new ChromeSmartSearch();
 const smartSupported = isDesktopChrome() && chromeSmartSearch.supported;
@@ -216,6 +216,8 @@ function art(item) {
 }
 function updateURL() {
   const url = new URL(location.href);
+  if (state.smartEnabled && state.expansionTerm) url.searchParams.set('term', state.expansionTerm);
+  else url.searchParams.delete('term');
   const collectionOptions = state.collections.map(collection => ({ id: collection.id }));
   for (const [key, value] of Object.entries({ q: state.query, filter: state.withinFilter, collection: encodedSelection(state.filterCollections, collectionOptions), license: encodedSelection(state.filterLicenseClasses, LICENSE_FILTERS), match: state.resultType === 'all' ? '' : state.resultType, display: state.displayMode === 'labels' ? 'labels' : '', smart: state.smartEnabled && state.query.trim() ? '1' : '', tones: state.skinTones ? '1' : '', id: state.selected || '' })) {
     if (value) url.searchParams.set(key, value);
@@ -235,6 +237,7 @@ function readURL() {
   state.displayMode = params.get('display') === 'labels' ? 'labels' : 'images';
   const requestedSmartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
   state.smartEnabled = smartSupported && requestedSmartEnabled;
+  state.expansionTerm = state.smartEnabled && state.query.trim() ? params.get('term') || '' : '';
   if (!smartSupported || params.has('smart')) saveSmartPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = params.get('id') || null;
@@ -247,17 +250,23 @@ function readURL() {
   renderSmartToggle();
   renderFilterControls();
 }
-function renderExpansionTerms() {
-  const panel = $('#expansion-panel');
-  const expansion = state.smartExpansion?.sourceQuery === state.query.trim() ? state.smartExpansion : null;
-  const terms = expansion?.terms || [];
-  const showTerms = state.smartEnabled && terms.length > 0;
-  panel.hidden = !showTerms;
-  const fragment = document.createDocumentFragment();
-  for (const term of terms) {
-    fragment.append(el('span', 'expansion-term', term));
+function renderExpansionTerms(termCounts = []) {
+  const container = $('#expansion-terms');
+  $('#expansion-panel').hidden = !termCounts.length;
+  for (const [index, [term, count]] of termCounts.entries()) {
+    let chip = container.children[index];
+    if (!chip) {
+      chip = button('', 'expansion-term', () => {
+        state.expansionTerm = state.expansionTerm === chip.dataset.term ? '' : chip.dataset.term;
+        renderGrid();
+      });
+      container.append(chip);
+    }
+    chip.dataset.term = term;
+    chip.textContent = `${term} (${count.toLocaleString()})`;
+    chip.setAttribute('aria-pressed', String(state.expansionTerm === term));
   }
-  $('#expansion-terms').replaceChildren(fragment);
+  while (container.children.length > termCounts.length) container.lastElementChild.remove();
 }
 function resultCard(item, search) {
   const card = button('', 'emoji-card', () => select(item.id));
@@ -298,15 +307,17 @@ function renderGrid({ preserveLimit = false } = {}) {
     options: { query: state.query, collections: [...state.filterCollections],
       licenseClasses: [...state.filterLicenseClasses], skinTones: state.skinTones },
     expansion: state.smartEnabled ? expansion : null, resultType: state.resultType,
+    expansionTerm: state.smartEnabled && expansion?.terms.includes(state.expansionTerm) ? state.expansionTerm : '',
     withinFilter: state.withinFilter, selected: state.selected,
   };
   $('#grid').setAttribute('aria-busy', 'true');
-  renderExpansionTerms();
+  if (!pendingSearch.expansion?.terms.length) renderExpansionTerms();
   renderActiveFilters();
   if (manifestReady) updateURL();
   dispatchSearch();
 }
 function showResults(message) {
+  renderExpansionTerms(message.termCounts);
   currentResults = message.items;
   resultTotal = message.total;
   currentSearch = { matchTypeById: new Map(message.matches), relatedTermById: new Map(message.related) };
@@ -442,7 +453,6 @@ function setSmartIdle() {
   const toggle = $('#smart-search');
   toggle.closest('.inline-toggle').classList.remove('busy');
   toggle.setAttribute('aria-busy', 'false');
-  renderExpansionTerms();
 }
 
 function armChromeAIRetry() {
@@ -460,6 +470,8 @@ function armChromeAIRetry() {
 
 function setSmartExpansion(expansion) {
   state.smartExpansion = expansion;
+  if (!expansion?.terms.includes(state.expansionTerm)) state.expansionTerm = '';
+  if (!expansion?.terms.length) renderExpansionTerms();
 }
 
 async function runSmartSearch({ refresh = false } = {}) {
@@ -478,7 +490,7 @@ async function runSmartSearch({ refresh = false } = {}) {
   try {
     const expansion = await chromeSmartSearch.expand(query, 'auto', null, partial => {
       if (request !== smartRequest || query !== state.query.trim()) return;
-      setSmartExpansion(partial);
+      state.smartExpansion = partial;
       renderGrid();
     }, { refresh });
     if (request !== smartRequest || query !== state.query.trim()) return;
@@ -636,7 +648,12 @@ $('#toggle-filters').addEventListener('click', () => setFiltersOpen($('#filters-
 $('#filter-backdrop').addEventListener('click', () => setFiltersOpen(false));
 mobileLayout.addEventListener('change', applyResponsiveLayout);
 applyResponsiveLayout();
-window.addEventListener('popstate', () => { readURL(); renderPanel(); renderGrid(); });
+window.addEventListener('popstate', () => {
+  readURL();
+  renderPanel();
+  renderGrid();
+  if (state.smartEnabled && state.query.trim() && state.smartExpansion?.sourceQuery !== state.query.trim()) runSmartSearch();
+});
 if ('ResizeObserver' in window) {
   new ResizeObserver(entries => {
     const height = entries[0]?.borderBoxSize?.[0]?.blockSize || entries[0]?.contentRect.height;
@@ -649,7 +666,7 @@ function loadingError(message) {
   loadStatus.textContent = `Could not load icons: ${message}. Reload to retry.`;
 }
 try {
-  worker = new Worker(new URL('./search-worker.js?v=git-art-1', import.meta.url), { type: 'module' });
+  worker = new Worker(new URL('./search-worker.js?v=expansion-chips-1', import.meta.url), { type: 'module' });
   worker.onerror = event => loadingError(event.message || 'Search worker unavailable');
   worker.onmessage = ({ data }) => {
     if (data.type === 'manifest') {
