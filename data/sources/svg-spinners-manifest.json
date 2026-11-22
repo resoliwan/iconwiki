@@ -1,0 +1,27 @@
+{
+  "name": "SVG Spinners",
+  "version": "1.2.4",
+  "packages": [
+    {
+      "name": "@iconify-json/svg-spinners",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/svg-spinners/-/svg-spinners-1.2.4.tgz",
+      "sha256": "243a55ead4c8e3a5d125afc32ed54c3eb3e50e0e0eec24e5f98d616ed1267b5c",
+      "assetCount": 46
+    }
+  ],
+  "upstreamUrl": "https://github.com/n3r4zzurr0/svg-spinners",
+  "assetCount": 46,
+  "catalog": "../svg-spinners.json",
+  "catalogSha256": "9a5a2e6d3c1093d2a378735f212584ec0a9f8f67859690ef5dd85594f95d1d6a",
+  "assets": "../../assets/svg-spinners/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "SVG-SPINNERS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "SVG-SPINNERS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/n3r4zzurr0/svg-spinners/abfa05c49acf005b8b1e0ef8eb25a67a7057eb20/LICENSE",
+      "sha256": "712f8f614e9a23cc754a21d72ea443f1166077e4ee0e6c3b6f9fa576a6d37254"
+    }
+  ]
+}

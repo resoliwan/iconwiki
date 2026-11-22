@@ -1,0 +1,27 @@
+{
+  "name": "Material Icon Theme",
+  "version": "1.2.77",
+  "packages": [
+    {
+      "name": "@iconify-json/material-icon-theme",
+      "version": "1.2.77",
+      "url": "https://registry.npmjs.org/@iconify-json/material-icon-theme/-/material-icon-theme-1.2.77.tgz",
+      "sha256": "0d8a33a72f31e9a5adc35424cf5eada50ea8e27d760fef8cf7e1d028a282ebd7",
+      "assetCount": 910
+    }
+  ],
+  "upstreamUrl": "https://github.com/material-extensions/vscode-material-icon-theme",
+  "assetCount": 910,
+  "catalog": "../material-icon-theme.json",
+  "catalogSha256": "e962d03073e8e215b20cfcd35e27f89367e8c1bb9ba87f458c5b7bcf05b8d62e",
+  "assets": "../../assets/material-icon-theme/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "MATERIAL-ICON-THEME-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "MATERIAL-ICON-THEME-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/material-extensions/vscode-material-icon-theme/8e461d1e48b0e66f1927d074e58f09135933dd39/LICENSE",
+      "sha256": "cdab3014d4f69b49dde2b85e81792208c72de613aa6aed7f7a9b5c6609b89670"
+    }
+  ]
+}

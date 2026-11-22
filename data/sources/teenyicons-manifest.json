@@ -1,0 +1,27 @@
+{
+  "name": "Teenyicons",
+  "version": "1.2.2",
+  "packages": [
+    {
+      "name": "@iconify-json/teenyicons",
+      "version": "1.2.2",
+      "url": "https://registry.npmjs.org/@iconify-json/teenyicons/-/teenyicons-1.2.2.tgz",
+      "sha256": "d7433dcfad7bfe26ccab3482516050f8f2d9ea4aacf1d2cb0230694198adda2d",
+      "assetCount": 1200
+    }
+  ],
+  "upstreamUrl": "https://www.npmjs.com/package/teenyicons",
+  "assetCount": 1200,
+  "catalog": "../teenyicons.json",
+  "catalogSha256": "f55feaab6539335395b52755d82d9418297dfb2aed6d81b812b876e97677dad3",
+  "assets": "../../assets/teenyicons/**/*.svg",
+  "license": "MIT",
+  "licenseFile": "TEENYICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "TEENYICONS-LICENSE.txt",
+      "url": "https://cdn.jsdelivr.net/npm/teenyicons@0.4.1/LICENSE",
+      "sha256": "4c88ea0fa4b0cc7b6dbdadcddb3dfaa460329c08c84ac86842ebb3865f9379c1"
+    }
+  ]
+}

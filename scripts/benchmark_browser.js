@@ -11,7 +11,12 @@ addEventListener('DOMContentLoaded', async () => {
     if(grid.querySelector('.material-symbol')) await document.fonts.load('40px "Material Symbols Outlined Local"');
     await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
     result.firstVisible=performance.now();
-    await wait(()=> !document.querySelector('#library-load-status') || /48\/48/.test(document.querySelector('#library-load-status').textContent));
+    await wait(() => {
+      const status = document.querySelector('#library-load-status');
+      if (!status) return true;
+      const counts = status.textContent.match(/^(\d+)\/(\d+) libraries ready$/);
+      return counts && counts[1] === counts[2];
+    });
     await wait(()=>grid.getAttribute('aria-busy')==='false');
     result.allReady=performance.now();
     // Turn off stored AI expansion in both runs via the app's own control.

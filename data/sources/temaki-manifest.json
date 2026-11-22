@@ -1,0 +1,27 @@
+{
+  "name": "Temaki",
+  "version": "1.2.7",
+  "packages": [
+    {
+      "name": "@iconify-json/temaki",
+      "version": "1.2.7",
+      "url": "https://registry.npmjs.org/@iconify-json/temaki/-/temaki-1.2.7.tgz",
+      "sha256": "ee5bc3b129ba9312181ff9e3e2995eb213147d5479c95afa9dd56fecfc554d74",
+      "assetCount": 557
+    }
+  ],
+  "upstreamUrl": "https://github.com/rapideditor/temaki",
+  "assetCount": 557,
+  "catalog": "../temaki.json",
+  "catalogSha256": "db7b68b78acb4c229b440d6676ae9a562f6939b3b33254c0bb67999629fe2e5f",
+  "assets": "../../assets/temaki/**/*.svg",
+  "license": "CC0-1.0",
+  "licenseFile": "TEMAKI-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "TEMAKI-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/rapideditor/temaki/f2bb5387ae32d54aefc370959caf5e3ba783930c/LICENSE.md",
+      "sha256": "32e9b76c6886b3b17c7a96ec0fbe6fb96b7ebf41cdd1f344f28b748631f95b8b"
+    }
+  ]
+}

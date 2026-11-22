@@ -63,10 +63,14 @@ for icon in metadata["icons"]:
 
 assert len(icons) > 3_800, f"Unexpected Material Symbols catalog size: {len(icons)}"
 assert len({item["id"] for item in icons}) == len(icons)
-(DATA / "material-symbols-outlined.json").write_text(
-    json.dumps(icons, ensure_ascii=False, separators=(",", ":")) + "\n",
-    encoding="utf-8",
-)
+for filename, rows in [
+    ("material-symbols-outlined.json", icons),
+    ("material-symbols-preview.json", icons[:100]),
+    ("material-symbols-remaining.json", icons[100:]),
+]:
+    (DATA / filename).write_text(
+        json.dumps(rows, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"
+    )
 
 collections_path = DATA / "collections.json"
 collections = json.loads(collections_path.read_text(encoding="utf-8")) if collections_path.exists() else []
@@ -74,6 +78,8 @@ collection = {
     "id": "material-symbols-outlined",
     "name": "Google Material Symbols Outlined",
     "catalog": "./data/material-symbols-outlined.json",
+    "previewCatalog": "./data/material-symbols-preview.json",
+    "remainingCatalog": "./data/material-symbols-remaining.json",
     "sourceUrl": "https://fonts.google.com/icons",
     "license": "Apache-2.0",
     "licenseUrl": "./data/sources/MATERIAL-SYMBOLS-LICENSE.txt",

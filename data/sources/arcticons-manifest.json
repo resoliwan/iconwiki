@@ -1,0 +1,27 @@
+{
+  "name": "Arcticons",
+  "version": "1.2.62",
+  "packages": [
+    {
+      "name": "@iconify-json/arcticons",
+      "version": "1.2.62",
+      "url": "https://registry.npmjs.org/@iconify-json/arcticons/-/arcticons-1.2.62.tgz",
+      "sha256": "ce979b788134186bf7fe6d32cc2eb707dc54a0bf6a53c63f3b749c683c74cc60",
+      "assetCount": 15457
+    }
+  ],
+  "upstreamUrl": "https://github.com/Arcticons-Team/Arcticons",
+  "assetCount": 15457,
+  "catalog": "../arcticons.json",
+  "catalogSha256": "a635425310007bb2dedb63fea92d1dd43b836efa1f0c82221edf22852655d0bb",
+  "assets": "../../assets/arcticons/**/*.svg",
+  "license": "CC-BY-SA-4.0",
+  "licenseFile": "ARCTICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "ARCTICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/spdx/license-list-data/ab9b0904b43db6f4b67431efd8821feb821f1c8b/text/CC-BY-SA-4.0.txt",
+      "sha256": "cde7883b9050a1104f4ac19a1572aafd6e5d7323b68351aaf51fbf4beba54966"
+    }
+  ]
+}

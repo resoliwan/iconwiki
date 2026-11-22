@@ -1,0 +1,27 @@
+{
+  "name": "Academicons",
+  "version": "1.2.4",
+  "packages": [
+    {
+      "name": "@iconify-json/academicons",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/academicons/-/academicons-1.2.4.tgz",
+      "sha256": "f758417f3500122c31aaa5fea7a20bd777d72d0105cf871136fddc39e930b6d3",
+      "assetCount": 158
+    }
+  ],
+  "upstreamUrl": "https://github.com/jpswalsh/academicons",
+  "assetCount": 158,
+  "catalog": "../academicons.json",
+  "catalogSha256": "7dbb09683778e1984c4c350bc63e8bfc59d336184e2b098c4679add032ad5bb1",
+  "assets": "../../assets/academicons/**/*.svg",
+  "license": "OFL-1.1",
+  "licenseFile": "ACADEMICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "ACADEMICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/spdx/license-list-data/ab9b0904b43db6f4b67431efd8821feb821f1c8b/text/OFL-1.1.txt",
+      "sha256": "8eea8287e5876b539670cadb82e99f9a7afddec6f6730811be1daf25d2e9bcfd"
+    }
+  ]
+}

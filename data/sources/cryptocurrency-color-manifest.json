@@ -1,0 +1,27 @@
+{
+  "name": "Cryptocurrency Color Icons",
+  "version": "1.2.4",
+  "packages": [
+    {
+      "name": "@iconify-json/cryptocurrency-color",
+      "version": "1.2.4",
+      "url": "https://registry.npmjs.org/@iconify-json/cryptocurrency-color/-/cryptocurrency-color-1.2.4.tgz",
+      "sha256": "9458176ac1d49bf6d96aa21f0fdaf2ece2219255f15e33136523c88d71fbfb91",
+      "assetCount": 483
+    }
+  ],
+  "upstreamUrl": "https://github.com/atomiclabs/cryptocurrency-icons",
+  "assetCount": 483,
+  "catalog": "../cryptocurrency-color.json",
+  "catalogSha256": "55cb52a3fe9f9cc434072adc99292bc9a02a1a6a902c33bc1f64f34aabf05a09",
+  "assets": "../../assets/cryptocurrency-color/**/*.svg",
+  "license": "CC0-1.0",
+  "licenseFile": "CRYPTOCURRENCY-COLOR-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "CRYPTOCURRENCY-COLOR-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/atomiclabs/cryptocurrency-icons/1a63530be6e374711a8554f31b17e4cb92c25fa5/LICENSE.md",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    }
+  ]
+}

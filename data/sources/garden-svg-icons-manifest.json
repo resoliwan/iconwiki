@@ -1,0 +1,27 @@
+{
+  "name": "Garden SVG Icons",
+  "version": "1.2.8",
+  "packages": [
+    {
+      "name": "@iconify-json/garden",
+      "version": "1.2.8",
+      "url": "https://registry.npmjs.org/@iconify-json/garden/-/garden-1.2.8.tgz",
+      "sha256": "c4d241c0b9f53fa83d862a7f701b3bbf04bce1955834ebbef0bb51b60976ddfb",
+      "assetCount": 1491
+    }
+  ],
+  "upstreamUrl": "https://github.com/zendeskgarden/svg-icons",
+  "assetCount": 1491,
+  "catalog": "../garden-svg-icons.json",
+  "catalogSha256": "123624e21d8d8b3218617d573a44caf37ca4b0b85e38c1796c8c1d0a96ade5c7",
+  "assets": "../../assets/garden-svg-icons/**/*.svg",
+  "license": "Apache-2.0",
+  "licenseFile": "GARDEN-SVG-ICONS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "GARDEN-SVG-ICONS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/zendeskgarden/svg-icons/22ae28f9ee05849feab0e1c690a98c60ef82817b/LICENSE.md",
+      "sha256": "46ae5f0dc2e06a18cde8b06bdb45abea0b6e28d169e6eff2069536780304cf6e"
+    }
+  ]
+}

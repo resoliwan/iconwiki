@@ -1,0 +1,27 @@
+{
+  "name": "FontAudio",
+  "version": "1.2.1",
+  "packages": [
+    {
+      "name": "@iconify-json/fad",
+      "version": "1.2.1",
+      "url": "https://registry.npmjs.org/@iconify-json/fad/-/fad-1.2.1.tgz",
+      "sha256": "c134ecc14f3765679ba6d4112d30e7b6d0e5c6e490fa1d7f4abe1da87054bd47",
+      "assetCount": 155
+    }
+  ],
+  "upstreamUrl": "https://github.com/fefanto/fontaudio",
+  "assetCount": 155,
+  "catalog": "../fontaudio.json",
+  "catalogSha256": "ae787f8c6f1775e8bf7fad9ee25ea8c7396ab8b0638ff192aca62ac27d0d69b7",
+  "assets": "../../assets/fontaudio/**/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "FONTAUDIO-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "FONTAUDIO-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/spdx/license-list-data/ab9b0904b43db6f4b67431efd8821feb821f1c8b/text/CC-BY-4.0.txt",
+      "sha256": "d557539df68e771cc1eedcc91d13f70fca930e508d11eedcafa4b15db49e3744"
+    }
+  ]
+}

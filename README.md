@@ -4,7 +4,7 @@ Making the web more beautiful, fast, and open through great icons.
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Over 136,000 icons and emoji from 48 libraries.
+Over 157,000 icons and emoji from 58 libraries.
 
 ## Key features
 
@@ -86,9 +86,19 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | CoreUI Icons Free | 1.2.3 / 1.2.7 | [CC-BY-4.0 / CC0-1.0](./data/sources/COREUI-ICONS-FREE-LICENSE.txt) | 1,583 |
 | Akar Icons | 1.2.7 | [MIT](./data/sources/AKAR-ICONS-LICENSE.txt) | 454 |
 | ProIcons | 1.2.20 | [MIT](./data/sources/PROICONS-LICENSE.txt) | 544 |
-| **Total** |  |  | **136,396** |
+| FontAudio | 1.2.1 | [CC-BY-4.0](./data/sources/FONTAUDIO-LICENSE.txt) | 155 |
+| Font-GIS | 1.2.6 | [CC-BY-4.0](./data/sources/FONT-GIS-LICENSE.txt) | 367 |
+| Academicons | 1.2.4 | [OFL-1.1](./data/sources/ACADEMICONS-LICENSE.txt) | 158 |
+| SVG Spinners | 1.2.4 | [MIT](./data/sources/SVG-SPINNERS-LICENSE.txt) | 46 |
+| Material Icon Theme | 1.2.77 | [MIT](./data/sources/MATERIAL-ICON-THEME-LICENSE.txt) | 910 |
+| Temaki | 1.2.7 | [CC0-1.0](./data/sources/TEMAKI-LICENSE.txt) | 557 |
+| Arcticons | 1.2.62 | [CC-BY-SA-4.0](./data/sources/ARCTICONS-LICENSE.txt) | 15,457 |
+| Garden SVG Icons | 1.2.8 | [Apache-2.0](./data/sources/GARDEN-SVG-ICONS-LICENSE.txt) | 1,491 |
+| Cryptocurrency Color Icons | 1.2.4 | [CC0-1.0](./data/sources/CRYPTOCURRENCY-COLOR-LICENSE.txt) | 483 |
+| Teenyicons | 1.2.2 | [MIT](./data/sources/TEENYICONS-LICENSE.txt) | 1,200 |
+| **Total** |  |  | **157,220** |
 
-For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the six latest additions, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
+For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the collections from Keyline Icons through Teenyicons, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
 
 ## Run locally
 
@@ -111,10 +121,10 @@ Icon Wiki's code is licensed under the [MIT License](./LICENSE). Icons and emoji
 
 ### Progressive loading and browser search
 
-Google Material Symbols is fetched and prepared first. After its icon font and first
-results paint, a maximum of three other catalogs load concurrently. Search results
-expand as catalogs arrive; the library counter shows actual coverage. Failed catalogs
-can be retried without discarding working libraries.
+The first page loads 100 Google Material Symbols. After the icon font and first
+results paint, the worker fetches the remaining Material icons and the other libraries,
+with up to three catalog requests at a time. Search results expand as data arrives.
+Material counts as ready once both parts load. A retry fetches only the missing data.
 
 A module Web Worker owns catalog fetching, preparation, and existing search logic.
 The UI sends only search options and receives the visible result batch. At most one

@@ -1,10 +1,11 @@
 import { filterCatalogItems } from './catalog.js?v=progressive-results-1';
 import { buildSmartResults } from './smart-search.js?v=silent-ai-1';
-import { loadProgressively, PRIMARY_COLLECTION } from './progressive-catalog.js';
+import { loadProgressively, PRIMARY_COLLECTION } from './progressive-catalog.js?v=material-preview-1';
 
 let collections = [], items = [], byId = new Map(), revision = 0;
 const loaded = new Set(), failures = new Map();
 let releasePrimary;
+let usePreview = false, previewCount = null;
 const primaryPainted = new Promise(resolve => { releasePrimary = resolve; });
 let loading = false, cached;
 async function read(url) {
@@ -13,22 +14,25 @@ async function read(url) {
   return response.json();
 }
 function progress() {
-  postMessage({ type: 'progress', loaded: [...loaded], failed: [...failures.keys()], total: collections.length, loading });
+  postMessage({ type: 'progress', loaded: [...loaded], failed: [...failures.keys()], total: collections.length, loading,
+    primaryReady: previewCount !== null || loaded.has(PRIMARY_COLLECTION) });
 }
 async function load(list) {
   loading = true;
   progress();
   await loadProgressively(list, {
     read,
-    accept(collection, chunk) {
+    usePreview, previewLoaded: previewCount !== null,
+    accept(collection, chunk, isPreview) {
       // Stable order is independent of the network completion order.
-      const rank = collection.id === PRIMARY_COLLECTION ? 0 : collections.indexOf(collection) + 1;
+      const offset = collection.id === PRIMARY_COLLECTION ? (previewCount ?? 0) : (collections.indexOf(collection) + 1) * 1_000_000;
       for (const item of chunk) {
-        item._order += rank * 1_000_000;
+        item._order += offset;
         byId.set(item.id, item);
       }
       items.push(...chunk);
-      loaded.add(collection.id);
+      if (isPreview) previewCount = chunk.length;
+      else loaded.add(collection.id);
       failures.delete(collection.id);
       revision++;
       progress();
@@ -45,6 +49,7 @@ function publicItem(item) {
 self.onmessage = async ({ data }) => {
   try {
     if (data.type === 'init') {
+      usePreview = data.usePreview === true;
       collections = await read('./data/collections.json');
       postMessage({ type: 'manifest', collections });
       await load(collections);

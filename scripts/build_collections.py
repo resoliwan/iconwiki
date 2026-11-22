@@ -2,6 +2,8 @@
 import json
 from pathlib import Path
 
+from build_specialty_icon_libraries import LIBRARIES as SPECIALTY_LIBRARIES
+
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
@@ -62,6 +64,8 @@ collections = [
     },
     {
         "id": "material-symbols-outlined", "name": "Google Material Symbols Outlined",
+        "previewCatalog": "./data/material-symbols-preview.json",
+        "remainingCatalog": "./data/material-symbols-remaining.json",
         "catalog": "./data/material-symbols-outlined.json", "sourceUrl": "https://fonts.google.com/icons",
         "license": "Apache-2.0", "licenseClass": "permissive", "licenseUrl": "./data/sources/MATERIAL-SYMBOLS-LICENSE.txt",
         "note": "Icon font and English search metadata are sourced from Google Fonts. The font is self-hosted for offline use.",
@@ -296,7 +300,16 @@ collections = [
     },
 ]
 
-missing = [item["catalog"] for item in collections if not (ROOT / item["catalog"].removeprefix("./")).is_file()]
+for library_id, config in SPECIALTY_LIBRARIES.items():
+    collections.append({
+        "id": library_id, "name": config["name"], "version": config["version"],
+        "catalog": f"./data/{library_id}.json", "sourceUrl": config["upstream"],
+        "license": config["license"], "licenseClass": config["license_class"],
+        "licenseUrl": f"./data/sources/{config['license_file']}", "note": config["note"],
+    })
+
+catalogs = [item[key] for item in collections for key in ("catalog", "previewCatalog", "remainingCatalog") if key in item]
+missing = [catalog for catalog in catalogs if not (ROOT / catalog).is_file()]
 if missing:
     raise RuntimeError(f"Missing collection catalogs: {missing}")
 if len({item["id"] for item in collections}) != len(collections):

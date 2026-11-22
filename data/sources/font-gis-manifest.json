@@ -1,0 +1,27 @@
+{
+  "name": "Font-GIS",
+  "version": "1.2.6",
+  "packages": [
+    {
+      "name": "@iconify-json/gis",
+      "version": "1.2.6",
+      "url": "https://registry.npmjs.org/@iconify-json/gis/-/gis-1.2.6.tgz",
+      "sha256": "ef7288f72fe575b911be6393cd13a553ed580a7a7b25846b5cb24e95c4af88f6",
+      "assetCount": 367
+    }
+  ],
+  "upstreamUrl": "https://github.com/viglino/font-gis",
+  "assetCount": 367,
+  "catalog": "../font-gis.json",
+  "catalogSha256": "fea0d4102bd2fbf9f57d0230182c82c92e3402685eb2389c8b1a52981c2ec2c1",
+  "assets": "../../assets/font-gis/**/*.svg",
+  "license": "CC-BY-4.0",
+  "licenseFile": "FONT-GIS-LICENSE.txt",
+  "licenseSources": [
+    {
+      "file": "FONT-GIS-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/viglino/font-gis/c3b99d144cf2feefa65fc2e0167c167d7bc27bac/LICENSE-CC-BY.md",
+      "sha256": "52558ccee18aba16bea0dd1607386e1b3304b501d9e3be61b36f3a7843781c73"
+    }
+  ]
+}

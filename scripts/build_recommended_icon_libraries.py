@@ -228,8 +228,7 @@ def svg_bytes(icon: dict[str, object], icon_set: dict[str, object]) -> tuple[byt
     return svg.encode(), view_box
 
 
-def build(library_id: str) -> None:
-    config = LIBRARIES[library_id]
+def build(library_id: str, config: dict) -> None:
     packages: list[dict[str, object]] = []
     for source in config["sources"]:
         package_bytes = download(str(source["url"]))
@@ -337,7 +336,7 @@ def main() -> None:
     parser.add_argument("libraries", nargs="*", choices=sorted(LIBRARIES))
     args = parser.parse_args()
     for library_id in args.libraries or LIBRARIES:
-        build(library_id)
+        build(library_id, LIBRARIES[library_id])
 
 
 if __name__ == "__main__":

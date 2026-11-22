@@ -98,6 +98,8 @@
   {
     "id": "material-symbols-outlined",
     "name": "Google Material Symbols Outlined",
+    "previewCatalog": "./data/material-symbols-preview.json",
+    "remainingCatalog": "./data/material-symbols-remaining.json",
     "catalog": "./data/material-symbols-outlined.json",
     "sourceUrl": "https://fonts.google.com/icons",
     "license": "Apache-2.0",
@@ -521,5 +523,115 @@
     "licenseClass": "permissive",
     "licenseUrl": "./data/sources/PROICONS-LICENSE.txt",
     "note": "ProIcons SVG artwork is self-hosted from a pinned Iconify distribution."
+  },
+  {
+    "id": "fontaudio",
+    "name": "FontAudio",
+    "version": "1.2.1",
+    "catalog": "./data/fontaudio.json",
+    "sourceUrl": "https://github.com/fefanto/fontaudio",
+    "license": "CC-BY-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/FONTAUDIO-LICENSE.txt",
+    "note": "FontAudio by Michelangelo Nottoli (@fefanto). SVG artwork is licensed under CC BY 4.0 and normalized by Iconify."
+  },
+  {
+    "id": "font-gis",
+    "name": "Font-GIS",
+    "version": "1.2.6",
+    "catalog": "./data/font-gis.json",
+    "sourceUrl": "https://github.com/viglino/font-gis",
+    "license": "CC-BY-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/FONT-GIS-LICENSE.txt",
+    "note": "Font-GIS mapping symbols by Jean-Marc Viglino, normalized by Iconify under CC BY 4.0."
+  },
+  {
+    "id": "academicons",
+    "name": "Academicons",
+    "version": "1.2.4",
+    "catalog": "./data/academicons.json",
+    "sourceUrl": "https://github.com/jpswalsh/academicons",
+    "license": "OFL-1.1",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/ACADEMICONS-LICENSE.txt",
+    "note": "Academic service logos from the Academicons font by James Walsh, normalized by Iconify under the SIL Open Font License 1.1."
+  },
+  {
+    "id": "svg-spinners",
+    "name": "SVG Spinners",
+    "version": "1.2.4",
+    "catalog": "./data/svg-spinners.json",
+    "sourceUrl": "https://github.com/n3r4zzurr0/svg-spinners",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/SVG-SPINNERS-LICENSE.txt",
+    "note": "Animated SVG loading indicators by Utkarsh Verma."
+  },
+  {
+    "id": "material-icon-theme",
+    "name": "Material Icon Theme",
+    "version": "1.2.77",
+    "catalog": "./data/material-icon-theme.json",
+    "sourceUrl": "https://github.com/material-extensions/vscode-material-icon-theme",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/MATERIAL-ICON-THEME-LICENSE.txt",
+    "note": "File and folder icons from the Material Icon Theme for Visual Studio Code."
+  },
+  {
+    "id": "temaki",
+    "name": "Temaki",
+    "version": "1.2.7",
+    "catalog": "./data/temaki.json",
+    "sourceUrl": "https://github.com/rapideditor/temaki",
+    "license": "CC0-1.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/TEMAKI-LICENSE.txt",
+    "note": "Point-of-interest mapping symbols by Bryan Housel and the Temaki contributors."
+  },
+  {
+    "id": "arcticons",
+    "name": "Arcticons",
+    "version": "1.2.62",
+    "catalog": "./data/arcticons.json",
+    "sourceUrl": "https://github.com/Arcticons-Team/Arcticons",
+    "license": "CC-BY-SA-4.0",
+    "licenseClass": "attribution",
+    "licenseUrl": "./data/sources/ARCTICONS-LICENSE.txt",
+    "note": "Arcticons by Donnnno and contributors. Iconify-normalized artwork is distributed under CC BY-SA 4.0."
+  },
+  {
+    "id": "garden-svg-icons",
+    "name": "Garden SVG Icons",
+    "version": "1.2.8",
+    "catalog": "./data/garden-svg-icons.json",
+    "sourceUrl": "https://github.com/zendeskgarden/svg-icons",
+    "license": "Apache-2.0",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/GARDEN-SVG-ICONS-LICENSE.txt",
+    "note": "Zendesk Garden interface icons in multiple sizes and styles."
+  },
+  {
+    "id": "cryptocurrency-color",
+    "name": "Cryptocurrency Color Icons",
+    "version": "1.2.4",
+    "catalog": "./data/cryptocurrency-color.json",
+    "sourceUrl": "https://github.com/atomiclabs/cryptocurrency-icons",
+    "license": "CC0-1.0",
+    "licenseClass": "restricted",
+    "licenseUrl": "./data/sources/CRYPTOCURRENCY-COLOR-LICENSE.txt",
+    "note": "Cryptocurrency logos by Christopher Downer and contributors. The artwork is CC0. Individual logos may be subject to trademarks."
+  },
+  {
+    "id": "teenyicons",
+    "name": "Teenyicons",
+    "version": "1.2.2",
+    "catalog": "./data/teenyicons.json",
+    "sourceUrl": "https://www.npmjs.com/package/teenyicons",
+    "license": "MIT",
+    "licenseClass": "permissive",
+    "licenseUrl": "./data/sources/TEENYICONS-LICENSE.txt",
+    "note": "15-pixel outline and solid interface icons by Anja van Staden."
   }
 ]

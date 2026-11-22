@@ -54,6 +54,16 @@ The icons, emoji artwork, fonts, and related metadata distributed with Icon Wiki
 | CoreUI Icons Free | 1.2.3 / 1.2.7 | CC BY 4.0 for linear SVGs; CC0 1.0 for brands and flags | [License](./data/sources/COREUI-ICONS-FREE-LICENSE.txt) | [CoreUI Icons](https://github.com/coreui/coreui-icons) |
 | Akar Icons | 1.2.7 | MIT | [License](./data/sources/AKAR-ICONS-LICENSE.txt) | [Akar Icons](https://github.com/artcoholic/akar-icons) |
 | ProIcons | 1.2.20 | MIT | [License](./data/sources/PROICONS-LICENSE.txt) | [ProIcons](https://github.com/ProCode-Software/proicons) |
+| FontAudio | 1.2.1 | CC-BY-4.0 | [License](./data/sources/FONTAUDIO-LICENSE.txt) | [FontAudio](https://github.com/fefanto/fontaudio) |
+| Font-GIS | 1.2.6 | CC-BY-4.0 | [License](./data/sources/FONT-GIS-LICENSE.txt) | [Font-GIS](https://github.com/viglino/font-gis) |
+| Academicons | 1.2.4 | OFL-1.1 | [License](./data/sources/ACADEMICONS-LICENSE.txt) | [Academicons](https://github.com/jpswalsh/academicons) |
+| SVG Spinners | 1.2.4 | MIT | [License](./data/sources/SVG-SPINNERS-LICENSE.txt) | [SVG Spinners](https://github.com/n3r4zzurr0/svg-spinners) |
+| Material Icon Theme | 1.2.77 | MIT | [License](./data/sources/MATERIAL-ICON-THEME-LICENSE.txt) | [Material Icon Theme](https://github.com/material-extensions/vscode-material-icon-theme) |
+| Temaki | 1.2.7 | CC0-1.0 | [License](./data/sources/TEMAKI-LICENSE.txt) | [Temaki](https://github.com/rapideditor/temaki) |
+| Arcticons | 1.2.62 | CC-BY-SA-4.0 | [License](./data/sources/ARCTICONS-LICENSE.txt) | [Arcticons](https://github.com/Arcticons-Team/Arcticons) |
+| Garden SVG Icons | 1.2.8 | Apache-2.0 | [License](./data/sources/GARDEN-SVG-ICONS-LICENSE.txt) | [Garden SVG Icons](https://github.com/zendeskgarden/svg-icons) |
+| Cryptocurrency Color Icons | 1.2.4 | CC0-1.0 | [License](./data/sources/CRYPTOCURRENCY-COLOR-LICENSE.txt) | [Cryptocurrency Color Icons](https://github.com/atomiclabs/cryptocurrency-icons) |
+| Teenyicons | 1.2.2 | MIT | [License](./data/sources/TEENYICONS-LICENSE.txt) | [Teenyicons](https://www.npmjs.com/package/teenyicons) |
 
 For the Iconify-normalized additions, the version shown is the pinned `@iconify-json` package version. Their manifests in `data/sources` record exact package URLs and SHA-256 checksums.
 
@@ -69,6 +79,9 @@ For the Iconify-normalized additions, the version shown is the pinned `@iconify-
 - Solar Icons artwork is provided by 480 Design under CC BY 4.0. Credit 480 Design and link to the license when using the artwork.
 - CoreUI Icons Free linear SVGs require attribution under CC BY 4.0. Its brand and flag SVGs use CC0 1.0, with trademark rights retained by their owners.
 - Devicon technology logos and Octicons GitHub marks may be subject to separate trademark and logo-usage rules.
+- FontAudio SVGs by Michelangelo Nottoli (@fefanto) and Font-GIS SVGs by Jean-Marc Viglino are normalized by Iconify and distributed under CC BY 4.0.
+- Arcticons by Donnnno and contributors is distributed in Iconify-normalized SVG form under CC BY-SA 4.0.
+- Academicons glyphs by James Walsh are distributed in Iconify-normalized SVG form under the SIL Open Font License 1.1.
 - Brand names, logos, and marks may be protected by trademark law independently of the copyright license listed above. Icon Wiki does not grant trademark rights or imply endorsement by any brand owner.
 
 Review the applicable upstream license before copying, modifying, or redistributing an asset.

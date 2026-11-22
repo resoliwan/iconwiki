@@ -5,7 +5,8 @@ const $ = selector => document.querySelector(selector);
 const RESULT_BATCH_SIZE = 100;
 const mobileLayout = matchMedia('(max-width:760px)');
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
-const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons']);
+const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons',
+  'fontaudio', 'font-gis', 'academicons', 'svg-spinners', 'temaki', 'arcticons', 'garden-svg-icons', 'teenyicons']);
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
@@ -35,7 +36,7 @@ let manifestReady = false;
 let worker;
 let refreshTimer;
 let primaryReleased = false;
-let loadingState = { loaded: [], failed: [], total: 0, loading: true };
+let loadingState = { loaded: [], failed: [], total: 0, loading: true, primaryReady: false };
 const loadStatus = el('span', 'hint');
 loadStatus.id = 'library-load-status';
 const retryLoad = button('Retry failed libraries', 'text-button', () => worker.postMessage({ type: 'retry' }));
@@ -55,7 +56,7 @@ function dispatchSearch() {
   worker.postMessage(inFlight);
 }
 async function releaseBackground() {
-  if (primaryReleased || !loadingState.loaded.includes('material-symbols-outlined')) return;
+  if (primaryReleased || !loadingState.primaryReady) return;
   primaryReleased = true;
   try { await document.fonts.load('40px "Material Symbols Outlined Local"'); } catch { /* Allow other libraries if the font fails. */ }
   requestAnimationFrame(() => requestAnimationFrame(() => worker.postMessage({ type: 'continue' })));
@@ -623,7 +624,7 @@ function loadingError(message) {
   loadStatus.textContent = `Could not load icons: ${message}. Reload to retry.`;
 }
 try {
-  worker = new Worker(new URL('./search-worker.js', import.meta.url), { type: 'module' });
+  worker = new Worker(new URL('./search-worker.js?v=material-preview-1', import.meta.url), { type: 'module' });
   worker.onerror = event => loadingError(event.message || 'Search worker unavailable');
   worker.onmessage = ({ data }) => {
     if (data.type === 'manifest') {
@@ -632,7 +633,7 @@ try {
       readURL(); renderPanel(); renderGrid();
       if (state.smartEnabled && state.query.trim()) runSmartSearch();
     } else if (data.type === 'progress') {
-      const changed = data.loaded.length !== loadingState.loaded.length;
+      const changed = data.loaded.length !== loadingState.loaded.length || data.primaryReady !== loadingState.primaryReady;
       loadingState = data;
       updateLoadStatus();
       if (changed && !searchInput.pending && !withinInput.pending) {
@@ -652,5 +653,5 @@ try {
       dispatchSearch();
     }
   };
-  worker.postMessage({ type: 'init' });
+  worker.postMessage({ type: 'init', usePreview: true });
 } catch (error) { loadingError(error.message); }
