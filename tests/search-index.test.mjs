@@ -46,10 +46,14 @@ test('packed cards render local artwork and recover selected details from the or
   const original = {
     id: 'ui:home:filled', collection: 'ui', name: 'home (filled)', kind: 'image', src: './assets/ui/filled/home.svg',
     variant: 'filled', colored: true, keywords: ['Homepage'], author: 'Designer',
+    license: 'CC-BY-4.0', licenseUrl: 'https://creativecommons.org/licenses/by/4.0/', sourceUrl: 'https://example.org/home',
   };
   const [block] = decodeBundle(encodeBundle([encodeCollection(meta, [original])]));
   block.metadata = meta;
   assert.equal(packedItem(block, 0).src, original.src);
+  assert.equal(packedItem(block, 0).license, original.license);
+  assert.equal(packedItem(block, 0).licenseUrl, original.licenseUrl);
+  assert.equal(packedItem(block, 0).sourceUrl, original.sourceUrl);
   assert.equal(packedItem(block, 0).colored, true);
   assert.equal(packedItem(block, 0).variant, 'filled');
   const details = await hydratePackedItem(block, 0, async () => Response.json([original]));

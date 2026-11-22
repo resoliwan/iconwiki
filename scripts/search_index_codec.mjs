@@ -52,6 +52,9 @@ export function encodeCollection({ namespace, id, name, license, licenseClass },
       intern(credits, item.attribution || item.author || ''),
       item.kind && item.kind !== kind ? item.kind : '',
       item.glyph && item.glyph !== slug ? item.glyph : '',
+      item.licenseUrl ? item.license || '' : '',
+      item.licenseUrl || '',
+      item.sourceUrl || '',
     ];
     while (row.length > 1 && !row.at(-1)) row.pop();
     rows.push(row.length === 1 ? slug : row);

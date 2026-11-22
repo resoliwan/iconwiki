@@ -41,7 +41,7 @@ export async function loadPackedIndex(manifest, read = fetch) {
 
 export function packedItem(block, rowIndex) {
   const raw = block.rows[rowIndex];
-  const [slug, title, group = 0, cls = 0, flags = 0, emoji, codes, variant = 0, src, credit = 0, kind, glyph] =
+  const [slug, title, group = 0, cls = 0, flags = 0, emoji, codes, variant = 0, src, credit = 0, kind, glyph, license, licenseUrl, sourceUrl] =
     typeof raw === 'string' ? [raw] : raw;
   const meta = block.metadata;
   const item = {
@@ -55,6 +55,9 @@ export function packedItem(block, rowIndex) {
   if (flags & 2) item.status = 'component';
   if (flags & 4) item.colored = true;
   if (variant) item.variant = block.variants[variant];
+  if (license) item.license = license;
+  if (licenseUrl) item.licenseUrl = licenseUrl;
+  if (sourceUrl) item.sourceUrl = sourceUrl;
   if (credit) item.attribution = block.credits[credit];
   if (meta.namespace === 'iconify') {
     item.artworkSet = artworkURL(meta.prefix);

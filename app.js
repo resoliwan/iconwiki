@@ -7,6 +7,7 @@ const RESULT_BATCH_SIZE = 100;
 const mobileLayout = matchMedia('(max-width:760px)');
 const SMART_PREFERENCE_KEY = 'iconwiki-ai-expansion-enabled';
 const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'lucide', 'phosphor', 'heroicons', 'font-awesome-free', 'bootstrap-icons', 'iconoir', 'ionicons', 'fluent-emoji-high-contrast', 'simple-icons', 'health-icons', 'octicons', 'radix-icons', 'codicons', 'pixelarticons', 'weather-icons', 'mingcute', 'carbon-icons', 'ant-design-icons', 'maki', 'clarity-icons', 'eva-icons', 'css-gg', 'solar-icons', 'keyline-icons', 'tdesign-icons', 'flowbite-icons', 'coreui-icons-free', 'akar-icons', 'proicons',
+  'adobe-spectrum-workflow', 'pictogramas', 'dripicons', 'icofont', 'caomei-icons', 'gonzocons', 'mfg-labs', 'modern-pictograms', 'zocial', 'geomicons-open', 'payment-webfont', 'seti-ui', 'powerline-symbols', 'powerline-extra', 'pomicons', 'iec-power-symbols', 'font-awesome-extension', 'css-icon', 'icono', 'mapsicon',
   'amazing-neo', 'captain-icon', 'devicons-vorillaz', 'ikonate', 'microns', 'themify-icons', 'iconic-free',
   'emblemicons', 'govicons', 'linecons', 'paymentfont', 'runestro-525', 'linea', 'picol', 'fontaudio', 'font-gis', 'academicons', 'svg-spinners', 'temaki', 'arcticons', 'garden-svg-icons', 'teenyicons']);
 const LICENSE_FILTERS = [
@@ -395,16 +396,16 @@ function renderDetail(item) {
   row('ID', el('code', '', item.id));
   if (item.codepoints) row('Code', el('code', '', item.codepoints.map(c => `U+${c}`).join(' ')));
   if (item.version) row('Introduced', `Emoji ${item.version}`);
-  if (collection?.sourceUrl) {
+  if (item.sourceUrl || collection?.sourceUrl) {
     const link = el('a', '', 'Official source ↗');
-    link.href = collection.sourceUrl;
+    link.href = item.sourceUrl || collection.sourceUrl;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     row('Source', link);
   }
-  if (collection?.licenseUrl) {
+  if (item.licenseUrl || collection?.licenseUrl) {
     const link = el('a', '', item.license || collection.license);
-    link.href = collection.licenseUrl;
+    link.href = item.licenseUrl || collection.licenseUrl;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
     row('Data license', link);

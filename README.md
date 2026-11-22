@@ -4,7 +4,7 @@ Making the web more beautiful, fast, and open through great icons.
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Search 710,907 icon and emoji entries across 339 libraries. The catalog includes 75 locally hosted libraries and [264 Iconify collections](#iconify-collections).
+Search 721,784 icon and emoji entries across 365 libraries. The catalog includes 75 locally hosted libraries, 26 additional libraries from pinned source repositories, and [264 Iconify collections](#iconify-collections).
 
 ## Key features
 
@@ -113,8 +113,34 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | PICOL | fe860a96e | [CC-BY-3.0](./data/sources/PICOL-LICENSE.txt) | 549 |
 | Keyrune | 256add455 | [GPL-3.0](./data/sources/KEYRUNE-LICENSE.txt) | 434 |
 | Iconic Free | f46e05a4e | [Iconic Free License](./data/sources/ICONIC-FREE-LICENSE.txt) | 200 |
+| [Adobe Spectrum Workflow Icons](https://github.com/adobe/spectrum-css-workflow-icons/tree/0f262f75be7121a8f57d37d2c81e742de8a0c6e0) | 0f262f75b | [Apache-2.0](./data/sources/ADOBE-SPECTRUM-WORKFLOW-LICENSE.txt) | 396 |
+| [Pictogramas](https://github.com/adrianmg/pictogramas/tree/7f7f93c114d92670acb0695fdcd97edc27775b68) | 7f7f93c11 | [MIT](./data/sources/PICTOGRAMAS-LICENSE.txt) | 53 |
+| [Dripicons](https://github.com/amitjakhu/dripicons/tree/b8b7035c6c0f34035b0a78af4b393a3fd8628c38) | b8b7035c6 | [CC-BY-SA-4.0](./data/sources/DRIPICONS-LICENSE.txt) | 200 |
+| [Caomei Icons](https://github.com/thecreation/standard-icons/tree/87e4df7d2521f9ea565490303c14d62b6ba92ee6) | 87e4df7d2 | [OFL-1.1](./data/sources/CAOMEI-ICONS-LICENSE.txt) | 376 |
+| [Gonzocons](https://github.com/thecreation/standard-icons/tree/87e4df7d2521f9ea565490303c14d62b6ba92ee6) | 87e4df7d2 | [CC-BY-SA-3.0](./data/sources/GONZOCONS-LICENSE.txt) | 100 |
+| [IcoFont](https://github.com/thecreation/standard-icons/tree/87e4df7d2521f9ea565490303c14d62b6ba92ee6) | 87e4df7d2 | [CC-BY-4.0](./data/sources/ICOFONT-LICENSE.txt) | 2,093 |
+| [SVGL](https://github.com/pheralb/svgl/tree/90f6de7026c5e75a9014dbf1f422792bd40b1802) | 90f6de702 | [Brand terms](./data/sources/SVGL-LICENSE.txt) | 677 |
+| [Bioicons](https://github.com/duerrsimon/bioicons/tree/30f1dd71314bf99d22668318769e5f91834660ee) | 30f1dd713 | [Per-icon license](./data/sources/BIOICONS-LICENSE.txt) | 2,824 |
+| [MFG Labs Iconset](https://github.com/MfgLabs/mfglabs-iconset/tree/203f5b84c88a3a892ed61dc39e85022d6c042ef1) | 203f5b84c | [CC-BY-3.0](./data/sources/MFG-LABS-LICENSE.txt) | 186 |
+| [Modern Pictograms](https://github.com/fontello/modernpics.font/tree/78eafe8692c8f340b20533b43318945d0f78214a) | 78eafe869 | [OFL-1.1](./data/sources/MODERN-PICTOGRAMS-LICENSE.txt) | 91 |
+| [Zocial](https://github.com/smcllns/css-social-buttons/tree/306c065c85a23bd45676db8a52fef23613b49b6d) | 306c065c8 | [MIT / brand terms](./data/sources/ZOCIAL-LICENSE.txt) | 113 |
+| [Geomicons Open](https://github.com/jxnblk/geomicons-open/tree/19102661dc001131b76ca9ac731b0ddb6ee61cc0) | 19102661d | [MIT](./data/sources/GEOMICONS-OPEN-LICENSE.txt) | 56 |
+| [Payment Webfont](https://github.com/orlandotm/payment-webfont/tree/968a93f7fb2991771b76a508428196b01dd3b5ee) | 968a93f7f | [CC0-1.0 / brand terms](./data/sources/PAYMENT-WEBFONT-LICENSE.txt) | 34 |
+| [Seti UI](https://github.com/jesseweed/seti-ui/tree/2d6c5e68b4ded73c92dac291845ee44e1182d511) | adbd16ab7 | [MIT](./data/sources/SETI-UI-LICENSE.txt) | 160 |
+| [Powerline Symbols](https://github.com/powerline/powerline/tree/11808cbe5c16e4621edcaefa916b5add81eab799) | adbd16ab7 | [MIT](./data/sources/POWERLINE-SYMBOLS-LICENSE.txt) | 7 |
+| [Powerline Extra Symbols](https://github.com/ryanoasis/powerline-extra-symbols/tree/ae05de7c51f6609479f4f1a4a0f6f65631731c1b) | adbd16ab7 | [MIT](./data/sources/POWERLINE-EXTRA-LICENSE.txt) | 33 |
+| [Pomicons](https://github.com/gabrielelana/pomicons/tree/d04478259e7be6ca44234661a2752975f977a4fe) | adbd16ab7 | [OFL-1.1](./data/sources/POMICONS-LICENSE.txt) | 11 |
+| [IEC Power Symbols](https://github.com/jloughry/Unicode/tree/805536fb6f93604da985d80e0c6b099f98f8b4d9) | adbd16ab7 | [MIT](./data/sources/IEC-POWER-SYMBOLS-LICENSE.txt) | 5 |
+| [Font Awesome Extension](https://github.com/AndreLZGava/font-awesome-extension/tree/09d80249058ee8018a45da30add4339289dbb466) | adbd16ab7 | [MIT](./data/sources/FONT-AWESOME-EXTENSION-LICENSE.txt) | 170 |
+| [Super Tiny Icons](https://github.com/edent/SuperTinyIcons/tree/d532b8a9e8a96ed5462f3813106f0b1e230249dc) | d532b8a9e | [Per-logo / brand terms](./data/sources/SUPER-TINY-ICONS-LICENSE.txt) | 479 |
+| [FlagKit](https://github.com/madebybowtie/FlagKit/tree/e7c542fc43dcfe1bf9bcdaa4898ad8d119a84407) | e7c542fc4 | [MIT](./data/sources/FLAGKIT-LICENSE.txt) | 255 |
+| [Mapsicon](https://github.com/djaiss/mapsicon/tree/33ba28808f8d32b5bae0ffada9cadd07073852e1) | 33ba28808 | [Attribution / no resale](./data/sources/MAPSICON-LICENSE.txt) | 241 |
+| [Browser Logos](https://github.com/alrra/browser-logos/tree/58881b84c4d73adc03c06fa2c275a7abee02d935) | 58881b84c | [Brand terms](./data/sources/BROWSER-LOGOS-LICENSE.txt) | 217 |
+| [VectorLogoZone](https://github.com/VectorLogoZone/vectorlogozone/tree/7442420d3dc3ae97476fc57a64edfbfd7be95e24) | 7442420d3 | [Brand terms](./data/sources/VECTORLOGOZONE-LICENSE.txt) | 1,768 |
+| [CSS ICON](https://github.com/wentin/cssicon/tree/6cd3922dcb1d9220d2e278c7054d3a4c8257bee1) | 6cd3922dc | [CC0-1.0](./data/sources/CSS-ICON-LICENSE.txt) | 197 |
+| [icono](https://github.com/saeedalipoor/icono/tree/fe465db8991a4f8c74914b75e9f7a63c519f52ca) | fe465db89 | [MIT](./data/sources/ICONO-LICENSE.txt) | 135 |
 | Iconify public collections (264) | 2.2.560 | [Per-library licenses](./data/search/manifest.json) | 546,996 |
-| **Total** |  |  | **710,907** |
+| **Total** |  |  | **721,784** |
 
 For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the collections from Keyline Icons through Teenyicons, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
 
@@ -404,11 +430,13 @@ npm start
 
 Open [localhost:4174](http://127.0.0.1:4174).
 
-Rebuild the icon catalogs:
+Rebuild the icon catalogs with Node.js, Python, uv and Chrome or Chromium installed.
 
 ```bash
 npm run data
 ```
+
+To rebuild only the 26 additional source collections and their search index, run `npm run data:feeds`.
 
 ## License
 

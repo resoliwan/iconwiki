@@ -9,7 +9,8 @@ const root = path.resolve(import.meta.dirname, '..');
 test('every registered collection has valid unique assets', () => {
   const collections = JSON.parse(fs.readFileSync(path.join(root, 'data/collections.json'), 'utf8'));
   const licenseClasses = new Set(['permissive', 'attribution', 'restricted']);
-  assert.equal(collections.length, 75);
+  const feeds = JSON.parse(fs.readFileSync(path.join(root, 'data/sources/feed-packs.json'), 'utf8'));
+  assert.equal(collections.length, 101);
   assert.equal(collections.find(collection => collection.id === 'noto-emoji')?.name, 'Noto Color Emoji');
   assert.equal(collections.find(collection => collection.id === 'noto-emoji-monochrome')?.name, 'Noto Emoji');
   assert.equal(fs.existsSync(path.join(root, 'assets/noto-emoji-monochrome/NotoEmoji-Regular.ttf')), true);
@@ -25,12 +26,19 @@ test('every registered collection has valid unique assets', () => {
       assert.equal(item.collection, collection.id, `${item.id} has wrong collection`);
       if (item.licenseClass) assert.equal(licenseClasses.has(item.licenseClass), true, `${item.id} has invalid license class`);
       if (item.kind === 'image') {
-        assert.equal(fs.existsSync(path.resolve(root, item.src.replace(/^\.\//, ''))), true, `missing ${item.src}`);
+        if (item.src.startsWith('https://')) {
+          const feed = feeds[collection.id];
+          assert.ok(feed && /^[a-f0-9]{40}$/.test(feed.commit), `unknown image source for ${item.id}`);
+          assert.ok(item.src.startsWith(`https://raw.githubusercontent.com/${feed.repo}/${feed.commit}/`), item.src);
+          assert.match(new URL(item.src).pathname, /\.(?:svg|png)$/i);
+        } else {
+          assert.equal(fs.existsSync(path.resolve(root, item.src.replace(/^\.\//, ''))), true, `missing ${item.src}`);
+        }
       }
     }
     items.push(...catalog);
   }
-  assert.equal(prepareCatalog(items).length, 163_911);
+  assert.equal(prepareCatalog(items).length, 174_788);
   const coreui = items.filter(item => item.collection === 'coreui-icons-free');
   assert.equal(coreui.filter(item => item.licenseClass === 'attribution').length, 554);
   assert.equal(coreui.filter(item => item.licenseClass === 'restricted').length, 1029);

@@ -1,6 +1,62 @@
 # 언어별 아이콘 배포처와 비중복 후보
 
-2026-11-22 기준. Icon Wiki의 58개 컬렉션과 Iconify의 280개 세트를 기준으로 대조했다. 중복의 단위는 **원작 아이콘 세트**다. 같은 제작자의 세트가 React·Java·Flutter로 각각 배포돼도 한 번만 센다. 서로 다른 세트 안에 비슷한 로고나 같은 도안이 있는지는 별도 문제다. [Icon Wiki 비교 기준](../data/collections.json) · [비교한 Iconify 목록](https://github.com/iconify/icon-sets/blob/d1fdcf54272b299075b4fbf21851147e8c3846f9/collections.md)
+첫 조사에서는 Icon Wiki 58개 컬렉션과 Iconify 280개 세트를 대조했다. 후속 조사는 아래의 75개 컬렉션을 기준으로 했다. 중복의 단위는 **원작 아이콘 세트**다. 같은 제작자의 세트가 React·Java·Flutter로 각각 배포돼도 한 번만 센다. 서로 다른 세트 안에 비슷한 로고나 같은 도안이 있는지는 별도 문제다. [Icon Wiki 비교 기준](../data/collections.json) · [비교한 Iconify 목록](https://github.com/iconify/icon-sets/blob/d1fdcf54272b299075b4fbf21851147e8c3846f9/collections.md)
+
+## 수록 결과
+
+아래에서 조사한 8개 세트와 후속 후보 18개를 합쳐 **26개 세트, 10,877개 검색 항목**을 추가했다. 앞의 8개 세트는 6,719개, 후속 18개 세트는 4,158개다. 원본 파일이 같은 세트 내 별칭은 검색어로 합쳤고, 기존 Devicon의 PowerShell과 파일 내용이 같은 SVGL 항목은 제외했다. Bioicons는 목록에 기록된 수치보다 고정한 저장소에 실제 SVG가 더 많아 파일을 기준으로 집계했다. 컬렉션마다 같은 브랜드나 대상을 그린 다른 도안이 포함될 수 있다. [세트별 실수록 수](../README.md#included-libraries) · [원본 버전과 선별 기준](../data/sources/feed-packs.json)
+
+## 바로 가져올 수 있는 아이콘 목록
+
+2026-11-22 확인. 아래는 Iconify 밖에서 원작 저장소를 발견하거나 아이콘 이름·파일 위치를 읽을 수 있는 배포처다. 기존 조사 문서, Icon Wiki 75개 컬렉션, Iconify 280개 세트와 대조한 예시 8개의 목록 URL과 에셋 경로는 [CSV](./icon-source-feeds.csv)에 담았다. 신규 여부는 세트 단위로 확인했고 개별 SVG 중복과 재배포 조건은 별도 검토가 필요하다.
+
+| 원하는 데이터 | 읽을 파일 | 확인한 내용 |
+|---|---|---|
+| 일반 아이콘 세트의 원작 저장소 목록 | [IconSearch YAML 원문](https://raw.githubusercontent.com/VectorLogoZone/git-svg-icons/main/data/iconsearch.yaml) | 166개 항목. 각 행의 repo, branch, directory로 실제 SVG 폴더를 찾을 수 있다. Adobe Spectrum Workflow Icons와 Pictogramas의 지정 경로에서 각각 SVG 396개와 53개를 확인했다. |
+| 브랜드·로고 세트의 원작 저장소 목록 | [LogoSearch YAML 원문](https://raw.githubusercontent.com/VectorLogoZone/git-svg-icons/main/data/logosearch.yaml) | 123개 항목. 예를 들어 SVGL은 [로고 메타데이터](https://github.com/pheralb/svgl/blob/main/src/data/svgs.ts)와 [SVG 디렉터리](https://github.com/pheralb/svgl/tree/main/static/library)를 제공한다. 두 YAML의 항목에는 같은 저장소의 다른 경로와 이미 수록한 세트도 포함된다. |
+| 여러 팩에 공통 형식으로 정리된 아이콘 이름과 SVG | [Standard Icons 모듈 목록 JSON](https://api.github.com/repos/thecreation/standard-icons/contents/modules) | 모듈 디렉터리 70개. 팩별 manifest.json의 icons와 같은 모듈의 icons/ 디렉터리를 함께 쓴다. 명단에서 Dripicons 200개, Caomei Icons 376개, Gonzocons 100개, IcoFont 2,095개를 확인했다. [Dripicons 목록 예시](https://raw.githubusercontent.com/thecreation/standard-icons/master/modules/dripicons/manifest.json) |
+| 과학·의학 일러스트의 개별 아이콘 목록 | [Bioicons 목록 JSON](https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/icons.json) | 2,804개 레코드. 각 행에 이름·카테고리·라이선스·작가가 있고 [같은 저장소](https://github.com/duerrsimon/bioicons/tree/main/static/icons)에서 SVG를 제공한다. |
+
+## 후속 조사 · 다른 아이콘 모음에서 찾은 후보 18개
+
+2026-11-22에 Icon Wiki의 현재 75개 컬렉션, Iconify의 280개 세트, 앞선 조사에서 보류하거나 제외한 목록까지 다시 대조했다. 아래 18개는 이들 목록에 별도 세트로 올라 있지 않은 후보들이다. 숫자는 표에 적은 배포본의 글리프나 파일 수다. 로고와 국기는 여러 세트에서 같은 대상을 그리므로 개별 도안의 중복 수와 재배포 조건은 별도 확인이 필요하다. [Icon Wiki 비교 시점](https://github.com/resoliwan/iconwiki/blob/bc6d4f41e3183705d3c7ace5c0fc33a77c9c1af9/data/collections.json) · [Iconify 비교 시점](https://github.com/iconify/icon-sets/blob/d1fdcf54272b299075b4fbf21851147e8c3846f9/collections.md)
+
+| 모음 | 형태 | 이번에 찾은 새 후보 |
+|---|---|---:|
+| [Fontello](https://github.com/fontello/fontello/tree/71330f51d11b00fa75b6c516db2ea4d62da67330/src) | 여러 제작자의 아이콘 폰트에서 글리프를 골라 하나의 폰트로 내보내는 도구 | 3 |
+| [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts/blob/adbd16ab7ca911eaca7ce3b0f2b7994207c7ecae/src/glyphs/README.md) | 파일 종류·터미널 상태·전원 기호 등을 개발자용 폰트에 묶어 배포 | 6 |
+| [svg-icon](https://github.com/leungwensen/svg-icon/tree/8b84d725b0d2be8f5d87cac7f2c386682ce43563#svg-icon-collections) | 원작별 SVG 스프라이트를 실제로 배포하는 npm 패키지 | 2 |
+| [Awesome Icons](https://github.com/notlmn/awesome-icons/blob/ada49832602b1109aa2441598d3740a44d80e001/readme.md) | 로고·지도·국기·CSS 아이콘의 제작자 저장소를 연결하는 디렉터리 | 7 |
+
+### 폰트와 SVG 묶음에서 확인한 11개
+
+| 원작 세트 | 모음 | 배포본에서 확인한 규모 또는 용도 |
+|---|---|---|
+| [MFG Labs Iconset](https://github.com/fontello/mfglabs.font/blob/5d5fb76bb9584584512b6113a40b748ff1ccf9eb/config.yml) | Fontello, svg-icon | Fontello 글리프 **153개**. 같은 원작이 두 모음에 있어 한 세트로 계산 |
+| [Modern Pictograms](https://github.com/fontello/modernpics.font/blob/78eafe8692c8f340b20533b43318945d0f78214a/config.yml) | Fontello | John Caserta의 픽토그램 **91개** |
+| [Zocial](https://github.com/fontello/zocial.font/blob/22f90e263e0d5295c339846d1ff222028f438a2b/config.yml) | Fontello, svg-icon | Fontello에서 소셜 서비스용 글리프 **103개** |
+| [Geomicons Open](https://github.com/jxnblk/geomicons-open) | svg-icon | 32px 그리드 UI 아이콘. 배포 스프라이트에 **56개**. [스프라이트](https://github.com/leungwensen/svg-icon/blob/8b84d725b0d2be8f5d87cac7f2c386682ce43563/dist/sprite/symbol/geom.svg) |
+| [Payment Webfont](https://github.com/orlandotm/payment-webfont) | svg-icon | Orlando의 결제 수단 아이콘 **34개**. 현재 수록된 PaymentFont와는 제작자가 다르며, 그려진 결제 브랜드는 겹칠 수 있다. [스프라이트](https://github.com/leungwensen/svg-icon/blob/8b84d725b0d2be8f5d87cac7f2c386682ce43563/dist/sprite/symbol/payment-web.svg) |
+| [Seti UI](https://github.com/jesseweed/seti-ui) | Nerd Fonts | VS Code 기본 파일 아이콘의 원작. Nerd Fonts의 seti 이름 167개가 서로 다른 코드 포인트 160개에 대응 |
+| [Powerline Symbols](https://github.com/powerline/powerline) | Nerd Fonts | 터미널 상태줄의 구분자와 기호. pl 코드 포인트 7개 |
+| [Powerline Extra Symbols](https://github.com/ryanoasis/powerline-extra-symbols) | Nerd Fonts | Powerline용 추가 구분자. ple 코드 포인트 33개 |
+| [Pomicons](https://github.com/gabrielelana/pomicons) | Nerd Fonts | 포모도로 작업·휴식 상태 기호. Nerd Fonts의 pom 코드 포인트 11개 |
+| [IEC Power Symbols](https://github.com/jloughry/Unicode) | Nerd Fonts | 전원·대기·절전 기호. iec 코드 포인트 5개 |
+| [Font Awesome Extension](https://github.com/AndreLZGava/font-awesome-extension) | Nerd Fonts | 독립 확장 프로젝트. fae 코드 포인트 170개. 기존 Font Awesome과 도안 단위 비교 필요 |
+
+Nerd Fonts 수량은 접두사별로 이름 별칭을 합친 코드 포인트 수다. [집계한 Nerd Fonts 이름표](https://github.com/ryanoasis/nerd-fonts/blob/adbd16ab7ca911eaca7ce3b0f2b7994207c7ecae/glyphnames.json)
+
+### 디렉터리에서 원본을 확인한 7개
+
+| 원작 세트 | 내용 |
+|---|---|
+| [Super Tiny Icons](https://github.com/edent/SuperTinyIcons/tree/d532b8a9e8a96ed5462f3813106f0b1e230249dc/images/svg) | 1KB 이하로 만든 로고 SVG **479개**. 원본 크기별 PNG와 참고 이미지는 제외 |
+| [FlagKit](https://github.com/madebybowtie/FlagKit/tree/e7c542fc43dcfe1bf9bcdaa4898ad8d119a84407/Assets/SVG) | 국기·지역기 SVG **255개**. Iconify의 Yummygum/Flagpack과 별개의 프로젝트 |
+| [Mapsicon](https://github.com/djaiss/mapsicon) | 국가의 지리적 윤곽을 표현한 실루엣. SVG와 여러 해상도의 PNG 제공 |
+| [Browser Logos](https://github.com/alrra/browser-logos) | 브라우저 로고의 현재·과거 디자인을 수집. 각 브랜드 권리 확인 필요 |
+| [Vector Logo Zone](https://github.com/VectorLogoZone/vectorlogozone) | 일정한 크기와 레이아웃으로 정리한 브랜드 SVG. 원작 브랜드·기존 로고 세트와의 대조 필요 |
+| [CSS ICON](https://github.com/wentin/cssicon) | Wenting Zhang의 CSS 도형 아이콘. CSS로 그린 원본 |
+| [icono](https://github.com/saeedalipoor/icono) | CSS 클래스만으로 렌더링하는 Saeed Alipoor의 아이콘 세트 |
 
 ## 수록한 원본 세트 6개
 

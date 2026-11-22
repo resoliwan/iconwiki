@@ -1,0 +1,43 @@
+Modern Pictograms — John Caserta
+
+Modern Pictograms artwork by John Caserta, licensed under OFL-1.1.
+
+https://github.com/fontello/modernpics.font/tree/78eafe8692c8f340b20533b43318945d0f78214a
+
+https://github.com/fontello/modernpics.font/blob/78eafe8692c8f340b20533b43318945d0f78214a/README.md
+
+Repacked Modern Pictograms font. Mostly, for use in fontello. If you plan to use it
+in your project - see license details on [original page](http://thedesignoffice.org/project/modern-pictograms/).
+
+Note, that ALL requests about artwork should be sent into original project.
+
+
+Info
+----
+
+Difference from original:
+
+- mapped to fit unicode 6.1 standard (where possible)
+- rehinted with `ttfautohint`
+- grouped glyphs on demo page, for convenience
+  (and synced order with other iconic fonts)
+- changed css glyphs names, to be more semantic
+- partially realligned to middle line (need more work)
+
+License
+-------
+
+### Font
+
+Artwork (and original font) by John Caserta:
+
+- http://thedesignoffice.org/project/modern-pictograms/
+- info@johncaserta.com
+- [twitter](https://twitter.com/johncaserta)
+
+Distributed under
+[SIL](http://scripts.sil.org/OFL) licence.
+
+### Scripting
+
+This project uses [font-builder](https://github.com/fontello/font-builder) scripts to generate data.

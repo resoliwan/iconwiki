@@ -1,0 +1,9 @@
+collection,discovered_via,list_url,format,assets_url,notes
+Dripicons,standard-icons,https://raw.githubusercontent.com/thecreation/standard-icons/master/modules/dripicons/manifest.json,JSON,https://github.com/thecreation/standard-icons/tree/master/modules/dripicons/icons,아이콘 이름은 icons 필드
+Caomei Icons,standard-icons,https://raw.githubusercontent.com/thecreation/standard-icons/master/modules/caomei-icons/manifest.json,JSON,https://github.com/thecreation/standard-icons/tree/master/modules/caomei-icons/icons,아이콘 이름은 icons 필드
+Gonzocons,standard-icons,https://raw.githubusercontent.com/thecreation/standard-icons/master/modules/gonzocons/manifest.json,JSON,https://github.com/thecreation/standard-icons/tree/master/modules/gonzocons/icons,아이콘 이름은 icons 필드
+IcoFont,standard-icons,https://raw.githubusercontent.com/thecreation/standard-icons/master/modules/icofont/manifest.json,JSON,https://github.com/thecreation/standard-icons/tree/master/modules/icofont/icons,아이콘 이름은 icons 필드
+Adobe Spectrum Workflow Icons,git-svg-icons / iconsearch.yaml,https://api.github.com/repos/adobe/spectrum-css-workflow-icons/contents/icons/assets/svg?ref=main,GitHub Contents JSON,https://github.com/adobe/spectrum-css-workflow-icons/tree/main/icons/assets/svg,개별 SVG의 download_url 제공
+Pictogramas,git-svg-icons / iconsearch.yaml,https://api.github.com/repos/adrianmg/pictogramas/contents/SVG?ref=master,GitHub Contents JSON,https://github.com/adrianmg/pictogramas/tree/master/SVG,개별 SVG의 download_url 제공
+SVGL,git-svg-icons / logosearch.yaml,https://raw.githubusercontent.com/pheralb/svgl/main/src/data/svgs.ts,TypeScript,https://github.com/pheralb/svgl/tree/main/static/library,브랜드 메타데이터와 로고 변형
+Bioicons,Bioicons,https://raw.githubusercontent.com/duerrsimon/bioicons/main/static/icons/icons.json,JSON,https://github.com/duerrsimon/bioicons/tree/main/static/icons,아이콘별 name·category·license·author 제공

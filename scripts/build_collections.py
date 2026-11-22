@@ -301,7 +301,7 @@ collections = [
 ]
 
 extra_libraries = dict(SPECIALTY_LIBRARIES)
-for source in ["ecosystem-packs.json", "additional-ecosystem-packs.json", "iconic-free-pack.json"]:
+for source in ["ecosystem-packs.json", "additional-ecosystem-packs.json", "iconic-free-pack.json", "feed-packs.json"]:
     extra_libraries.update(json.loads((DATA / "sources" / source).read_text()))
 
 for library_id, config in extra_libraries.items():
