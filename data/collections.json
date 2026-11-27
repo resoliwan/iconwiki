@@ -1,5 +1,32 @@
 [
   {
+    "id": "sf-symbols",
+    "name": "Apple SF Symbols (macOS)",
+    "searchAliases": [
+      "Apple SF Symbols",
+      "San Francisco",
+      "Apple San Francisco",
+      "샌프란시스코",
+      "애플 샌프란시스코"
+    ],
+    "catalog": "./data/sf-symbols.json",
+    "sourceUrl": "https://developer.apple.com/sf-symbols/",
+    "license": "Apple SF Symbols terms",
+    "licenseClass": "restricted",
+    "licenseUrl": "https://developer.apple.com/design/human-interface-guidelines/sf-symbols",
+    "note": "Previews use the SF Pro font on your device. Where a glyph is unavailable, its symbol name is shown."
+  },
+  {
+    "id": "segoe-fluent-icons",
+    "name": "Windows 11 · Segoe Fluent Icons",
+    "catalog": "./data/segoe-fluent-icons.json",
+    "sourceUrl": "https://learn.microsoft.com/en-us/windows/apps/design/iconography/segoe-fluent-icons-font",
+    "license": "Microsoft font terms",
+    "licenseClass": "restricted",
+    "licenseUrl": "https://learn.microsoft.com/en-us/windows/apps/design/iconography/segoe-fluent-icons-font#how-do-i-get-this-font",
+    "note": "Previews come from Microsoft’s Segoe Fluent Icons reference. Microsoft restricts shipping the font to other platforms."
+  },
+  {
     "id": "unicode",
     "name": "Unicode Emoji",
     "version": "17.0",

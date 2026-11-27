@@ -10,10 +10,14 @@ const MONOCHROME_COLLECTIONS = new Set(['material-design-icons', 'tabler', 'luci
   'adobe-spectrum-workflow', 'pictogramas', 'dripicons', 'icofont', 'caomei-icons', 'gonzocons', 'mfg-labs', 'modern-pictograms', 'zocial', 'geomicons-open', 'payment-webfont', 'seti-ui', 'powerline-symbols', 'powerline-extra', 'pomicons', 'iec-power-symbols', 'font-awesome-extension', 'css-icon', 'icono', 'mapsicon',
   'amazing-neo', 'captain-icon', 'devicons-vorillaz', 'ikonate', 'microns', 'themify-icons', 'iconic-free',
   'emblemicons', 'govicons', 'linecons', 'paymentfont', 'runestro-525', 'linea', 'picol', 'fontaudio', 'font-gis', 'academicons', 'svg-spinners', 'temaki', 'arcticons', 'garden-svg-icons', 'teenyicons']);
+const PLATFORM_MARKS = {
+  'sf-symbols': { name: 'Apple', src: './assets/simple-icons/apple.svg' },
+  'segoe-fluent-icons': { name: 'Windows', src: './assets/devicon/windows11/windows11-original.svg' },
+};
 const LICENSE_FILTERS = [
   { id: 'permissive', name: 'Permissive' },
   { id: 'attribution', name: 'Attribution / ShareAlike' },
-  { id: 'restricted', name: 'Restricted / Brand' },
+  { id: 'restricted', name: '사용 제한' },
 ];
 const state = {
   collections: [], byId: new Map(), query: '', withinFilter: '', filterCollections: new Set(),
@@ -100,10 +104,11 @@ function readSelection(value, options) {
   return new Set(value.split(',').filter(id => valid.has(id)));
 }
 function readSmartPreference() {
-  try { return localStorage.getItem(SMART_PREFERENCE_KEY) === 'true'; }
-  catch { return false; }
+  try { return localStorage.getItem(SMART_PREFERENCE_KEY) !== 'false'; }
+  catch { return true; }
 }
 function saveSmartPreference() {
+  if (!smartSupported) return;
   try { localStorage.setItem(SMART_PREFERENCE_KEY, String(state.smartEnabled)); }
   catch { /* The toggle still works for the current page if storage is unavailable. */ }
 }
@@ -117,9 +122,10 @@ function renderChoiceGroup(container, options, selected, update) {
   const focused = container.contains(document.activeElement) ? document.activeElement.dataset.choice : null;
   const allSelected = selected.size === options.length;
   const fragment = document.createDocumentFragment();
-  const addChoice = (id, name, active, action) => {
+  const addChoice = (id, name, active, action, searchAliases = []) => {
     const choice = button(name, 'filter-choice', action);
     choice.dataset.choice = id;
+    choice.dataset.searchNames = [name, ...searchAliases].join('\n').toLowerCase();
     choice.setAttribute('aria-label', name);
     choice.setAttribute('aria-pressed', String(active));
     fragment.append(choice);
@@ -131,7 +137,7 @@ function renderChoiceGroup(container, options, selected, update) {
       if (next.has(option.id)) next.delete(option.id);
       else next.add(option.id);
       update(next.size ? next : new Set(options.map(option => option.id)));
-    });
+    }, option.searchAliases);
   }
   container.replaceChildren(fragment);
   if (focused) [...container.children].find(node => node.dataset.choice === focused)?.focus({ preventScroll: true });
@@ -161,7 +167,7 @@ function renderFilterControls() {
 }
 function filterLibraryChoices() {
   const query = $('#library-search').value.trim().toLowerCase();
-  for (const choice of $('#collection-options').children) choice.hidden = choice.dataset.choice !== 'all' && !choice.textContent.toLowerCase().includes(query);
+  for (const choice of $('#collection-options').children) choice.hidden = choice.dataset.choice !== 'all' && !choice.dataset.searchNames.includes(query);
 }
 function renderActiveFilters() {
   const container = $('#active-filters');
@@ -193,17 +199,37 @@ function renderActiveFilters() {
   $('#clear-filters').hidden = !container.children.length;
   if (focusedIndex !== -1) (container.children[Math.min(focusedIndex, container.children.length - 1)] || $('#toggle-filters')).focus({ preventScroll: true });
 }
+// A system font can be present but lack an individual symbol on an older OS.
+const sfFont = '"SF Pro Display", "SF Pro", -apple-system, BlinkMacSystemFont, sans-serif';
+const sfMetrics = document.createElement('canvas').getContext('2d');
+function hasSFSymbol(glyph) {
+  if (!sfMetrics) return false;
+  sfMetrics.font = '40px ' + sfFont;
+  const actual = sfMetrics.measureText(glyph);
+  const missing = sfMetrics.measureText(String.fromCodePoint(0x10fffd));
+  return ['width', 'actualBoundingBoxRight', 'actualBoundingBoxLeft', 'actualBoundingBoxAscent', 'actualBoundingBoxDescent']
+    .some(key => actual[key] !== missing[key]);
+}
 function art(item) {
   const node = el('span', 'emoji');
   node.setAttribute('aria-hidden', 'true');
   if (item.kind === 'image') {
     if (!item.colored && (item.monochrome || MONOCHROME_COLLECTIONS.has(item.collection) || item.collection === 'fluent-system-icons' && item.variant !== 'color' || item.collection === 'icon-park' && item.variant !== 'multi-color')) node.classList.add('monochrome');
+    if (item.collection === 'segoe-fluent-icons') node.classList.add('segoe-preview');
     const img = el('img', 'artwork-pending');
     img.alt = '';
     img.loading = 'lazy';
     img.addEventListener('load', () => img.classList.remove('artwork-pending'), { once: true });
     showArtwork(img, item);
     node.append(img);
+  } else if (item.collection === 'sf-symbols') {
+    if (hasSFSymbol(item.glyph)) {
+      node.style.fontFamily = sfFont;
+      node.textContent = item.glyph;
+    } else {
+      node.classList.add('symbol-name-preview');
+      node.textContent = item.name;
+    }
   } else if (item.kind === 'font') {
     node.classList.add('material-symbol');
     node.textContent = item.glyph;
@@ -238,7 +264,7 @@ function readURL() {
   const requestedSmartEnabled = params.has('smart') ? params.get('smart') === '1' : readSmartPreference();
   state.smartEnabled = smartSupported && requestedSmartEnabled;
   state.expansionTerm = state.smartEnabled && state.query.trim() ? params.get('term') || '' : '';
-  if (!smartSupported || params.has('smart')) saveSmartPreference();
+  if (smartSupported && params.has('smart')) saveSmartPreference();
   state.skinTones = params.get('tones') === '1';
   state.selected = params.get('id') || null;
   $('#search').value = state.query;
@@ -280,6 +306,17 @@ function resultCard(item, search) {
   const matchType = search.matchTypeById.get(item.id);
   card.title = `${item.name}\n${item.id}${matchType && matchType !== 'browse' ? `\n${matchType} match` : ''}`;
   card.append(art(item));
+  const platform = PLATFORM_MARKS[item.collection];
+  if (platform) {
+    const mark = el('img', 'platform-mark');
+    mark.src = platform.src;
+    mark.alt = '';
+    mark.dataset.platform = platform.name;
+    const label = platform.name + ' · 사용 제한';
+    card.title += '\n' + label;
+    card.setAttribute('aria-label', item.name + ', ' + label);
+    card.append(mark);
+  }
   if (state.displayMode === 'labels') {
     const caption = el('span', 'card-caption');
     caption.append(el('span', 'card-name', item.name));
@@ -433,7 +470,7 @@ function renderDetail(item) {
   if (item.licenseClass || collection?.licenseClass) row('License class', {
     permissive: 'Permissive',
     attribution: 'Attribution / ShareAlike',
-    restricted: 'Restricted / Brand',
+    restricted: '사용 제한',
   }[item.licenseClass || collection.licenseClass] || item.licenseClass || collection.licenseClass);
   panel.append(metadata, el('h3', 'section-label', 'Keywords'));
   const tags = el('div', 'tags');
@@ -580,7 +617,6 @@ $('#smart-search').addEventListener('change', event => {
   if (!smartSupported) {
     event.target.checked = false;
     state.smartEnabled = false;
-    saveSmartPreference();
     renderSmartToggle();
     renderExpansionTerms();
     updateURL();

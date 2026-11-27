@@ -10,14 +10,17 @@ test('every registered collection has valid unique assets', () => {
   const collections = JSON.parse(fs.readFileSync(path.join(root, 'data/collections.json'), 'utf8'));
   const licenseClasses = new Set(['permissive', 'attribution', 'restricted']);
   const feeds = JSON.parse(fs.readFileSync(path.join(root, 'data/sources/feed-packs.json'), 'utf8'));
-  assert.equal(collections.length, 101);
+  assert.equal(collections.length, 103);
   assert.equal(collections.find(collection => collection.id === 'noto-emoji')?.name, 'Noto Color Emoji');
   assert.equal(collections.find(collection => collection.id === 'noto-emoji-monochrome')?.name, 'Noto Emoji');
   assert.equal(fs.existsSync(path.join(root, 'assets/noto-emoji-monochrome/NotoEmoji-Regular.ttf')), true);
   const items = [];
   for (const collection of collections) {
     assert.equal(licenseClasses.has(collection.licenseClass), true, `invalid license class for ${collection.id}`);
-    assert.equal(fs.existsSync(path.resolve(root, collection.licenseUrl.replace(/^\.\//, ''))), true, `missing ${collection.licenseUrl}`);
+    if (['sf-symbols', 'segoe-fluent-icons'].includes(collection.id)) {
+      assert.equal(collection.licenseClass, 'restricted');
+      assert.equal(new URL(collection.licenseUrl).hostname, collection.id === 'sf-symbols' ? 'developer.apple.com' : 'learn.microsoft.com');
+    } else assert.equal(fs.existsSync(path.resolve(root, collection.licenseUrl.replace(/^\.\//, ''))), true, `missing ${collection.licenseUrl}`);
     const catalogPath = path.resolve(root, collection.catalog.replace(/^\.\//, ''));
     assert.equal(fs.existsSync(catalogPath), true, `missing ${collection.catalog}`);
     const catalog = JSON.parse(fs.readFileSync(catalogPath, 'utf8'));
@@ -27,6 +30,10 @@ test('every registered collection has valid unique assets', () => {
       if (item.licenseClass) assert.equal(licenseClasses.has(item.licenseClass), true, `${item.id} has invalid license class`);
       if (item.kind === 'image') {
         if (item.src.startsWith('https://')) {
+          if (collection.id === 'segoe-fluent-icons') {
+            assert.match(item.src, /^https:\/\/raw\.githubusercontent\.com\/MicrosoftDocs\/windows-dev-docs\/[a-f0-9]{40}\/hub\/apps\/design\/iconography\/images\/segoe-fluent-icons\/[a-f0-9]+\.png$/i);
+            continue;
+          }
           const feed = feeds[collection.id];
           assert.ok(feed && /^[a-f0-9]{40}$/.test(feed.commit), `unknown image source for ${item.id}`);
           assert.ok(item.src.startsWith(`https://raw.githubusercontent.com/${feed.repo}/${feed.commit}/`), item.src);
@@ -38,7 +45,7 @@ test('every registered collection has valid unique assets', () => {
     }
     items.push(...catalog);
   }
-  assert.equal(prepareCatalog(items).length, 174_788);
+  assert.equal(prepareCatalog(items).length, 177_993);
   const coreui = items.filter(item => item.collection === 'coreui-icons-free');
   assert.equal(coreui.filter(item => item.licenseClass === 'attribution').length, 554);
   assert.equal(coreui.filter(item => item.licenseClass === 'restricted').length, 1029);

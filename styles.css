@@ -64,6 +64,14 @@ main { grid-area:results; min-width:0; padding:32px 32px 48px; }
 .result-count { font-size:14px; color:var(--muted); }
 .emoji-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr)); gap:12px; }
 .emoji-card { min-width:0; height:140px; border:2px solid transparent; border-radius:8px; background:transparent; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px 8px; gap:16px; position:relative; content-visibility:auto; contain-intrinsic-size:auto 140px; }
+.platform-mark { position:absolute; top:6px; right:6px; width:13px; height:13px; object-fit:contain; pointer-events:none; }
+.platform-mark[data-platform=Apple] { filter:brightness(0) invert(.89); }
+.emoji.segoe-preview { mix-blend-mode:screen; }
+.emoji.segoe-preview img { filter:invert(1) brightness(.89); }
+.emoji.symbol-name-preview, .emoji-grid.image-only .emoji.symbol-name-preview, .preview .emoji.symbol-name-preview {
+  width:100%; height:auto; font:500 12px/1.4 system-ui,sans-serif; overflow-wrap:anywhere; text-align:center; color:var(--muted);
+}
+.emoji-card:has(.card-caption) .symbol-name-preview { display:none; }
 .emoji-card:hover { background:var(--raised); }
 .emoji-card[aria-pressed=true] { background:var(--raised); border-color:var(--muted); }
 .emoji { font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif; font-weight:400; font-style:normal; display:flex; align-items:center; justify-content:center; width:48px; height:48px; flex:none; font-size:var(--emoji-size); line-height:1; }

@@ -4,7 +4,7 @@ Making the web more beautiful, fast, and open through great icons.
 
 **Try Icon Wiki at [iconwiki.aoo.kr](https://iconwiki.aoo.kr)**
 
-Search 721,784 icon and emoji entries across 365 libraries. The catalog includes 75 locally hosted libraries, 26 additional libraries from pinned source repositories, and [264 Iconify collections](#iconify-collections).
+Search 724,989 icon and emoji entries across 367 libraries. The catalog includes 2 platform system icon collections, 75 locally hosted libraries, 26 additional libraries from pinned source repositories, and [264 Iconify collections](#iconify-collections).
 
 ## Key features
 
@@ -22,7 +22,7 @@ Search for `face`, open **Filters**, then enter `smile` in **Filter results** to
 
 ### Discover related icons
 
-Turn on **AI expansion** to include related search terms.
+**AI expansion** includes related search terms by default in supported browsers. You can turn it off in **Filters**.
 
 <img src="./docs/ai-expansion-demo.gif?raw=1" alt="Searching for kangaroo and expanding the results with AI" width="1280" loading="eager">
 
@@ -139,8 +139,10 @@ AI expansion and multilingual search are supported only in desktop Google Chrome
 | [VectorLogoZone](https://github.com/VectorLogoZone/vectorlogozone/tree/7442420d3dc3ae97476fc57a64edfbfd7be95e24) | 7442420d3 | [Brand terms](./data/sources/VECTORLOGOZONE-LICENSE.txt) | 1,768 |
 | [CSS ICON](https://github.com/wentin/cssicon/tree/6cd3922dcb1d9220d2e278c7054d3a4c8257bee1) | 6cd3922dc | [CC0-1.0](./data/sources/CSS-ICON-LICENSE.txt) | 197 |
 | [icono](https://github.com/saeedalipoor/icono/tree/fe465db8991a4f8c74914b75e9f7a63c519f52ca) | fe465db89 | [MIT](./data/sources/ICONO-LICENSE.txt) | 135 |
+| Apple SF Symbols (macOS) | — | [Apple usage guidance](https://developer.apple.com/design/human-interface-guidelines/sf-symbols) | 1,672 |
+| Windows 11 · Segoe Fluent Icons | — | [Microsoft usage guidance](https://learn.microsoft.com/en-us/windows/apps/design/iconography/segoe-fluent-icons-font) | 1,533 |
 | Iconify public collections (264) | 2.2.560 | [Per-library licenses](./data/search/manifest.json) | 546,996 |
-| **Total** |  |  | **721,784** |
+| **Total** |  |  | **724,989** |
 
 For IconPark, MingCute, Carbon, Ant Design, Flat Color, Maki, Clarity, Eva, css.gg, Solar, and the collections from Keyline Icons through Teenyicons, the version shown is the pinned `@iconify-json` package version used to generate the local SVGs.
 

@@ -3,11 +3,28 @@ import json
 from pathlib import Path
 
 from build_specialty_icon_libraries import LIBRARIES as SPECIALTY_LIBRARIES
+from build_platform_icons import SF_SEARCH_ALIASES
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
 
 collections = [
+    {
+        "id": "sf-symbols", "name": "Apple SF Symbols (macOS)",
+        "searchAliases": SF_SEARCH_ALIASES,
+        "catalog": "./data/sf-symbols.json", "sourceUrl": "https://developer.apple.com/sf-symbols/",
+        "license": "Apple SF Symbols terms", "licenseClass": "restricted",
+        "licenseUrl": "https://developer.apple.com/design/human-interface-guidelines/sf-symbols",
+        "note": "Previews use the SF Pro font on your device. Where a glyph is unavailable, its symbol name is shown.",
+    },
+    {
+        "id": "segoe-fluent-icons", "name": "Windows 11 · Segoe Fluent Icons",
+        "catalog": "./data/segoe-fluent-icons.json",
+        "sourceUrl": "https://learn.microsoft.com/en-us/windows/apps/design/iconography/segoe-fluent-icons-font",
+        "license": "Microsoft font terms", "licenseClass": "restricted",
+        "licenseUrl": "https://learn.microsoft.com/en-us/windows/apps/design/iconography/segoe-fluent-icons-font#how-do-i-get-this-font",
+        "note": "Previews come from Microsoft’s Segoe Fluent Icons reference. Microsoft restricts shipping the font to other platforms.",
+    },
     {
         "id": "unicode", "name": "Unicode Emoji", "version": "17.0",
         "catalog": "./data/unicode.json", "sourceUrl": "https://www.unicode.org/emoji/",
